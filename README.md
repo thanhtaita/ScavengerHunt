@@ -1,21 +1,19 @@
 # Geo Scavenger Hunt
 
-# Tai Ta - nta3@uic.edu , Ali Saeed asaee2@uic.edu, Hemalatha Ningappa kondakundi hning4@uic.edu 
+# Member information
+Tai Ta - nta3@uic.edu , Ali Saeed asaee2@uic.edu, Hemalatha Ningappa kondakundi hning4@uic.edu 
 
-# https://github.com/thanhtaita/ScavengerHunt
 
-## What does your application do? Present "Scavenger Hunt Adventure," a web application crafted to bring the excitement of scavenger hunts into the digital realm. Our mission is to offer users an immersive and interactive experience suitable for individuals, families, and groups of all sizes. In general, our web app serves as your premier destination for crafting and engaging in captivating scavenger hunts.
+# Github link
+https://github.com/thanhtaita/ScavengerHunt
 
+## What does your application do? 
+Present "Scavenger Hunt Adventure," a web application crafted to bring the excitement of scavenger hunts into the digital realm. Our mission is to offer users an immersive and interactive experience suitable for individuals, families, and groups of all sizes. In general, our web app serves as your premier destination for crafting and engaging in captivating scavenger hunts.
 
 ## What makes it different than a CRUD app? I.e., what functionality does it provide that is not just a user interface layer on top of a database of user information,and the ability to view / add to / change that information? 
-
 A scavenger hunt web application differs from a typical CRUD (Create, Read, Update, Delete) application in several ways, as it introduces specific gameplay and interaction elements that go beyond basic data management. It creates dynamic scavenger hunts with unique challenges and real-time interaction. Besides that, there are two different modes for administrators and players. Administrators can craft tasks and riddles, extending beyond typical data management. The game utilizes GPS for location-based challenges and tracks the players’ locations. It creates the whole user experience with gamification (time constraints, rules, grouping), storytelling, and multimedia content.
 
-
-
-
 ## What security and privacy concerns do you expect you (as developers) or your users to have with this application?
-
 1. Authentication and Authorization:
 Implement a robust user authentication system to ensure that only authorized users can access and participate in the scavenger hunt.
 Use role-based access control (RBAC) to manage permissions for different user roles, such as administrators and participants.
@@ -44,4 +42,4 @@ Log errors securely for debugging purposes.
 
 This repository has a package.json that functions as a blank shell that gets full credit if you turn it in to the gradescope autograder. We will not be using the autograder in any way to actually evaluate your project, it is just there to keep track of your initial submission.
 
-We recommend that you use this repository for your final project code. This will allow you to ask questions on Piazza and get help from the TAs and instructors. Adding a real linter, type checker, etc, based on our other examples would be a good idea.
+We recommend that you use this repository for your final project code. This will allow you to ask questions on Piazza and get help from the TAs and instructors. Adding a real linter, type checker, etc, based on our other examples would be a good idea.l
