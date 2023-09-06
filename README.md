@@ -1,7 +1,7 @@
 # Geo Scavenger Hunt
 
 # Member information
-Tai Ta - nta3@uic.edu , Ali Saeed asaee2@uic.edu, Hemalatha Ningappa kondakundi hning4@uic.edu 
+Tai Ta - nta3@uic.edu , Ali Saeed - asaee2@uic.edu, Hemalatha Ningappa kondakundi - hning4@uic.edu, Vishaal Karthik Muralidharan - vmural9@uic.edu
 
 
 # Github link
@@ -10,7 +10,7 @@ https://github.com/thanhtaita/ScavengerHunt
 ## What does your application do? 
 Present "Scavenger Hunt Adventure," a web application crafted to bring the excitement of scavenger hunts into the digital realm. Our mission is to offer users an immersive and interactive experience suitable for individuals, families, and groups of all sizes. In general, our web app serves as your premier destination for crafting and engaging in captivating scavenger hunts.
 
-## What makes it different than a CRUD app? I.e., what functionality does it provide that is not just a user interface layer on top of a database of user information,and the ability to view / add to / change that information? 
+## What makes it different than a CRUD app? I.e., what functionality does it provide that is not just a user interface layer on top of a database of user information, and the ability to view / add to / change that information? 
 A scavenger hunt web application differs from a typical CRUD (Create, Read, Update, Delete) application in several ways, as it introduces specific gameplay and interaction elements that go beyond basic data management. It creates dynamic scavenger hunts with unique challenges and real-time interaction. Besides that, there are two different modes for administrators and players. Administrators can craft tasks and riddles, extending beyond typical data management. The game utilizes GPS for location-based challenges and tracks the players’ locations. It creates the whole user experience with gamification (time constraints, rules, grouping), storytelling, and multimedia content.
 
 ## What security and privacy concerns do you expect you (as developers) or your users to have with this application?
@@ -29,7 +29,7 @@ If your scavenger hunt includes image uploads or file submissions, ensure that u
 Implement secure session management to protect against session fixation and session hijacking attacks.
 Use techniques like session timeouts and secure cookies.
 6. API Security:
-App includes APIs, secure them with authentication mechanisms like API keys or OAuth, and implement rate limiting to prevent abuse.
+The app includes APIs. Secure them with authentication mechanisms like API keys or OAuth, and implement rate limiting to prevent abuse.
 7. Database Security:
 Use parameterized queries or an ORM (Object-Relational Mapping) to interact with the database to prevent SQL injection.
 Apply the principle of least privilege when configuring database access.
@@ -42,4 +42,4 @@ Log errors securely for debugging purposes.
 
 This repository has a package.json that functions as a blank shell that gets full credit if you turn it in to the gradescope autograder. We will not be using the autograder in any way to actually evaluate your project, it is just there to keep track of your initial submission.
 
-We recommend that you use this repository for your final project code. This will allow you to ask questions on Piazza and get help from the TAs and instructors. Adding a real linter, type checker, etc, based on our other examples would be a good idea.l
+We recommend that you use this repository for your final project code. This will allow you to ask questions on Piazza and get help from the TAs and instructors. Adding a real linter, type checker, etc., based on our other examples would be a good idea.l
