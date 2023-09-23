@@ -8,26 +8,18 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <h1 className="text-3xl font-bold underline">
+        Welcome to Geo Scavenger Hunt - Your Ultimate Adventure Awaits!🌍🔍🏞️
+      </h1>
+      {/* <div className="bg-blue-500 text-white p-4">
+        <p className="text-xl font-semibold">Get ready to embark on an exciting journey of discovery and exploration. Whether you're a seasoned adventurer or new to the world of scavenger hunts, our app is your passport to a world of fun, challenges, and hidden treasures. Grab your smartphone, gather your friends, and let the adventure begin! Navigate through intriguing clues, explore fascinating locations, and uncover the secrets of the world around you.</p>
+        <p className="mt-2">This is a sample product description.</p>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+      <div className="bg-gray-200 p-4">
+        <p className="text-lg font-semibold">Product B</p>
+        <p className="mt-2">Another product with a description.</p>
+      </div> */}
     </>
   )
 }
