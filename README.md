@@ -1,4 +1,5 @@
-# Geo Scavenger Hunt: https://scavenger-hunt-rust.vercel.app/
+# Geo Scavenger Hunt: 
+https://scavenger-hunt-rust.vercel.app/
 
 # Member information
 Tai Ta - nta3@uic.edu , Ali Saeed - asaee2@uic.edu, Hemalatha Ningappa kondakundi - hning4@uic.edu, Vishaal Karthik Muralidharan - vmural9@uic.edu
