@@ -1,0 +1,31 @@
+.search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-top: 1rem;
+}
+
+input[type="number"] {
+  border-radius: 10px;
+  border: none;
+  width: 40%;
+  text-align: center;
+  color: rgb(0, 0, 0);
+  background-color: rgba(255, 255, 255, 0.544);
+  box-shadow: 0px 0px 0px #88888871;
+  padding: 0.7rem 0rem;
+  font-size: 1.1rem;
+}
+
+.login {
+  background-color: #a73200;
+  color: white;
+  padding: 0.5rem 2rem;
+  border: #767373;
+  border-radius: 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 3%;
+  right: 3%;
+}
