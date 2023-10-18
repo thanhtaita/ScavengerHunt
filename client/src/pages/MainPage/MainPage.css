@@ -1,0 +1,13 @@
+.titleHeader {
+  text-align: center;
+  font-family: "Kalam", cursive;
+  font-weight: 700;
+}
+.title {
+  font-size: 7rem;
+  color: rgb(165, 65, 42);
+}
+.bio {
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.702);
+}
