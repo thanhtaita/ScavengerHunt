@@ -4,7 +4,7 @@
 
 Tai Ta - nta3@uic.edu , Ali Saeed - asaee2@uic.edu, Hemalatha Ningappa kondakundi - hning4@uic.edu, Vishaal Karthik Muralidharan - vmural9@uic.edu
 
-# Instruction to run the project
+# To run the project
 
 1. Direct to server folder `cd standard-auth/server`, then install packages `npm i`
 2. Run `npm start` to run the server
