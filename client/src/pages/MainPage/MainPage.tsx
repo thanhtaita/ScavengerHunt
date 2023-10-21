@@ -2,8 +2,9 @@ import { useState } from "react";
 import "./MainPage.css";
 import Navbar from "../../components/Navbar/Navbar.tsx";
 import { Leaderboards } from "../../components/Leaderboard/Leaderboards.tsx";
-import { GameRow, AuthContextType } from "../../utils/types.ts";
+import { GameRow } from "../../utils/types.ts";
 import { useContext } from "react";
+import { AuthContext } from "../../utils/context";
 
 const games = [
   {
@@ -34,12 +35,8 @@ const games = [
   },
 ];
 
-interface MainPageProps {
-  authorContext: React.Context<AuthContextType>;
-}
-
-const MainPage = ({ authorContext }: MainPageProps) => {
-  const { user } = useContext(authorContext);
+const MainPage = () => {
+  const { user } = useContext(AuthContext);
 
   const [gameId, setGameId] = useState(0);
 
@@ -53,7 +50,7 @@ const MainPage = ({ authorContext }: MainPageProps) => {
       <Navbar
         gameId={gameId}
         setGameId={setGameId}
-        authorContext={authorContext}
+        authorContext={AuthContext}
       />
 
       <div className="titleHeader">
@@ -65,6 +62,7 @@ const MainPage = ({ authorContext }: MainPageProps) => {
       </div>
 
       <Leaderboards games={games} gameId={gameId} onClick={handleRowClick} />
+      <button className="add-button">Create Game +</button>
     </>
   );
 };

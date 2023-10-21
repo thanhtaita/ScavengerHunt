@@ -5,28 +5,15 @@ import {
   useNavigate,
 } from "react-router-dom";
 import axios from "axios";
-import {
-  useEffect,
-  useRef,
-  useState,
-  createContext,
-  useContext,
-  useCallback,
-} from "react";
+import { useEffect, useRef, useState, useContext, useCallback } from "react";
 import "../dotenv.tsx";
-import { AuthContextType } from "./utils/types.ts";
 import MainPage from "./pages/MainPage/MainPage.tsx";
+import { AuthContext } from "../src/utils/context.ts";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
 
 const serverUrl = "http://localhost:5000";
-
-const AuthContext = createContext<AuthContextType>({
-  loggedIn: null,
-  checkLoginState: () => {},
-  user: null,
-});
 
 // a React context to hold the logged-in and user states so they can be shared globally
 const AuthContextProvider = ({ children }) => {
@@ -88,7 +75,7 @@ const Callback = () => {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainPage authorContext={AuthContext} />,
+    element: <MainPage />,
   },
   {
     path: "/auth/callback/", // google will redirect here

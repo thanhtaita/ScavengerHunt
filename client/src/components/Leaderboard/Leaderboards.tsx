@@ -56,7 +56,6 @@ export function Leaderboards({ games, gameId }: LeaderboardsProps) {
           </tbody>
         </table>
       </div>
-      <button className="add-button">Create Game +</button>
     </div>
   );
 }

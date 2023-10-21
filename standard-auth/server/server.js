@@ -63,7 +63,6 @@ const auth = (req, res, next) => {
 };
 
 app.get("/", function (req, res) {
-  console.log(`Client secret: ${process.env.GOOLGE_CLIENT_SECRET}`);
   res.json({ message: "Connect to backend" });
 });
 
