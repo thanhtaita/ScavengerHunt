@@ -47,11 +47,7 @@ const MainPage = () => {
 
   return (
     <>
-      <Navbar
-        gameId={gameId}
-        setGameId={setGameId}
-        authorContext={AuthContext}
-      />
+      <Navbar gameId={gameId} setGameId={setGameId} />
 
       <div className="titleHeader">
         <div className="title">Scavenger Hunt!</div>

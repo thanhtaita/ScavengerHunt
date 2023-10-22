@@ -47,9 +47,3 @@ A scavenger hunt web application differs from a typical CRUD (Create, Read, Upda
 8. Error Handling:
    Implement proper error handling to avoid exposing sensitive information in error messages to users.
    Log errors securely for debugging purposes.
-
-### This repository
-
-This repository has a package.json that functions as a blank shell that gets full credit if you turn it in to the gradescope autograder. We will not be using the autograder in any way to actually evaluate your project, it is just there to keep track of your initial submission.
-
-We recommend that you use this repository for your final project code. This will allow you to ask questions on Piazza and get help from the TAs and instructors. Adding a real linter, type checker, etc., based on our other examples would be a good idea.l

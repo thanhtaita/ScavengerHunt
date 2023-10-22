@@ -3,36 +3,35 @@ import "./Navbar.css";
 import axios from "axios";
 import { AuthContextType } from "../../utils/types.ts";
 import { useContext } from "react";
+import { AuthContext } from "../../utils/context";
 
 interface NavbarProps {
   gameId: number;
   setGameId: (gameId: number) => void;
-  authorContext: React.Context<AuthContextType>;
 }
 
 const serverUrl = "http://localhost:5000";
 
-const Navbar = ({ gameId, setGameId, authorContext }: NavbarProps) => {
-  const { loggedIn, checkLoginState } = useContext(authorContext);
+const Navbar = ({ gameId, setGameId }: NavbarProps) => {
+  const { loggedIn, user } = useContext(AuthContext);
 
-  const handleLogInNOut = async () => {
+  const handleLogin = async () => {
+    try {
+      // Gets authentication url from backend server
+      const {
+        data: { url },
+      } = await axios.get(`${serverUrl}/auth/url`);
+      // Navigate to consent screen
+      window.location.assign(url);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const handleLogout = async () => {
     if (loggedIn) {
       try {
         await axios.post(`${serverUrl}/auth/logout`);
-        // Check login state again
-        checkLoginState();
         window.location.assign("/");
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      try {
-        // Gets authentication url from backend server
-        const {
-          data: { url },
-        } = await axios.get(`${serverUrl}/auth/url`);
-        // Navigate to consent screen
-        window.location.assign(url);
       } catch (err) {
         console.error(err);
       }
@@ -49,9 +48,34 @@ const Navbar = ({ gameId, setGameId, authorContext }: NavbarProps) => {
           onChange={(e) => setGameId(parseInt(e.target.value))}
         />
       </div>
-      <button className="login" onClick={() => handleLogInNOut()}>
-        {loggedIn ? "Logout" : "Login"}
-      </button>
+      {!loggedIn && (
+        <button className="login" onClick={() => handleLogin()}>
+          Login
+        </button>
+      )}
+      {loggedIn && (
+        <div>
+          <section className="top-nav profile">
+            <label className="user-name">Hi, {user?.name}</label>
+            <input id="menu-toggle" type="checkbox" />
+            <label className="menu-button-container" htmlFor="menu-toggle">
+              <div className="menu-button"></div>
+            </label>
+            <ul className="menu">
+              <li onClick={() => window.location.assign("/mygame/10")}>
+                My Game
+              </li>
+              <li onClick={() => window.location.assign("/tutorials")}>
+                Tutorials
+              </li>
+              <li onClick={() => window.location.assign("/settings")}>
+                Settings
+              </li>
+              <li onClick={() => handleLogout()}>Logout</li>
+            </ul>
+          </section>
+        </div>
+      )}
     </div>
   );
 };

@@ -7,8 +7,13 @@ import {
 import axios from "axios";
 import { useEffect, useRef, useState, useContext, useCallback } from "react";
 import "../dotenv.tsx";
+import { AuthContext } from "../src/utils/context.ts"; // context to store info about logged in user
+
+// page import
 import MainPage from "./pages/MainPage/MainPage.tsx";
-import { AuthContext } from "../src/utils/context.ts";
+import AdminGame from "./pages/AdminGame/AdminGame.tsx";
+import Tutorials from "./pages/Tutorials/Tutorials.tsx";
+import Settings from "./pages/Settings/Settings.tsx";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
@@ -76,6 +81,18 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <MainPage />,
+  },
+  {
+    path: "/mygame/:gameId",
+    element: <AdminGame />,
+  },
+  {
+    path: "/tutorials",
+    element: <Tutorials />,
+  },
+  {
+    path: "/settings",
+    element: <Settings />,
   },
   {
     path: "/auth/callback/", // google will redirect here
