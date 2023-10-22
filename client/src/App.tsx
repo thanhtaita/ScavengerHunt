@@ -18,7 +18,7 @@ import Settings from "./pages/Settings/Settings.tsx";
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
 
-const serverUrl = "http://localhost:5000";
+const serverUrl = "http://localhost:9999";
 
 // a React context to hold the logged-in and user states so they can be shared globally
 const AuthContextProvider = ({ children }) => {

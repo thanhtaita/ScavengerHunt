@@ -10,7 +10,7 @@ interface NavbarProps {
   setGameId: (gameId: number) => void;
 }
 
-const serverUrl = "http://localhost:5000";
+const serverUrl = "http://localhost:9999";
 
 const Navbar = ({ gameId, setGameId }: NavbarProps) => {
   const { loggedIn, user } = useContext(AuthContext);
