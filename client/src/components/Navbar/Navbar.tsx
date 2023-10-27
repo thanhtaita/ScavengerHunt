@@ -1,7 +1,6 @@
 import React from "react";
 import "./Navbar.css";
 import axios from "axios";
-import { AuthContextType } from "../../utils/types.ts";
 import { useContext } from "react";
 import { AuthContext } from "../../utils/context";
 

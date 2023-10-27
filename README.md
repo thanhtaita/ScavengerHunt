@@ -1,3 +1,5 @@
+Tai Ta
+
 # Geo Scavenger Hunt: https://scavenger-hunt-rust.vercel.app/
 
 # Member information
