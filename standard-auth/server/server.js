@@ -5,6 +5,14 @@ import axios from "axios";
 import queryString from "query-string";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+// import getUsers  from './queries.js'
+import addUsers  from './queries.js'
+
+
+
+// import ./queries as db;
+
+// const db = require('./queries').default
 
 const config = {
   clientId: process.env.GOOGLE_CLIENT_ID,
@@ -116,6 +124,8 @@ app.get("/auth/logged_in", (req, res) => {
     const token = req.cookies.token;
     if (!token) return res.json({ loggedIn: false });
     const { user } = jwt.verify(token, config.tokenSecret);
+    console.log(" user: ",user)
+    addUsers(user)
     const newToken = jwt.sign({ user }, config.tokenSecret, {
       expiresIn: config.tokenExpiration,
     });
@@ -125,6 +135,7 @@ app.get("/auth/logged_in", (req, res) => {
       httpOnly: true,
     });
     res.json({ loggedIn: true, user });
+    console.log("user: ",user)
   } catch (err) {
     res.json({ loggedIn: false });
   }

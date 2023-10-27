@@ -62,7 +62,7 @@ const Callback = () => {
           const res = await axios.get(
             `${serverUrl}/auth/token${window.location.search}`
           );
-          console.log("response: ", res);
+          console.log("response: ", res.data.user);
           checkLoginState();
           navigate("/");
         } catch (err) {
