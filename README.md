@@ -1,5 +1,4 @@
-By Ali Saeed
-write
+By: Ali Saeed
 
 # Geo Scavenger Hunt: https://scavenger-hunt-rust.vercel.app/
 
