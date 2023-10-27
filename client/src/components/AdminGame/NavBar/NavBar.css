@@ -1,0 +1,16 @@
+.nav-bar {
+  background-color: rgba(0, 0, 0, 0.201);
+  padding: 1.5rem 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-bar h2 {
+  font-size: 1.5rem;
+}
+
+.nav-bar .title {
+  font-size: 2rem;
+}
