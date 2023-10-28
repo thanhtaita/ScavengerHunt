@@ -4,14 +4,14 @@
 }
 .cont {
   height: 100%;
-  left: calc(50% - 350px);
+  left: calc(50% - 220px);
   padding: 0;
   margin: 40px auto;
   position: absolute;
 }
 #nprogress-bar {
   -webkit-appearance: none;
-  width: 700px;
+  width: 28rem;
   color: #ccc;
   height: 2px;
   margin: 0 auto;
@@ -24,26 +24,24 @@
   margin: 0px;
 }
 #step span {
-  height: 80px;
-  width: 80px;
+  height: 3rem;
+  width: 3rem;
   border-radius: 100%;
-  border: 3px solid #ccc;
-  background: #cccccc;
+  border: 3px solid #e2e2e2;
+  background: #e2e2e2;
   position: absolute;
   left: 0;
-  color: #ffffff;
-  top: -30px;
+  top: -0.5rem;
   cursor: pointer;
   transition: all 0.4s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 #step {
   height: 100px;
   width: 100%;
-}
-#step span i {
-  padding: 20px;
-  text-align: center;
-  font-size: 40px;
 }
 
 #step .first {
@@ -64,7 +62,7 @@
 }
 #nprogress-bar::-webkit-progress-value {
   /* Changes line color */
-  background: #049dfe;
+  background: #c04203;
   transition: all 0.4s ease-in-out;
 }
 #nprogress-bar::-webkit-progress-bar {
@@ -72,7 +70,7 @@
   background: #ccc;
 }
 #step .border-change {
-  border-color: #0077c2;
-  background: #049dfe;
+  border-color: #5d3a03;
+  background: #c04203;
   transition: all 0.4s ease-in-out;
 }

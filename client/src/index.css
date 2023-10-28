@@ -156,3 +156,7 @@ button:active {
 li {
   list-style-type: none;
 }
+
+.nav-btn {
+  font-size: 1.2rem;
+}
