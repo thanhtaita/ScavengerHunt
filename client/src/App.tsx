@@ -14,6 +14,7 @@ import MainPage from "./pages/MainPage/MainPage.tsx";
 import AdminGame from "./pages/AdminGame/AdminGame.tsx";
 import Tutorials from "./pages/Tutorials/Tutorials.tsx";
 import Settings from "./pages/Settings/Settings.tsx";
+import PlayerView from "./pages/PlayerView/playerView.tsx";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
   {
     path: "/mygame/:gameId",
     element: <AdminGame />,
+  },
+  {
+    path: "/playerview/:gameId",
+    element: <PlayerView />,
   },
   {
     path: "/tutorials",

@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 :root {
   line-height: 1.5;
   font-weight: 400;
@@ -8,7 +9,7 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
 
-  background-image: url("../public/main2.png");
+
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -20,6 +21,8 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+
 
 body,
 html {
@@ -38,6 +41,8 @@ a:hover {
 body {
   min-width: 320px;
   min-height: 100vh;
+
+  background-image: url("../public/main2.png");
 }
 
 h1 {
