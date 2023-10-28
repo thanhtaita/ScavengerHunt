@@ -1,0 +1,46 @@
+.titlePage2 {
+  text-align: center;
+  color: black;
+  font-size: 70px;
+  margin-bottom: -2%;
+}
+.bioPage2 {
+  text-align: center;
+  color: rgb(0, 0, 0);
+  font-size: 40px;
+}
+.footer2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+  gap: 2rem;
+  font-size: 25px;
+}
+.listOfQR2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+  background-image: linear-gradient(
+    to right,
+    rgba(165, 159, 159, 0.418),
+    rgb(127, 121, 121)
+  );
+  border-radius: 25px;
+}
+.allOfClues2 {
+  height: 30rem;
+  overflow-y: scroll;
+  width: 40rem;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0rem 1rem;
+}
+.QRCodes2 {
+  text-align: center;
+  padding: 1rem 5rem;
+  font-size: 1.5rem;
+}

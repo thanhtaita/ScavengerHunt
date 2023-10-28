@@ -1,0 +1,68 @@
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.titlePage {
+  color: black;
+  font-size: 70px;
+  text-align: center;
+  margin-bottom: -2%;
+}
+.fillLater {
+  margin-top: 2%;
+  margin-left: 80%;
+  width: 10%;
+}
+.bioPage {
+  text-align: center;
+  color: rgb(0, 0, 0);
+  font-size: 40px;
+}
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 5%;
+  padding-bottom: 7%;
+  font-size: 25px;
+}
+.backButton {
+  margin-right: 10%;
+  width: 10%;
+}
+.PrintQR {
+  width: 20%;
+}
+.nextButton {
+  margin-left: 10%;
+  width: 10%;
+}
+.listOfQR {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+  background-image: linear-gradient(
+    to right,
+    rgba(165, 159, 159, 0.418),
+    rgb(127, 121, 121)
+  );
+  border-radius: 25px;
+}
+.allOfClues {
+  height: 30rem;
+  overflow-y: scroll;
+  width: 40rem;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0rem 1rem;
+}
+.QRCodes {
+  text-align: center;
+  border-radius: 25px;
+  padding: 2rem 5rem;
+  background-color: #333333;
+}

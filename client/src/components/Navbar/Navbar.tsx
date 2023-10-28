@@ -62,9 +62,7 @@ const Navbar = ({ gameId, setGameId }: NavbarProps) => {
               <div className="menu-button"></div>
             </label>
             <ul className="menu">
-              <li onClick={() => window.location.assign("/mygame/10")}>
-                My Game
-              </li>
+              <li onClick={() => window.location.assign("/mygame")}>My Game</li>
               <li onClick={() => window.location.assign("/tutorials")}>
                 Tutorials
               </li>
