@@ -1,8 +1,10 @@
 body,.mainContainer{
-    background-color: #3e3e3e;
+    background-color: #f7f7f7;
     height:100%;
     font-family: 'Poppins', sans-serif;
-    color: #f7f7f7;   
+    color: #212529;
+    width: 100vw;
+    height: 100%;
 }
 
 nav{
@@ -48,21 +50,18 @@ h4{
     flex-direction: column;
     height: 100%;
 }
-.currentClue {
-    /* background-color: bisque; */
-}
 
 Pie {
     align-content: center;
 }
 
-ul {
+.solvedClues ul, .currentClue ul {
     list-style-type: none;
     padding-left: 0; /* Remove default padding */
 }
 
 /* Add custom square bullet points */
-li {
+.solvedClues li, .currentClue li {
     position: relative;
     padding-left: 1.5em; /* Space for the square bullet point */
 }
@@ -78,4 +77,14 @@ li {
 }
 .currentClue li::before{
     background-color: #FFC36B;
+}
+
+/* ----------------------------------------------------------- */
+.leaderboardsContainer{
+    height:95vh;
+    display: flex;
+    align-items:center;
+}
+h3{
+    align-items: center;
 }
