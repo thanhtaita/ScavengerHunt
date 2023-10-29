@@ -14,8 +14,9 @@ import MainPage from "./pages/MainPage/MainPage.tsx";
 import AdminGame from "./pages/AdminGame/AdminGame.tsx";
 import Tutorials from "./pages/Tutorials/Tutorials.tsx";
 import Settings from "./pages/Settings/Settings.tsx";
-import Process from "./pages/AdminGame/ProcessPage.tsx";
-import Scan from "./pages/AdminGame/ScanQRCode.tsx";
+import Process from "./pages/AdminGame/ProcessPage/ProcessPage.tsx";
+import Scan from "./pages/AdminGame/ScanQRCode/ScanQRCode.tsx";
+import FirstTab from "./pages/AdminGame/FirstTab/FirstTab.tsx";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
@@ -87,6 +88,20 @@ const router = createBrowserRouter([
   {
     path: "/mygame",
     element: <AdminGame />,
+    children: [
+      {
+        path: "",
+        element: <FirstTab />,
+      },
+      {
+        path: "process",
+        element: <Process />,
+      },
+      {
+        path: "ScanQRCode",
+        element: <Scan />,
+      },
+    ],
   },
   {
     path: "/process",

@@ -1,0 +1,76 @@
+.text-center {
+  text-align: center;
+  color: #ccc;
+}
+.cont {
+  height: 100%;
+  left: calc(50% - 220px);
+  padding: 0;
+  margin: 40px auto;
+  position: absolute;
+}
+#nprogress-bar {
+  -webkit-appearance: none;
+  width: 28rem;
+  color: #ccc;
+  height: 2px;
+  margin: 0 auto;
+}
+
+#first,
+#second,
+#third,
+#fourth {
+  margin: 0px;
+}
+#step span {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 100%;
+  border: 3px solid #e2e2e2;
+  background: #e2e2e2;
+  position: absolute;
+  left: 0;
+  top: -0.5rem;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#step {
+  height: 100px;
+  width: 100%;
+}
+
+#step .first {
+  left: -23px;
+}
+
+#step .second {
+  left: 200px;
+}
+#step .third {
+  left: 420px;
+}
+#step .fourth {
+  left: 640px;
+}
+.detail {
+  position: relative;
+}
+#nprogress-bar::-webkit-progress-value {
+  /* Changes line color */
+  background: #c04203;
+  transition: all 0.4s ease-in-out;
+}
+#nprogress-bar::-webkit-progress-bar {
+  /* Changes background color */
+  background: #ccc;
+}
+#step .border-change {
+  border-color: #5d3a03;
+  background: #c04203;
+  transition: all 0.4s ease-in-out;
+}

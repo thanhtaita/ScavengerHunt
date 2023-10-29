@@ -27,16 +27,8 @@
   padding-bottom: 7%;
   font-size: 25px;
 }
-.backButton {
-  margin-right: 10%;
-  width: 10%;
-}
 .PrintQR {
   width: 20%;
-}
-.nextButton {
-  margin-left: 10%;
-  width: 10%;
 }
 .listOfQR {
   display: flex;
@@ -65,4 +57,12 @@
   border-radius: 25px;
   padding: 2rem 5rem;
   background-color: #333333;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
 }

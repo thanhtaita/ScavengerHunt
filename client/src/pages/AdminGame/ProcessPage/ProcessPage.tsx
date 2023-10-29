@@ -1,5 +1,6 @@
 import "./ProcessPage.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Process = () => {
   const [clues, setClues] = useState<Array<string>>([
@@ -31,19 +32,13 @@ const Process = () => {
       </div>
 
       <div className="footer">
-        <button
-          className="backButton"
-          onClick={() => window.location.assign("/mygame")}
-        >
-          back
-        </button>
+        <Link to="/mygame" className="nav-btn">
+          Back
+        </Link>
         <button className="PrintQR">Print QR Code</button>
-        <button
-          className="nextButton"
-          onClick={() => window.location.assign("/scanQRCode")}
-        >
+        <Link to="/mygame/scanQRCode" className="nav-btn">
           next
-        </button>
+        </Link>
       </div>
     </>
   );
