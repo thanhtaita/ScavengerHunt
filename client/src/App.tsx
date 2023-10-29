@@ -1,4 +1,5 @@
 import "./App.css";
+import "../dotenv.tsx";
 import {
   RouterProvider,
   createBrowserRouter,
