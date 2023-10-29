@@ -1,0 +1,81 @@
+body,.mainContainer{
+    background-color: #3e3e3e;
+    height:100%;
+    font-family: 'Poppins', sans-serif;
+    color: #f7f7f7;   
+}
+
+nav{
+    background-color: #d9d9d9;
+}
+.progressContainer{
+    display: flex;
+    align-content: center;
+    justify-content: space-around;
+    padding-left: 7%;
+    padding-right:7%;
+    padding-top: 2%;
+    height:95vh;
+}
+.pieChart{
+    display: flex;
+    width: 43%;
+}
+h4{
+    font-size: 4vh;
+    font-weight: 500;
+}
+.clues{
+    display: flex;
+    flex-direction: column;
+    /* background-color: aliceblue; */
+    font-size: 2vh;
+    padding-top: 2vh;
+    padding-bottom:2vh;
+    width: 50%;
+    height:75%;
+}
+.scrollableList{
+    flex:1;
+    overflow-y:auto;
+}
+
+.solvedClues{
+    padding-top: 5%;
+    /* background-color: antiquewhite; */
+    flex: 1;
+    display:flex;    
+    flex-direction: column;
+    height: 100%;
+}
+.currentClue {
+    /* background-color: bisque; */
+}
+
+Pie {
+    align-content: center;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0; /* Remove default padding */
+}
+
+/* Add custom square bullet points */
+li {
+    position: relative;
+    padding-left: 1.5em; /* Space for the square bullet point */
+}
+
+.solvedClues li::before,.currentClue li::before {
+    content: ''; /* This is necessary for the pseudo-element to work */
+    position: absolute;
+    left: 0;
+    top: 0.3em; /* Adjust this value to fine-tune the vertical position */
+    width: 0.9em; /* Width of the square */
+    height: 0.9em; 
+    background-color: #69BF4F; /* Color of the square */
+}
+.currentClue li::before{
+    background-color: #FFC36B;
+}
