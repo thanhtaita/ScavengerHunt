@@ -15,7 +15,6 @@ const Process = () => {
   return (
     <>
       <div className="Header">
-        <button className="fillLater">fill later</button>
         <p className="titlePage">Print The QR Codes</p>
         <p className="bioPage">
           click the PrintQR Code button to generate a PDF of all the QR
