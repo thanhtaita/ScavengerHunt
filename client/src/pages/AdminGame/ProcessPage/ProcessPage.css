@@ -25,6 +25,7 @@
 }
 .PrintQR {
   width: 20rem;
+  cursor: pointer;
 }
 .listOfQR {
   display: flex;
