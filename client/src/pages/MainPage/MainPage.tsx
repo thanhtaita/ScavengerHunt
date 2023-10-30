@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./MainPage.css";
 import Navbar from "../../components/Navbar/Navbar.tsx";
 import { Leaderboards } from "../../components/Leaderboard/Leaderboards.tsx";
@@ -44,6 +44,17 @@ const MainPage = () => {
     // Handle what should happen when a row is clicked
     console.log(`Row clicked: ${row}`);
   };
+
+  useEffect(() => {
+    // Fetch games from API
+    console.log("Fetching games...");
+    const fetchGames = async () => {
+      const res = await fetch("http://localhost:9999/");
+      const data = await res.json();
+      console.log(data);
+    };
+    fetchGames();
+  }, []);
 
   return (
     <>
