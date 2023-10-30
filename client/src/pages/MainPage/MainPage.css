@@ -1,13 +1,23 @@
 .titleHeader {
   text-align: center;
   font-family: "Kalam", cursive;
-  font-weight: 700;
+  font-weight: 550;
+  margin-top: -1rem;
 }
 .title {
-  font-size: 7rem;
   color: rgb(165, 65, 42);
+  font-size: 3.5rem;
+  padding-top: 4rem;
+  margin-left: 4rem;
 }
 .bio {
-  font-size: 20px;
+  font-size: 1.5rem;
   color: rgba(0, 0, 0, 0.702);
+  margin-left: 10%;
+}
+.add-button123 {
+  background-color: #a73200;
+  margin-left: 70%;
+  padding: 0.7rem 0.7rem;
+  margin-top: 5%;
 }

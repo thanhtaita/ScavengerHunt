@@ -14,9 +14,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5rem;
+  margin-top: 2.5rem;
   gap: 2rem;
   font-size: 25px;
+  padding-bottom: 2rem;
 }
 .listOfQR2 {
   display: flex;
@@ -25,8 +26,8 @@
   margin-top: 2%;
   background-image: linear-gradient(
     to right,
-    rgba(165, 159, 159, 0.418),
-    rgb(127, 121, 121)
+    rgba(207, 195, 104, 0.348),
+    rgba(99, 177, 211, 0.366)
   );
   border-radius: 25px;
 }

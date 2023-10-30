@@ -7,12 +7,17 @@
   align-items: center;
 }
 
-.nav-bar h2 {
-  font-size: 1.5rem;
-}
-
 .nav-bar .title {
   margin-right: 3rem;
   font-size: 2rem;
+  margin-top: -3rem;
   color: #333333;
+}
+.nav-bar .nav-btn {
+  margin-top: 0.9rem;
+}
+@media screen and (max-width: 768px) {
+  .nav-bar .title {
+    display: none;
+  }
 }
