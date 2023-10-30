@@ -72,6 +72,7 @@ const auth = (req, res, next) => {
 
 app.get("/", function (req, res) {
   res.json({ message: "Connect to backend" });
+  console.log(process.env.PORT)
 });
 
 app.get("/auth/url", (_, res) => {

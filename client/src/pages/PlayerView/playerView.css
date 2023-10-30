@@ -82,7 +82,7 @@ Pie {
 /* ----------------------------------------------------------- */
 .leaderboardsContainer{
     height:95vh;
-    display: flex;
+  
     align-items:center;
 }
 h3{
