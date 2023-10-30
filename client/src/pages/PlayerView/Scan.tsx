@@ -43,12 +43,12 @@ const Scan = () => {
 
 
     return (
-        <div className="leaderboardsContainer">
+        <div className="scanContainer">
             {scanCode === "" &&
 
                 <video ref={video}></video>
             }{scanCode !== "" &&
-                < h1 > {scanCode}</h1 >
+                < h1> {scanCode}</h1 >
             }
 
 

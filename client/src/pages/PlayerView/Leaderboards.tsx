@@ -40,11 +40,9 @@ const Leaderboards = () => {
 
 
     return (
-        <div className="leaderboardsContainer position-relative" >
+        <div className="leaderboardsContainer" >
             <h3 style={{ textAlign: "center" }} >Current Leaderboards</h3>
-            <div style={{ alignItems: "center" }}>
-
-                <table style={{ width: "9vh" }}>
+                <table id="leaderboards">
                     <tr>
                         <th>Rankings</th>
                         <th>Name of the player</th>
@@ -60,7 +58,6 @@ const Leaderboards = () => {
                         </tr>)}
 
                 </table>
-            </div>
         </div>
     );
 }

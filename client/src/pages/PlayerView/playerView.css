@@ -81,10 +81,45 @@ Pie {
 
 /* ----------------------------------------------------------- */
 .leaderboardsContainer{
+    padding-top: 7vh;
     height:95vh;
-  
+    width: 100%;
     align-items:center;
+    display: flex;
+    flex-direction: column;
 }
 h3{
     align-items: center;
+}
+#leaderboards{
+    border:px solid #f7f7f7 !important; 
+    align-items: center;
+}
+#leaderboards{
+    width: 70%;
+    margin:0;
+    height:fit-content;
+}
+#leaderboards th{
+    padding:1vh 1vh 1vh 1vh;
+    height: fit-content;
+}
+#leaderboards td{
+    padding:1vh 1vh 1vh 1vh;
+    height: fit-content;
+}
+
+/* -------------------------------------------------- */
+.scanContainer{
+    padding-top: 7vh;
+    height:95vh;
+    width: 100%;
+    align-items:center;
+    display: flex;
+    flex-direction: column;
+    border-radius: 2vh;
+}
+video{
+    border-radius: 5px;
+    height: 80vh;
 }
