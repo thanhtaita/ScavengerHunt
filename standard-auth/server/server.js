@@ -5,7 +5,10 @@ import axios from "axios";
 import queryString from "query-string";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
-
+import { pool } from "./config/database.js";
+import seedTripsTable from "./config/reset.js";
+import gamesRouter from "./routes/games.js";
+import GamesController from "./controllers/games.js";
 const config = {
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOLGE_CLIENT_SECRET,
@@ -49,6 +52,8 @@ app.use(
 // Parse Cookie
 app.use(cookieParser());
 
+// app.use("", gamesRouter);
+
 // Verify auth
 const auth = (req, res, next) => {
   try {
@@ -62,8 +67,11 @@ const auth = (req, res, next) => {
   }
 };
 
-app.get("/", function (req, res) {
-  res.json({ message: "Connect to backend" });
+app.get("/", async function (req, res) {
+  const users = await pool.query("SELECT * FROM Users");
+  console.log(users);
+  res.status(200).json(users.rows);
+  console.log("Connected to backend");
 });
 
 app.get("/auth/url", (_, res) => {
@@ -73,6 +81,7 @@ app.get("/auth/url", (_, res) => {
 });
 
 app.get("/auth/token", async (req, res) => {
+  seedTripsTable();
   const { code } = req.query;
   if (!code)
     return res
@@ -81,7 +90,6 @@ app.get("/auth/token", async (req, res) => {
   try {
     // Get all parameters needed to hit authorization server
     const tokenParam = getTokenParams(code);
-    console.log(tokenParam);
     // Exchange authorization code for access token (id token is returned here too)
     const {
       data: { id_token },
