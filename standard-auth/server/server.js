@@ -68,9 +68,12 @@ const auth = (req, res, next) => {
 };
 
 app.get("/", async function (req, res) {
-  const users = await pool.query("SELECT * FROM Users");
-  console.log(users);
-  res.status(200).json(users.rows);
+  GamesController.getGames(req, res);
+  console.log("Connected to backend");
+});
+
+app.get("/mygame/:id", async function (req, res) {
+  GamesController.getGames(req, res);
   console.log("Connected to backend");
 });
 
@@ -81,7 +84,6 @@ app.get("/auth/url", (_, res) => {
 });
 
 app.get("/auth/token", async (req, res) => {
-  seedTripsTable();
   const { code } = req.query;
   if (!code)
     return res
@@ -98,6 +100,13 @@ app.get("/auth/token", async (req, res) => {
     // Get user info from id token
     const { email, name, picture } = jwt.decode(id_token);
     const user = { name, email, picture };
+
+    // Check if user exists in DB
+    if (!GamesController.existedUser(email)) {
+      // Create user in DB
+      GamesController.createUser(name, email);
+    }
+
     // Sign a new token
     const token = jwt.sign({ user }, config.tokenSecret, {
       expiresIn: config.tokenExpiration,
@@ -119,6 +128,7 @@ app.get("/auth/token", async (req, res) => {
 
 // so we know the token (or is it a refresh_token?) is stored inside cookies
 app.get("/auth/logged_in", (req, res) => {
+  // seedTripsTable();
   try {
     // Get token from cookie,
     const token = req.cookies.token;

@@ -2,7 +2,7 @@ import { pool } from "../config/database.js";
 
 const getGames = async (req, res) => {
   try {
-    const games = await pool.query("SELECT * FROM Game");
+    const games = await pool.query("SELECT * FROM Games");
     res.status(200).json(games.rows);
   } catch (err) {
     console.error("⚠️ error getting games", err);
@@ -15,6 +15,20 @@ const getUsers = async (req, res) => {
     res.status(200).json(users.rows);
   } catch (err) {
     console.error("⚠️ error getting users", err);
+  }
+};
+
+const existedUser = async (email) => {
+  try {
+    const result = await pool.query("SELECT * FROM Users WHERE email = $1", [
+      email,
+    ]);
+    const user = result.rows[0];
+    console.log(user);
+    if (user) return true;
+    return false;
+  } catch (err) {
+    console.error("⚠️ error getting user", err);
   }
 };
 
@@ -40,4 +54,4 @@ const getUser = async (email) => {
   }
 };
 
-export default { getGames, getUsers, createUser, getUser };
+export default { getGames, getUsers, createUser, getUser, existedUser };
