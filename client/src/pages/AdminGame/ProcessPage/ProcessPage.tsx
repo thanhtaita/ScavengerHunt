@@ -49,7 +49,7 @@ const Process = () => {
           ))}
         </ul>
       </div>
-      <button></button>
+
       <div className="footer">
         <Link to="/mygame" className="nav-btn">
           Back
