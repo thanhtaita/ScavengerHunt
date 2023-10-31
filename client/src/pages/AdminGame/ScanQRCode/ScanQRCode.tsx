@@ -1,8 +1,6 @@
 import "./ScanQRCode.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Scan from "../../../components/ScanFolder/ScanFile";
-import { Scanning } from "./ScanningQR";
 
 const ScanQR = () => {
   const [clues, setClues] = useState<Array<string>>([
@@ -14,9 +12,13 @@ const ScanQR = () => {
     "Clue 6",
     "Clue 7",
   ]);
-  const [disabled, setDisabled] = useState<Array<boolean>>([]);
+  const [disabled, setDisabled] = useState<Array<boolean>>(
+    Array.from({ length: clues.length }, () => false)
+  );
+  // To fix the issue, wrap the boolean value in an array and set it to the corresponding index of the `disabled` state array
 
   const locationOnClick = (index: number) => {
+    alert("Are you sure you want to enter this location?");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position: GeolocationPosition) => {
@@ -25,7 +27,7 @@ const ScanQR = () => {
           console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
         }
       );
-      const getelement = document.getElementsByClassName("")[
+      const getelement = document.getElementsByClassName("QRCodes2")[
         index
       ] as HTMLButtonElement;
       getelement.innerHTML = `QR Code ${index + 1} Location Entered`;
@@ -34,12 +36,11 @@ const ScanQR = () => {
         newDisabled[index] = true;
         return newDisabled;
       });
-      // return <Scanning />;
+      window.location.assign("/scanQr");
     } else {
       console.log("Geolocation not supported");
     }
   };
-
   return (
     <div>
       <p className="titlePage2"> Scan The QR Codes </p>
