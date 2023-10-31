@@ -36,7 +36,7 @@ const loadedClues: ClueInfo[] = [
   },
 ]; // after loading from backend, this will be updated
 
-const FirstTab = (props: { clues: (arg0: string[]) => void }) => {
+const FirstTab = () => {
   // Game information section
   const [gameName, setGameName] = useState("");
   const [gameDescription, setGameDescription] = useState("");

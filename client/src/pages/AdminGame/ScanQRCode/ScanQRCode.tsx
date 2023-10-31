@@ -1,9 +1,10 @@
 import "./ScanQRCode.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Scan } from "../../../components/ScanFolder/ScanFile.tsx";
+import Scan from "../../../components/ScanFolder/ScanFile";
+import { Scanning } from "./ScanningQR";
 
-const Scan = () => {
+const ScanQR = () => {
   const [clues, setClues] = useState<Array<string>>([
     "Clue 1",
     "Clue 2",
@@ -13,11 +14,10 @@ const Scan = () => {
     "Clue 6",
     "Clue 7",
   ]);
-  const [location, setLocation] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<Array<boolean>>([]);
 
   const locationOnClick = (index: number) => {
     if (navigator.geolocation) {
-      Scan();
       navigator.geolocation.getCurrentPosition(
         (position: GeolocationPosition) => {
           const latitude = position.coords.latitude;
@@ -25,11 +25,16 @@ const Scan = () => {
           console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
         }
       );
-      const getelement = document.getElementsByClassName("QRCodes2")[
+      const getelement = document.getElementsByClassName("")[
         index
       ] as HTMLButtonElement;
       getelement.innerHTML = `QR Code ${index + 1} Location Entered`;
-      getelement.disabled = true;
+      setDisabled((prevDisabled) => {
+        const newDisabled = [...prevDisabled];
+        newDisabled[index] = true;
+        return newDisabled;
+      });
+      // return <Scanning />;
     } else {
       console.log("Geolocation not supported");
     }
@@ -48,7 +53,7 @@ const Scan = () => {
               className="QRCodes2"
               key={index}
               onClick={() => locationOnClick(index)}
-              disabled={location}
+              disabled={disabled[index]}
             >
               {clue}
             </button>
@@ -67,4 +72,4 @@ const Scan = () => {
   );
 };
 
-export default Scan;
+export default ScanQR;
