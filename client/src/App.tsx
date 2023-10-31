@@ -19,6 +19,7 @@ import Process from "./pages/AdminGame/ProcessPage/ProcessPage.tsx";
 import ScanQR from "./pages/AdminGame/ScanQRCode/ScanQRCode.tsx";
 import FirstTab from "./pages/AdminGame/FirstTab/FirstTab.tsx";
 import { Scanning } from "./pages/AdminGame/ScanQRCode/ScanningQR.tsx";
+import GameDetails from "./pages/GameDetails/GameDetails.tsx";
 // import Scan from "./components/ScanFolder/ScanFile.tsx";
 
 // Ensures cookie is sent
@@ -84,6 +85,10 @@ const Callback = () => {
 };
 
 const router = createBrowserRouter([
+  {
+    path: "/game/:gameId",
+    element: <GameDetails />,
+  },
   {
     path: "/",
     element: <MainPage />,

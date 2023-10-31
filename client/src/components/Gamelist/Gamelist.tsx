@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { GameRow } from "../../utils/types.ts";
 import "./Gamelist.css";
+import { useNavigate } from "react-router-dom";
 
 interface LeaderboardsProps {
   games: GameRow[];
@@ -16,6 +17,10 @@ export function Leaderboards({ games, gameId }: LeaderboardsProps) {
     const temp = games.find((game) => game.id === gameId);
     setFilteredGame(temp);
   }, [gameId]);
+  const navigate = useNavigate();
+  const handleRowClick = (gameId: number)=>{
+    navigate(`/game/${gameId}`);
+  }
 
   return (
     <div className="container">
@@ -45,7 +50,7 @@ export function Leaderboards({ games, gameId }: LeaderboardsProps) {
               )
             ) : (
               games.map((game) => (
-                <tr>
+                <tr key={game.id} onClick={()=>handleRowClick(game.id)}>
                   <td>{game.id}</td>
                   <td>{game.name}</td>
                   <td>{game.startDate}</td>
