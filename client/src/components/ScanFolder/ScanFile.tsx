@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 // import { OverlayEventDetail } from "@ionic/core";
 import QrScanner from "qr-scanner";
 
-const Scan = () => {
+const ScanQR = () => {
   const modal = useRef<HTMLIonModalElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [qrScanner, setQrScanner] = useState<QrScanner>();
@@ -45,4 +45,4 @@ const Scan = () => {
   );
 };
 
-export default Scan;
+export default ScanQR;

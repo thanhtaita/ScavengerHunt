@@ -64,7 +64,11 @@ const Process = () => {
           Print QR Code
         </button>
 
-        <Link to="/mygame/scanQRCode" className="nav-btn">
+        <Link
+          to="/mygame/scanQRCode"
+          className="nav-btn"
+          onClick={() => setStep(step + 1)}
+        >
           next
         </Link>
       </div>

@@ -78,4 +78,4 @@ const Scan = () => {
   );
 };
 
-export default ScanQR;
+export default Scan;
