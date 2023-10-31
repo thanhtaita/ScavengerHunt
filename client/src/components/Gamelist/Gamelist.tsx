@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { GameRow } from "../../utils/types.ts";
-import "./Leaderboards.css";
+import "./Gamelist.css";
 
 interface LeaderboardsProps {
   games: GameRow[];

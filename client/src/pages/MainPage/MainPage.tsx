@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./MainPage.css";
 import Navbar from "../../components/Navbar/Navbar.tsx";
-import { Leaderboards } from "../../components/Leaderboard/Leaderboards.tsx";
+import { Leaderboards } from "../../components/Gamelist/Gamelist.tsx";
 import { GameRow } from "../../utils/types.ts";
 import { useContext } from "react";
 import { AuthContext } from "../../utils/context";
@@ -69,7 +69,12 @@ const MainPage = () => {
       </div>
 
       <Leaderboards games={games} gameId={gameId} onClick={handleRowClick} />
-      <button className="add-button">Create Game +</button>
+      <button
+        className="add-button123"
+        onClick={() => window.location.assign("/mygame")}
+      >
+        Create Game +
+      </button>
     </>
   );
 };

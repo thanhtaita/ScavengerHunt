@@ -25,6 +25,8 @@
 }
 .PrintQR {
   width: 20rem;
+  cursor: pointer;
+  z-index: 50;
 }
 .listOfQR {
   display: flex;
@@ -33,8 +35,8 @@
   margin-top: 2%;
   background-image: linear-gradient(
     to right,
-    rgba(165, 159, 159, 0.418),
-    rgb(127, 121, 121)
+    rgba(207, 195, 104, 0.348),
+    rgba(99, 177, 211, 0.366)
   );
   border-radius: 25px;
 }
@@ -46,7 +48,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 2rem 1rem;
+  padding: 1.5rem 1rem;
 }
 .QRCodes {
   text-align: center;

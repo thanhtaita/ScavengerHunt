@@ -1,6 +1,8 @@
 import "./ProcessPage.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import jsPDF from "jspdf";
+import QRCode from "../../../../public/QRCode.png";
 
 const Process = () => {
   const [clues, setClues] = useState<Array<string>>([
@@ -11,7 +13,25 @@ const Process = () => {
     "Clue 5",
     "Clue 6 ",
     "Clue 7",
+    "Clue 8",
+    "Clue 9",
+    "Clue 10",
   ]);
+  const pdfOnClick = () => {
+    const doc = new jsPDF();
+    let size = 10;
+    let size2 = 10;
+    clues.map(() => {
+      doc.addImage(QRCode, "jpeg", size2, size, 50, 50);
+      if (size2 == 100) {
+        size += 53;
+        size2 = 10;
+      } else {
+        size2 = 100;
+      }
+    });
+    doc.save("QRCodes.pdf");
+  };
   return (
     <>
       <div className="Header">
@@ -34,7 +54,11 @@ const Process = () => {
         <Link to="/mygame" className="nav-btn">
           Back
         </Link>
-        <button className="PrintQR">Print QR Code</button>
+
+        <button className="PrintQR" onClick={() => pdfOnClick()}>
+          Print QR Code
+        </button>
+
         <Link to="/mygame/scanQRCode" className="nav-btn">
           next
         </Link>

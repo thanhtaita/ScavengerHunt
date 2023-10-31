@@ -1,5 +1,5 @@
 .first-tab {
-  margin: 9rem 0rem;
+  margin: 5rem 0rem;
   display: flex;
   flex-direction: column;
 }
@@ -9,14 +9,14 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.116);
-  padding: 3rem 5rem;
+  padding: 1rem 5rem;
   gap: 1.5rem;
 }
 
 .first-tab .title {
   font-size: 3rem;
   align-self: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .first-tab .game-info {
