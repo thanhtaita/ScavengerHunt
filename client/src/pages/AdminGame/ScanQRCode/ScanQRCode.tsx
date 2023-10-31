@@ -1,8 +1,9 @@
 import "./ScanQRCode.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 const Scan = () => {
+  const [step, setStep] = useOutletContext();
   const [clues, setClues] = useState<Array<string>>([
     "Clue 1",
     "Clue 2",
@@ -28,7 +29,11 @@ const Scan = () => {
         </ul>
       </div>
       <div className="footer2">
-        <Link to="/mygame/process" className="nav-btn">
+        <Link
+          to="/mygame/process"
+          className="nav-btn"
+          onClick={() => setStep(step - 1)}
+        >
           Back
         </Link>
         <Link to="/mygame" className="nav-btn">

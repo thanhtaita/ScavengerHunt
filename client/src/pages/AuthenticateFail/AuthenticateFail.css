@@ -1,0 +1,21 @@
+.auth-fail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.auth-fail h1 {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.auth-fail h2 {
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.auth-fail button {
+  margin-top: 3rem;
+}

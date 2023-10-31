@@ -1,6 +1,6 @@
 import "./FirstTab.css";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 const fixedCluesSize = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // this is fixed
 interface ClueInfo {
@@ -50,6 +50,7 @@ const FirstTab = () => {
   const [currentClueInfo, setCurrentClueInfo] = useState(defaultClueInfo);
   const [latestClueNum, setLatestClueNum] = useState(1); // this is the latest clue number that has been saved
 
+  const [step, setStep] = useOutletContext();
   useEffect(() => {
     // load provided clues from backend
     setProvidedClues(loadedClues);
@@ -151,7 +152,11 @@ const FirstTab = () => {
           </div>
         </div>
 
-        <Link to="/mygame/process" className="nav-btn">
+        <Link
+          to="/mygame/process"
+          onClick={() => setStep(step + 1)}
+          className="nav-btn"
+        >
           Next
         </Link>
       </div>

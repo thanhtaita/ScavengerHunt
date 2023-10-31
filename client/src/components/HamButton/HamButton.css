@@ -143,4 +143,8 @@
   border-bottom: 1px solid #444;
 }
 
+.menu li {
+  z-index: 9999;
+}
+
 /* end of hamburger button */

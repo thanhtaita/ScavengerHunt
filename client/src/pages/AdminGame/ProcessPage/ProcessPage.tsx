@@ -1,8 +1,9 @@
 import "./ProcessPage.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 const Process = () => {
+  const [step, setStep] = useOutletContext();
   const [clues, setClues] = useState<Array<string>>([
     "Clue 1",
     "Clue 2",
@@ -32,11 +33,19 @@ const Process = () => {
       </div>
 
       <div className="footer">
-        <Link to="/mygame" className="nav-btn">
+        <Link
+          to="/mygame"
+          className="nav-btn"
+          onClick={() => setStep(step - 1)}
+        >
           Back
         </Link>
         <button className="PrintQR">Print QR Code</button>
-        <Link to="/mygame/scanQRCode" className="nav-btn">
+        <Link
+          to="/mygame/scanQRCode"
+          className="nav-btn"
+          onClick={() => setStep(step + 1)}
+        >
           next
         </Link>
       </div>
