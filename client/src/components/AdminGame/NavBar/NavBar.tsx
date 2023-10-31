@@ -1,11 +1,12 @@
 import "./NavBar.css";
 import HamButton from "../../HamButton/HamButton";
+import { Link } from "react-router-dom";
 const NavBar = () => {
   return (
     <div className="nav-bar">
-      <button className="nav-btn" onClick={() => window.location.assign("/")}>
+      <Link to="/" className="nav-btn">
         Cancel
-      </button>
+      </Link>
       <h2 className="title">Admin's View</h2>
       <HamButton />
     </div>

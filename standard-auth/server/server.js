@@ -72,6 +72,7 @@ app.get("/", async function (req, res) {
   console.log("Connected to backend");
 });
 
+// app.get("/mygame", async function (req, res) {});
 app.get("/mygame/:id", async function (req, res) {
   GamesController.getGames(req, res);
   console.log("Connected to backend");
@@ -102,9 +103,12 @@ app.get("/auth/token", async (req, res) => {
     const user = { name, email, picture };
 
     // Check if user exists in DB
-    if (!GamesController.existedUser(email)) {
+    console.log("user logging");
+    const userExists = await GamesController.existedUser(email);
+    if (!userExists) {
       // Create user in DB
-      GamesController.createUser(name, email);
+      console.log("create a new user");
+      await GamesController.createUser(name, email);
     }
 
     // Sign a new token

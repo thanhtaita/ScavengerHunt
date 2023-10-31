@@ -36,13 +36,27 @@ const games = [
 ];
 
 const MainPage = () => {
-  const { user } = useContext(AuthContext);
-
+  const { user, loggedIn } = useContext(AuthContext);
   const [gameId, setGameId] = useState(0);
 
   const handleRowClick = (row: GameRow) => {
     // Handle what should happen when a row is clicked
     console.log(`Row clicked: ${row}`);
+  };
+
+  const handleCreateGame = () => {
+    // call api to check if the user has a game
+    // only allow user to create a game if they don't have one
+    if (true) {
+      console.log(
+        "You are not currently hosting a game. You can create a new game."
+      );
+      window.location.assign("/mygame");
+    } else {
+      console.log(
+        "You are currently hosting a game. You can not create a new game."
+      );
+    }
   };
 
   useEffect(() => {
@@ -54,7 +68,7 @@ const MainPage = () => {
       console.log(data);
     };
     fetchGames();
-  }, []);
+  }, [user]);
 
   return (
     <>
@@ -69,10 +83,7 @@ const MainPage = () => {
       </div>
 
       <Leaderboards games={games} gameId={gameId} onClick={handleRowClick} />
-      <button
-        className="add-button123"
-        onClick={() => window.location.assign("/mygame")}
-      >
+      <button className="add-button" onClick={() => handleCreateGame()}>
         Create Game +
       </button>
     </>

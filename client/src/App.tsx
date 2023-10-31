@@ -21,6 +21,7 @@ import FirstTab from "./pages/AdminGame/FirstTab/FirstTab.tsx";
 import { Scanning } from "./pages/AdminGame/ScanQRCode/ScanningQR.tsx";
 import GameDetails from "./pages/GameDetails/GameDetails.tsx";
 // import Scan from "./components/ScanFolder/ScanFile.tsx";
+import AuthenticateFail from "./pages/AuthenticateFail/AuthenticateFail.tsx";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
@@ -126,6 +127,10 @@ const router = createBrowserRouter([
   {
     path: "/auth/callback/", // google will redirect here
     element: <Callback />,
+  },
+  {
+    path: "/authfail",
+    element: <AuthenticateFail />,
   },
 ]);
 

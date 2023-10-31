@@ -14,9 +14,9 @@ const createTables = async () => {
     DROP TABLE IF EXISTS Games CASCADE;
     CREATE TABLE IF NOT EXISTS Games (
         GID SERIAL PRIMARY KEY,
-        name VARCHAR(30) NOT NULL,
+        name VARCHAR(30),
         email VARCHAR(30) NOT NULL,
-        code VARCHAR(30) NOT NULL,
+        code VARCHAR(30),
         link VARCHAR(30),
         Questions JSONB,
         CONSTRAINT fk_users_game FOREIGN KEY(email) REFERENCES Users(email)

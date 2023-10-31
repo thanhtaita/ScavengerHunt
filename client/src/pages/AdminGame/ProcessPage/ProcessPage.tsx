@@ -1,10 +1,11 @@
 import "./ProcessPage.css";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import jsPDF from "jspdf";
 import QRCode from "../../../../public/QRCode.png";
 
 const Process = () => {
+  const [step, setStep] = useOutletContext();
   const [clues, setClues] = useState<Array<string>>([
     "Clue 1",
     "Clue 2",
@@ -51,7 +52,11 @@ const Process = () => {
       </div>
 
       <div className="footer">
-        <Link to="/mygame" className="nav-btn">
+        <Link
+          to="/mygame"
+          className="nav-btn"
+          onClick={() => setStep(step - 1)}
+        >
           Back
         </Link>
 
