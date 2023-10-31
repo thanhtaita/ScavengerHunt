@@ -1,7 +1,7 @@
-import { get } from "http";
 import "./ScanQRCode.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Scan } from "../../../components/ScanFolder/ScanFile.tsx";
 
 const Scan = () => {
   const [clues, setClues] = useState<Array<string>>([
@@ -17,6 +17,7 @@ const Scan = () => {
 
   const locationOnClick = (index: number) => {
     if (navigator.geolocation) {
+      Scan();
       navigator.geolocation.getCurrentPosition(
         (position: GeolocationPosition) => {
           const latitude = position.coords.latitude;
