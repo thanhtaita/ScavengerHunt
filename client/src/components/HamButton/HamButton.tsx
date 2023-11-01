@@ -18,7 +18,7 @@ const HamButton = () => {
   };
   const handleMyGame = async () => {
     const res = await fetch(
-      `http://localhost:9999/mygame?email=${user?.email}`
+      `https://jkjk-ui9d.onrender.com/mygame?email=${user?.email}`
     );
     const data = await res.json();
     console.log(data);

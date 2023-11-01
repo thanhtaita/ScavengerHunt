@@ -24,11 +24,11 @@ const Scan = () => {
         setScanCode(result.data)
         console.log(result.data)
         console.log("Handling Scan...")
-        
-        if(user){
+
+        if (user) {
             const uid = user.email;
             try {
-                const response = await fetch("http://localhost:9999/verifyQR", {
+                const response = await fetch("https://jkjk-ui9d.onrender.com/verifyQR", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -39,9 +39,9 @@ const Scan = () => {
                         gameId: gameId,
                     }),
                 });
-    
+
                 const data = await response.json();
-    
+
                 if (data.success) {
                     console.log("API call was successful");
                     window.alert("QR verification was successful! The progress page should reflect the same");
@@ -83,7 +83,7 @@ const Scan = () => {
             }{scanCode !== "" &&
                 < h1> {scanCode}</h1 >
             }
-            
+
 
 
         </div>
