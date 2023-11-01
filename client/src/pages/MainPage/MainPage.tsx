@@ -63,11 +63,11 @@ const MainPage = () => {
     // Fetch games from API
     console.log("Fetching games...");
     const fetchGames = async () => {
-      try{
-      const res = await fetch("http://localhost:9999/");
-      const data = await res.json();
-      setFetchedGames(data);
-      }catch (error) {
+      try {
+        const res = await fetch("http://localhost:9999/");
+        const data = await res.json();
+        setFetchedGames(data);
+      } catch (error) {
         console.error("Error fetching games:", error);
       }
     };
@@ -86,12 +86,17 @@ const MainPage = () => {
             create your own one!
           </p>
         </div>
+      </div>
 
-      <Leaderboards games={fetchedGames} gameId={gameId} onClick={handleRowClick} />
+      <Leaderboards
+        games={fetchedGames}
+        gameId={gameId}
+        onClick={handleRowClick}
+      />
       <button className="add-button" onClick={() => handleCreateGame()}>
         Create Game +
       </button>
-    </>
+    </div>
   );
 };
 
