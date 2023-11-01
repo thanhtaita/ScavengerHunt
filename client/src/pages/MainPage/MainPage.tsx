@@ -91,7 +91,8 @@ const MainPage = () => {
       <button className="add-button" onClick={() => handleCreateGame()}>
         Create Game +
       </button>
-    </>
+    </div>
+    </div>
   );
 };
 
