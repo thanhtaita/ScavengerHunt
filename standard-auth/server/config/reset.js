@@ -18,7 +18,8 @@ const createTables = async () => {
         email VARCHAR(30) NOT NULL,
         code VARCHAR(30),
         link VARCHAR(30),
-        Questions JSONB,
+        hints JSONB,
+        description VARCHAR(30),
         CONSTRAINT fk_users_game FOREIGN KEY(email) REFERENCES Users(email)
     );
 
@@ -26,7 +27,7 @@ const createTables = async () => {
     CREATE TABLE IF NOT EXISTS User_progress (
         gid INT,
         email VARCHAR(30) NOT NULL,
-        Progress JSONB,
+        solvedClues VARCHAR(100),
         points VARCHAR(30),
         latest_time_date VARCHAR(30) DEFAULT 'N/A',
         CONSTRAINT fk_users_progress FOREIGN KEY(email) REFERENCES Users(email),
