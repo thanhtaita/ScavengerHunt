@@ -52,7 +52,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: "*", // Allow access from any origin
+    origin: "https://shunt494.onrender.com", // Allow access from any origin
     credentials: true,
   })
 );
