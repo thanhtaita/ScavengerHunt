@@ -49,7 +49,7 @@ const MainPage = () => {
     // call api to check if the user has a game
     // only allow user to create a game if they don't have one
     const res = await fetch(
-      `https://jkjk-ui9d.onrender.com/mygame?email=${user?.email}`
+      `https://shserver-q8el.onrender.com/mygame?email=${user?.email}`
     );
     const data = await res.json();
     console.log(data);
@@ -64,7 +64,7 @@ const MainPage = () => {
     console.log("Fetching games...");
     const fetchGames = async () => {
       try {
-        const res = await fetch("https://jkjk-ui9d.onrender.com/");
+        const res = await fetch("https://shserver-q8el.onrender.com/");
         const data = await res.json();
         setFetchedGames(data);
       } catch (error) {

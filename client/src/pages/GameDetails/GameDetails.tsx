@@ -32,7 +32,7 @@ function GameDetails() {
     const uid = user.email;
 
     try {
-      const response = await fetch(`https://jkjk-ui9d.onrender.com/startGame?gameId=${gameId}&uid=${uid}`);
+      const response = await fetch(`https://shserver-q8el.onrender.com/startGame?gameId=${gameId}&uid=${uid}`);
 
       const data = await response.json();
 
@@ -53,7 +53,7 @@ function GameDetails() {
     // Fetch game details from API
     const fetchGameDetails = async () => {
       try {
-        const response = await fetch(`https://jkjk-ui9d.onrender.com/game/${gameId}`);
+        const response = await fetch(`https://shserver-q8el.onrender.com/game/${gameId}`);
         console.log(response);
         const data = await response.json();
         setGameDetails(data);

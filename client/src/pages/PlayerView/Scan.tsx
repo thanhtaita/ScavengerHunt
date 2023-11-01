@@ -28,7 +28,7 @@ const Scan = () => {
         if (user) {
             const uid = user.email;
             try {
-                const response = await fetch("https://jkjk-ui9d.onrender.com/verifyQR", {
+                const response = await fetch("https://shserver-q8el.onrender.com/verifyQR", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

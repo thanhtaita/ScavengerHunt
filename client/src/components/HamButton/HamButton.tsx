@@ -3,7 +3,7 @@ import { useContext } from "react";
 import axios from "axios";
 import "./HamButton.css";
 
-const serverUrl = "https://jkjk-ui9d.onrender.com";
+const serverUrl = "https://shserver-q8el.onrender.com";
 const HamButton = () => {
   const { user, loggedIn } = useContext(AuthContext);
   const handleLogout = async () => {
@@ -18,7 +18,7 @@ const HamButton = () => {
   };
   const handleMyGame = async () => {
     const res = await fetch(
-      `https://jkjk-ui9d.onrender.com/mygame?email=${user?.email}`
+      `https://shserver-q8el.onrender.com/mygame?email=${user?.email}`
     );
     const data = await res.json();
     console.log(data);

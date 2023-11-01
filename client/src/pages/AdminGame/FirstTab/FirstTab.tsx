@@ -36,7 +36,7 @@ const FirstTab = () => {
 
   const saveGameInfo = async () => {
     // save game information to backend
-    await fetch(`https://jkjk-ui9d.onrender.com/mygame/${gId}`, {
+    await fetch(`https://shserver-q8el.onrender.com/mygame/${gId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const FirstTab = () => {
     setProvidedClues(tempClues);
 
     // update clues information to backend
-    await fetch(`https://jkjk-ui9d.onrender.com/mygame/${gId}/${currentClueNum}`, {
+    await fetch(`https://shserver-q8el.onrender.com/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -75,9 +75,9 @@ const FirstTab = () => {
     setStep(step + 1);
     const tempClues = providedClues;
     for (let i = 0; i < tempClues.length; i++) {
-      tempClues[i].QR_text = `https://jkjk-ui9d.onrender.com/${gId}/${i + 1}`;
+      tempClues[i].QR_text = `https://shserver-q8el.onrender.com/${gId}/${i + 1}`;
     }
-    await fetch(`https://jkjk-ui9d.onrender.com/mygame/${gId}/${currentClueNum}`, {
+    await fetch(`https://shserver-q8el.onrender.com/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -91,7 +91,7 @@ const FirstTab = () => {
     const loadedGameInfo = async () => {
       try {
         console.log(gId);
-        const response = await fetch(`https://jkjk-ui9d.onrender.com/mygame/${gId}`);
+        const response = await fetch(`https://shserver-q8el.onrender.com/mygame/${gId}`);
         if (response.ok) {
           const data = await response.json();
           //     // Handle the data and set state accordingly
