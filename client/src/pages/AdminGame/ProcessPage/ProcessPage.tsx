@@ -1,12 +1,19 @@
 import "./ProcessPage.css";
-import { useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
 import QRCode from "../../../../public/QRCode.png";
+import QRCodeGenrator from "react-qr-code";
+import * as htmlToImage from 'html-to-image';
+import { saveAs } from 'file-saver';
+import { PDFDocument, rgb } from 'pdf-lib';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
+
 
 const Process = () => {
-  const [step, setStep] = useOutletContext();
-  const [clues, setClues] = useState<Array<string>>([
+
+  let genPDF = false
+  const clues = [
     "Clue 1",
     "Clue 2",
     "Clue 3",
@@ -17,21 +24,98 @@ const Process = () => {
     "Clue 8",
     "Clue 9",
     "Clue 10",
-  ]);
-  const pdfOnClick = () => {
-    const doc = new jsPDF();
-    let size = 10;
-    let size2 = 10;
-    clues.map(() => {
-      doc.addImage(QRCode, "jpeg", size2, size, 50, 50);
-      if (size2 == 100) {
-        size += 53;
-        size2 = 10;
-      } else {
-        size2 = 100;
-      }
+  ]
+
+
+  function dataURLtoBlob(dataUrl: string) {
+    // Decode the dataURL    
+    var binary = atob(dataUrl.split(',')[1]);
+
+    // Create 8-bit unsigned array
+    var array = [];
+    for (var i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
+    }
+
+    // Return our Blob object
+    return new Blob([new Uint8Array(array)], {
+      type: 'image/png'
     });
-    doc.save("QRCodes.pdf");
+  }
+  const pdfDoc = PDFDocument.create();
+  let pdfBlob: Blob
+  const convertBlobToPDF = async (clue: string, blobData: Blob) => {
+    try {
+      // Convert the blob data to an array buffer
+      const arrayBuffer = await blobData.arrayBuffer();
+
+      // Create a new PDF document
+      // const pdfDoc = await PDFDocument.create();
+
+      // Add a new page to the document
+      const page = (await pdfDoc).addPage([600, 400]);
+
+
+      // Set the background color of the page
+      page.drawRectangle({
+        x: 0,
+        y: 0,
+        width: 600,
+        height: 400,
+        color: rgb(1, 1, 1),
+      });
+
+      // Embed the blob data in the PDF
+      const image = await (await pdfDoc).embedPng(arrayBuffer);
+
+      // Draw the embedded image on the page
+      page.drawImage(image, {
+        x: 0,
+        y: 0,
+        width: 600,
+        height: 400,
+      });
+
+      // Serialize the PDF to bytes
+      const pdfBytes = await (await pdfDoc).save();
+
+      // Create a Blob from the PDF bytes
+      pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+
+      // Save the PDF as a file
+
+    } catch (error) {
+      console.error('Error converting blob to PDF:', error);
+    }
+  }
+  if (genPDF === false) {
+    console.log("genpdf", genPDF)
+    clues.map((clue) => {
+
+      const node = document.getElementById(clue);
+      htmlToImage.toPng(node!)
+        .then(function (dataUrl) {
+          var img = new Image();
+          img.src = dataUrl;
+          var blobData = dataURLtoBlob(dataUrl)
+
+          console.log("dataUrl: ", QRCode, dataUrl)
+
+          convertBlobToPDF(clue, blobData)
+
+
+        })
+        .catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        });
+    })
+    genPDF = true
+  }
+  const pdfOnClick = () => {
+
+    saveAs(pdfBlob, 'gameId.pdf');
+
   };
   return (
     <>
@@ -45,18 +129,22 @@ const Process = () => {
         <ul className="allOfClues">
           {clues.map((clue: string, index: number) => (
             <li className="QRCodes" key={index}>
-              {clue}
+              {clue}  <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+                <QRCodeGenrator
+                  size={256}
+                  id={clue}
+                  style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                  value={"https://myserver.com:3000/clue:" + clue}
+                  viewBox={`0 0 256 256`}
+                />
+              </div>
             </li>
           ))}
         </ul>
       </div>
 
       <div className="footer">
-        <Link
-          to="/mygame"
-          className="nav-btn"
-          onClick={() => setStep(step - 1)}
-        >
+        <Link to="/mygame" className="nav-btn">
           Back
         </Link>
 
@@ -64,16 +152,13 @@ const Process = () => {
           Print QR Code
         </button>
 
-        <Link
-          to="/mygame/scanQRCode"
-          className="nav-btn"
-          onClick={() => setStep(step + 1)}
-        >
+        <Link to="/mygame/scanQRCode" className="nav-btn">
           next
         </Link>
       </div>
     </>
   );
 };
+
 
 export default Process;
