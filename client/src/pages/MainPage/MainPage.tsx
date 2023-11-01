@@ -38,6 +38,7 @@ const games = [
 const MainPage = () => {
   const { user, loggedIn } = useContext(AuthContext);
   const [gameId, setGameId] = useState(0);
+  const [fetchedGames, setFetchedGames] = useState<GameRow[]>([]);
 
   const handleRowClick = (row: GameRow) => {
     // Handle what should happen when a row is clicked
@@ -63,9 +64,13 @@ const MainPage = () => {
     // Fetch games from API
     console.log("Fetching games...");
     const fetchGames = async () => {
+      try{
       const res = await fetch("http://localhost:9999/");
       const data = await res.json();
-      console.log(data);
+      setFetchedGames(data);
+      }catch (error) {
+        console.error("Error fetching games:", error);
+      }
     };
     fetchGames();
   }, [user]);
@@ -82,7 +87,7 @@ const MainPage = () => {
         </p>
       </div>
 
-      <Leaderboards games={games} gameId={gameId} onClick={handleRowClick} />
+      <Leaderboards games={fetchedGames} gameId={gameId} onClick={handleRowClick} />
       <button className="add-button" onClick={() => handleCreateGame()}>
         Create Game +
       </button>

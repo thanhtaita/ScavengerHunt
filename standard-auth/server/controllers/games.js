@@ -171,9 +171,19 @@ const createUser = async (name, email) => {
 const getGames = async (req, res) => {
   try {
     const games = await pool.query("SELECT * FROM Games");
-    res.status(200).json(games.rows);
+    
+    // Transform the data to match the expected format
+    const transformedGames = games.rows.map(game => ({
+      id: game.gid,
+      name: game.name,
+      startDate: game.starttime, // Assuming 'starttime' is the column name in the 'Games' table
+      clues: game.hints ? game.hints.length : 0 // Assuming 'hints' is an array
+    }));
+
+    res.status(200).json(transformedGames);
   } catch (err) {
     console.error("⚠️ error getting games", err);
+    res.status(500).json({ error: "Internal server error." }); // It's a good practice to send a response in case of errors
   }
 };
 

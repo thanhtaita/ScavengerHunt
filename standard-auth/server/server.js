@@ -84,6 +84,7 @@ app.get("/mygame/:id", async function (req, res) {
   console.log("Connected to backend");
 });
 
+
 app.get("/auth/url", (_, res) => {
   res.json({
     url: `${config.authUrl}?${authParams}`,
