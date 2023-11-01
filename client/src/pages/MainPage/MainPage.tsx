@@ -70,22 +70,24 @@ const MainPage = () => {
   }, [user]);
 
   return (
-    <>
+    <div className="main-page">
       <Navbar gameId={gameId} setGameId={setGameId} />
 
-      <div className="titleHeader">
-        <div className="title">Scavenger Hunt!</div>
-        <p className="bio">
-          Hey {user?.name || "you"}! Welcome to Scavenger Hunt! Join a game or
-          create your own one!
-        </p>
-      </div>
+      <div className="main-page-content">
+        <div className="titleHeader">
+          <div className="title">Scavenger Hunt!</div>
+          <p className="bio">
+            Hey {user?.name || "you"}! Welcome to Scavenger Hunt! Join a game or
+            create your own one!
+          </p>
+        </div>
 
-      <Leaderboards games={games} gameId={gameId} onClick={handleRowClick} />
-      <button className="add-button" onClick={() => handleCreateGame()}>
-        Create Game +
-      </button>
-    </>
+        <Leaderboards games={games} gameId={gameId} onClick={handleRowClick} />
+        <button className="add-button" onClick={() => handleCreateGame()}>
+          Create Game +
+        </button>
+      </div>
+    </div>
   );
 };
 

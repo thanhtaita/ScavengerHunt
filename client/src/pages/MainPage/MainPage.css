@@ -1,4 +1,6 @@
 .titleHeader {
+  display: flex;
+  flex-direction: column;
   text-align: center;
   font-family: "Kalam", cursive;
   font-weight: 550;
@@ -15,9 +17,14 @@
   color: rgba(0, 0, 0, 0.702);
   margin-left: 10%;
 }
-.add-button123 {
-  background-color: #a73200;
-  margin-left: 70%;
+.add-button {
+  background-color: #181717;
   padding: 0.7rem 0.7rem;
-  margin-top: 5%;
+}
+
+.main-page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
