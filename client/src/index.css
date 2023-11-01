@@ -38,7 +38,7 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
-  background-image: url("../public/main.png");
+  background-image: url("../public/main2.png");
 }
 
 h1 {
@@ -86,12 +86,6 @@ button:focus-visible {
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-
-  background-image: url("../public/main.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

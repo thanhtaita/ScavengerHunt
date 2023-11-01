@@ -1,12 +1,15 @@
 import { useRef, useState, useEffect } from 'react';
-import { IonModal, IonPage, IonTitle } from '@ionic/react';
+import { useParams } from "react-router-dom";
 import { OverlayEventDetail } from '@ionic/core';
 import QrScanner from 'qr-scanner';
 import "./playerView.css";
-
+import { useContext } from "react";
+import { AuthContext } from "../../utils/context";
 
 
 const Scan = () => {
+    const { user } = useContext(AuthContext);
+    const { gameId } = useParams<{ gameId: string }>();
     const modal = useRef<HTMLIonModalElement>(null);
     const video = useRef<HTMLVideoElement>(null);
     const [qrScanner, setQrScanner] = useState<QrScanner>();
@@ -16,10 +19,41 @@ const Scan = () => {
         close();
     }
 
-    function handleScan(result: QrScanner.ScanResult) {
+    async function handleScan(result: QrScanner.ScanResult) {
         //Logic with scanned qr code
         setScanCode(result.data)
-        console.log(result)
+        console.log(result.data)
+        console.log("Handling Scan...")
+        
+        if(user){
+            const uid = user.email;
+            try {
+                const response = await fetch("http://localhost:9999/verifyQR", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        uid: uid,
+                        result: result.data,
+                        gameId: gameId,
+                    }),
+                });
+    
+                const data = await response.json();
+    
+                if (data.success) {
+                    console.log("API call was successful");
+                    window.alert("QR verification was successful! The progress page should reflect the same");
+                } else {
+                    console.log("API call failed");
+                    window.alert("Wrong QR code scanned");
+                }
+            } catch (error) {
+                console.error("Error making API call:", error);
+            }
+        }
+
         qrScanner?.destroy();
     }
 
@@ -41,7 +75,6 @@ const Scan = () => {
         // eslint-disable-next-line
     }, [video.current]);
 
-
     return (
         <div className="scanContainer">
             {scanCode === "" &&
@@ -50,6 +83,7 @@ const Scan = () => {
             }{scanCode !== "" &&
                 < h1> {scanCode}</h1 >
             }
+            
 
 
         </div>
