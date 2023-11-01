@@ -10,7 +10,7 @@ interface NavbarProps {
   setGameId: (gameId: number) => void;
 }
 
-const serverUrl = "http://localhost:9999";
+const serverUrl = "https://jkjk-ui9d.onrender.com";
 
 const Navbar = ({ gameId, setGameId }: NavbarProps) => {
   const { loggedIn, user } = useContext(AuthContext);

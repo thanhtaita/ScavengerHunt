@@ -3,7 +3,7 @@ import { useContext } from "react";
 import axios from "axios";
 import "./HamButton.css";
 
-const serverUrl = "http://localhost:9999";
+const serverUrl = "https://jkjk-ui9d.onrender.com";
 const HamButton = () => {
   const { user, loggedIn } = useContext(AuthContext);
   const handleLogout = async () => {

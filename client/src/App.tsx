@@ -27,7 +27,7 @@ import PlayerView from "./pages/PlayerView/playerView.tsx";
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
 
-const serverUrl = "http://localhost:9999";
+const serverUrl = "https://jkjk-ui9d.onrender.com";
 
 // a React context to hold the logged-in and user states so they can be shared globally
 const AuthContextProvider = ({ children }) => {
