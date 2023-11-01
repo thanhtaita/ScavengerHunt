@@ -4,15 +4,13 @@ import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
 import QRCode from "../../../../public/QRCode.png";
 import QRCodeGenrator from "react-qr-code";
-import * as htmlToImage from 'html-to-image';
-import { saveAs } from 'file-saver';
-import { PDFDocument, rgb } from 'pdf-lib';
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
-
+import * as htmlToImage from "html-to-image";
+import { saveAs } from "file-saver";
+import { PDFDocument, rgb } from "pdf-lib";
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 
 const Process = () => {
-
-  let genPDF = false
+  let genPDF = false;
   const clues = [
     "Clue 1",
     "Clue 2",
@@ -24,26 +22,25 @@ const Process = () => {
     "Clue 8",
     "Clue 9",
     "Clue 10",
-  ]
-
+  ];
 
   function dataURLtoBlob(dataUrl: string) {
-    // Decode the dataURL    
-    var binary = atob(dataUrl.split(',')[1]);
+    // Decode the dataURL
+    const binary = atob(dataUrl.split(",")[1]);
 
     // Create 8-bit unsigned array
-    var array = [];
-    for (var i = 0; i < binary.length; i++) {
+    const array = [];
+    for (let i = 0; i < binary.length; i++) {
       array.push(binary.charCodeAt(i));
     }
 
     // Return our Blob object
     return new Blob([new Uint8Array(array)], {
-      type: 'image/png'
+      type: "image/png",
     });
   }
   const pdfDoc = PDFDocument.create();
-  let pdfBlob: Blob
+  let pdfBlob: Blob;
   const convertBlobToPDF = async (clue: string, blobData: Blob) => {
     try {
       // Convert the blob data to an array buffer
@@ -54,7 +51,6 @@ const Process = () => {
 
       // Add a new page to the document
       const page = (await pdfDoc).addPage([600, 400]);
-
 
       // Set the background color of the page
       page.drawRectangle({
@@ -80,42 +76,38 @@ const Process = () => {
       const pdfBytes = await (await pdfDoc).save();
 
       // Create a Blob from the PDF bytes
-      pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-
+      pdfBlob = new Blob([pdfBytes], { type: "application/pdf" });
 
       // Save the PDF as a file
-
     } catch (error) {
-      console.error('Error converting blob to PDF:', error);
+      console.error("Error converting blob to PDF:", error);
     }
-  }
-  if (genPDF === false) {
-    console.log("genpdf", genPDF)
-    clues.map((clue) => {
+  };
+  useEffect(() => {
+    if (genPDF === false) {
+      console.log("genpdf", genPDF);
+      clues.map((clue) => {
+        const node = document.getElementById(clue);
+        htmlToImage
+          .toPng(node!)
+          .then(function (dataUrl) {
+            const img = new Image();
+            img.src = dataUrl;
+            const blobData = dataURLtoBlob(dataUrl);
 
-      const node = document.getElementById(clue);
-      htmlToImage.toPng(node!)
-        .then(function (dataUrl) {
-          var img = new Image();
-          img.src = dataUrl;
-          var blobData = dataURLtoBlob(dataUrl)
+            console.log("dataUrl: ", QRCode, dataUrl);
 
-          console.log("dataUrl: ", QRCode, dataUrl)
-
-          convertBlobToPDF(clue, blobData)
-
-
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong!', error);
-        });
-    })
-    genPDF = true
-  }
+            convertBlobToPDF(clue, blobData);
+          })
+          .catch(function (error) {
+            console.error("oops, something went wrong!", error);
+          });
+      });
+      genPDF = true;
+    }
+  }, []);
   const pdfOnClick = () => {
-
-    saveAs(pdfBlob, 'gameId.pdf');
-
+    saveAs(pdfBlob, "gameId.pdf");
   };
   return (
     <>
@@ -129,7 +121,15 @@ const Process = () => {
         <ul className="allOfClues">
           {clues.map((clue: string, index: number) => (
             <li className="QRCodes" key={index}>
-              {clue}  <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+              {clue}{" "}
+              <div
+                style={{
+                  height: "auto",
+                  margin: "0 auto",
+                  maxWidth: 64,
+                  width: "100%",
+                }}
+              >
                 <QRCodeGenrator
                   size={256}
                   id={clue}
@@ -159,6 +159,5 @@ const Process = () => {
     </>
   );
 };
-
 
 export default Process;
