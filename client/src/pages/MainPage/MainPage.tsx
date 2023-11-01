@@ -45,19 +45,18 @@ const MainPage = () => {
     console.log(`Row clicked: ${row}`);
   };
 
-  const handleCreateGame = () => {
+  const handleCreateGame = async () => {
     // call api to check if the user has a game
     // only allow user to create a game if they don't have one
-    if (true) {
-      console.log(
-        "You are not currently hosting a game. You can create a new game."
-      );
-      window.location.assign("/mygame");
-    } else {
-      console.log(
-        "You are currently hosting a game. You can not create a new game."
-      );
-    }
+    const res = await fetch(
+      `http://localhost:9999/mygame?email=${user?.email}`
+    );
+    const data = await res.json();
+    console.log(data);
+    const redirectURL = data.url;
+
+    // if game exists, redirect to game page
+    window.location.assign(redirectURL);
   };
 
   useEffect(() => {
@@ -76,16 +75,17 @@ const MainPage = () => {
   }, [user]);
 
   return (
-    <>
+    <div className="main-page">
       <Navbar gameId={gameId} setGameId={setGameId} />
 
-      <div className="titleHeader">
-        <div className="title">Scavenger Hunt!</div>
-        <p className="bio">
-          Hey {user?.name || "you"}! Welcome to Scavenger Hunt! Join a game or
-          create your own one!
-        </p>
-      </div>
+      <div className="main-page-content">
+        <div className="titleHeader">
+          <div className="title">Scavenger Hunt!</div>
+          <p className="bio">
+            Hey {user?.name || "you"}! Welcome to Scavenger Hunt! Join a game or
+            create your own one!
+          </p>
+        </div>
 
       <Leaderboards games={fetchedGames} gameId={gameId} onClick={handleRowClick} />
       <button className="add-button" onClick={() => handleCreateGame()}>

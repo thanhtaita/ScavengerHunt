@@ -96,7 +96,7 @@ const router = createBrowserRouter([
     element: <MainPage />,
   },
   {
-    path: "/mygame",
+    path: "/mygame/:gId",
     element: <AdminGame />,
     children: [
       {
@@ -111,12 +111,13 @@ const router = createBrowserRouter([
         path: "ScanQRCode",
         element: <ScanQR />,
       },
+      {
+        path: "scanQr",
+        element: <Scanning />,
+      },
     ],
   },
-  {
-    path: "/scanQr",
-    element: <Scanning />,
-  },
+
   {
     path: "/playerview/:gameId",
     element: <PlayerView />,

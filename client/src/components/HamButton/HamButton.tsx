@@ -16,6 +16,15 @@ const HamButton = () => {
       }
     }
   };
+  const handleMyGame = async () => {
+    const res = await fetch(
+      `http://localhost:9999/mygame?email=${user?.email}`
+    );
+    const data = await res.json();
+    console.log(data);
+    const redirectURL = data.url;
+    window.location.assign(redirectURL);
+  };
   return (
     <div>
       <section className="top-nav profile">
@@ -25,7 +34,7 @@ const HamButton = () => {
           <div className="menu-button"></div>
         </label>
         <ul className="menu">
-          <li onClick={() => window.location.assign("/mygame")}>My Game</li>
+          <li onClick={() => handleMyGame()}>My Game</li>
           <li onClick={() => window.location.assign("/tutorials")}>
             Tutorials
           </li>

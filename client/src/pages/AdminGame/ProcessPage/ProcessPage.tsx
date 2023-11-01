@@ -1,6 +1,6 @@
 import "./ProcessPage.css";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams, useOutletContext } from "react-router-dom";
 import jsPDF from "jspdf";
 import QRCode from "../../../../public/QRCode.png";
 import QRCodeGenrator from "react-qr-code";
@@ -10,6 +10,9 @@ import { PDFDocument, rgb } from "pdf-lib";
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 
 const Process = () => {
+  const { gId } = useParams();
+  console.log(gId);
+  const [step, setStep] = useOutletContext();
   let genPDF = false;
   const clues = [
     "Clue 1",
@@ -144,7 +147,11 @@ const Process = () => {
       </div>
 
       <div className="footer">
-        <Link to="/mygame" className="nav-btn">
+        <Link
+          to={`/mygame/${gId}`}
+          className="nav-btn"
+          onClick={() => setStep(step - 1)}
+        >
           Back
         </Link>
 
@@ -152,8 +159,12 @@ const Process = () => {
           Print QR Code
         </button>
 
-        <Link to="/mygame/scanQRCode" className="nav-btn">
-          next
+        <Link
+          to={`/mygame/${gId}/ScanQRCode`}
+          className="nav-btn"
+          onClick={() => setStep(step + 1)}
+        >
+          Next
         </Link>
       </div>
     </>

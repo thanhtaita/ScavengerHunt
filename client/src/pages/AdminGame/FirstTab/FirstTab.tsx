@@ -1,47 +1,29 @@
 import "./FirstTab.css";
-import { useEffect, useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useOutletContext, useParams } from "react-router-dom";
+import { AuthContext } from "../../../utils/context";
+import { ClueInfo } from "../../../utils/types";
 
 const fixedCluesSize = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // this is fixed
-interface ClueInfo {
-  clueNum: number;
-  question: string;
-  imageURL: string;
-}
 
 const defaultClueInfo: ClueInfo = {
-  clueNum: 0,
-  question: "",
+  clueID: 0,
+  clueText: "",
   imageURL: "",
+  location: "",
+  QR_text: "",
 };
 
-const loadedClues: ClueInfo[] = [
-  {
-    clueNum: 1,
-    question: "This is the question for first clue",
-    imageURL:
-      "https://images.pexels.com/photos/1402787/pexels-photo-1402787.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-  {
-    clueNum: 2,
-    question: "This is the question for second clue",
-    imageURL:
-      "https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-  {
-    clueNum: 3,
-    question: "This is the question for third clue",
-    imageURL:
-      "https://images.pexels.com/photos/842711/pexels-photo-842711.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  },
-]; // after loading from backend, this will be updated
-
 const FirstTab = () => {
+  // Get current user information
+  const { user } = useContext(AuthContext);
+  const { gId } = useParams();
+
   // Game information section
   const [gameName, setGameName] = useState("");
   const [gameDescription, setGameDescription] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
 
   // Clues information section
   const [providedClues, setProvidedClues] = useState<ClueInfo[]>([]);
@@ -51,15 +33,98 @@ const FirstTab = () => {
   const [latestClueNum, setLatestClueNum] = useState(1); // this is the latest clue number that has been saved
 
   const [step, setStep] = useOutletContext();
+
+  const saveGameInfo = async () => {
+    // save game information to backend
+    await fetch(`http://localhost:9999/mygame/${gId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        gameId: gId,
+        gameName: gameName,
+        gameDescription: gameDescription,
+        startTime: startTime,
+        endTime: endTime,
+      }),
+    });
+  };
+
+  const saveClueInfo = async () => {
+    // replace the changed clues
+    const tempClues = providedClues;
+    if (currentClueNum < latestClueNum) {
+      tempClues[currentClueNum - 1] = currentClueInfo;
+    } else {
+      tempClues.push(currentClueInfo);
+    }
+    setProvidedClues(tempClues);
+
+    // update clues information to backend
+    await fetch(`http://localhost:9999/mygame/${gId}/${currentClueNum}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(tempClues),
+    });
+  };
+
+  const handletoProcess = async () => {
+    setStep(step + 1);
+    const tempClues = providedClues;
+    for (let i = 0; i < tempClues.length; i++) {
+      tempClues[i].QR_text = `http://localhost:9999/${gId}/${i + 1}`;
+    }
+    await fetch(`http://localhost:9999/mygame/${gId}/${currentClueNum}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(tempClues),
+    });
+  };
+
   useEffect(() => {
-    // load provided clues from backend
-    setProvidedClues(loadedClues);
-    const numProvidedClues = loadedClues.map(({ clueNum }) => clueNum);
-    setNumProvidedClues(numProvidedClues);
-    setLatestClueNum(numProvidedClues.length + 1);
-    setCurrentClueInfo(loadedClues[0]);
-    setCurrentClueNum(1);
+    // load provided game information from backend
+    const loadedGameInfo = async () => {
+      try {
+        console.log(gId);
+        const response = await fetch(`http://localhost:9999/mygame/${gId}`);
+        if (response.ok) {
+          const data = await response.json();
+          //     // Handle the data and set state accordingly
+          console.log(data);
+          setGameName(data?.name);
+          setGameDescription(data?.description);
+          setStartTime(data?.starttime);
+          setEndTime(data?.endtime);
+          setProvidedClues(data?.hints);
+          console.log(data?.hints);
+          setLatestClueNum(data?.hints.length + 1);
+          setCurrentClueInfo(data?.hints[0]);
+          const numProvidedCluesTemp = data?.hints.map(
+            (clue: ClueInfo) => clue.clueID
+          );
+          setNumProvidedClues(numProvidedCluesTemp);
+        } else {
+          // Handle the situation when the response is not ok (e.g., error handling)
+          console.error("Error fetching data:", response.status);
+        }
+      } catch (error) {
+        // Handle any other errors that might occur during the fetch process
+        console.error("Error:", error);
+      }
+    };
+    loadedGameInfo();
   }, []);
+
+  // useEffect(() => {
+
+  // }, [providedClues]);
+
+  if (user === null) return null;
 
   return (
     <div className="first-tab">
@@ -82,18 +147,15 @@ const FirstTab = () => {
               />
               <input
                 type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
               />
               <input
                 type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
               />
-              <button
-                className="save-btn"
-                onClick={() => console.log("save game information")}
-              >
+              <button className="save-btn" onClick={() => saveGameInfo()}>
                 Save
               </button>
             </form>
@@ -107,8 +169,16 @@ const FirstTab = () => {
                     }`}
                     key={num}
                     onClick={() => {
-                      setCurrentClueNum(num);
-                      setCurrentClueInfo(providedClues[num - 1]);
+                      if (numProvidedClues.includes(num)) {
+                        setCurrentClueNum(num);
+                        setCurrentClueInfo(providedClues[num - 1]);
+                      } else {
+                        setCurrentClueNum(latestClueNum);
+                        setCurrentClueInfo({
+                          ...defaultClueInfo,
+                          clueID: providedClues.length + 1,
+                        });
+                      }
                     }}
                   >
                     Clue {num}
@@ -123,11 +193,11 @@ const FirstTab = () => {
               <input
                 type="text"
                 placeholder="Question"
-                value={currentClueInfo.question}
+                value={currentClueInfo.clueText}
                 onChange={(e) => {
                   setCurrentClueInfo({
                     ...currentClueInfo,
-                    question: e.target.value,
+                    clueText: e.target.value,
                   });
                 }}
               />
@@ -142,10 +212,7 @@ const FirstTab = () => {
                   });
                 }}
               />
-              <button
-                className="save-btn"
-                onClick={() => console.log(`save clue ${currentClueNum}`)}
-              >
+              <button className="save-btn" onClick={() => saveClueInfo()}>
                 Save
               </button>
             </form>
@@ -153,8 +220,8 @@ const FirstTab = () => {
         </div>
 
         <Link
-          to="/mygame/process"
-          onClick={() => setStep(step + 1)}
+          to={`/mygame/${gId}/process`}
+          onClick={() => handletoProcess()}
           className="nav-btn"
         >
           Next

@@ -1,8 +1,10 @@
 import "./ScanQRCode.css";
 import { useState } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link, useOutletContext, useParams } from "react-router-dom";
 
 const Scan = () => {
+  const { gId } = useParams();
+  console.log(gId);
   const [step, setStep] = useOutletContext();
   const [clues, setClues] = useState<Array<string>>([
     "Clue 1",
@@ -37,7 +39,6 @@ const Scan = () => {
         newDisabled[index] = true;
         return newDisabled;
       });
-      window.location.assign("/scanQr");
     } else {
       console.log("Geolocation not supported");
     }
@@ -51,26 +52,27 @@ const Scan = () => {
       <div className="listOfQR2">
         <ul className="allOfClues2">
           {clues.map((clue: string, index: number) => (
-            <button
+            <Link
+              to={`/mygame/${gId}/scanQRcode`}
               className="QRCodes2"
               key={index}
               onClick={() => locationOnClick(index)}
               disabled={disabled[index]}
             >
               {clue}
-            </button>
+            </Link>
           ))}
         </ul>
       </div>
       <div className="footer2">
         <Link
-          to="/mygame/process"
+          to={`/mygame/${gId}/process`}
           className="nav-btn"
           onClick={() => setStep(step - 1)}
         >
           Back
         </Link>
-        <Link to="/mygame" className="nav-btn">
+        <Link to="/" className="nav-btn">
           Create Game
         </Link>
       </div>

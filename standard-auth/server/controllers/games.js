@@ -8,8 +8,11 @@ const joinGame = async (uid, gameId) => {
       FROM user_progress 
       WHERE email = $1 AND gid = $2
     `;
-    console.log(uid,parseInt(gameId, 10), gameId);
-    const existingEntry = await pool.query(selectQuery, [uid, parseInt(gameId, 10)]);
+    console.log(uid, parseInt(gameId, 10), gameId);
+    const existingEntry = await pool.query(selectQuery, [
+      uid,
+      parseInt(gameId, 10),
+    ]);
 
     if (existingEntry.rowCount > 0) {
       // Entry already exists, you can either return a specific message or just return true
@@ -24,17 +27,18 @@ const joinGame = async (uid, gameId) => {
     await pool.query(insertQuery, [parseInt(gameId, 10), uid]);
 
     return true;
-
-  }catch (err) {
+  } catch (err) {
     console.error("⚠️ error creating DB entry", err);
     throw err; // propagate the error
   }
-}
+};
 
 const getGameDeets = async (gameId) => {
   try {
-    console.log("Fetching from games database ...")
-    const game = await pool.query("SELECT * FROM games WHERE gid = $1", [gameId]);
+    console.log("Fetching from games database ...");
+    const game = await pool.query("SELECT * FROM games WHERE gid = $1", [
+      gameId,
+    ]);
 
     if (game.rows.length === 0) {
       return null; // or throw an error if you prefer
@@ -47,9 +51,9 @@ const getGameDeets = async (gameId) => {
       id: gameDetails.gid,
       name: gameDetails.name,
       startDate: gameDetails.startDate, // Assuming you have a startDate column
-      endDate: gameDetails.endDate,     // Assuming you have an endDate column
+      endDate: gameDetails.endDate, // Assuming you have an endDate column
       description: gameDetails.description,
-      clues: cluesCount
+      clues: cluesCount,
     };
   } catch (err) {
     console.error("⚠️ error getting game details", err);
@@ -60,13 +64,16 @@ const getGameDeets = async (gameId) => {
 const verifyQR = async (uid, gameId, result) => {
   try {
     console.log("Accessing DB inside verifyQR ...");
-    
+
     const selectUserProgressQuery = `
       SELECT solvedclues
       FROM user_progress
       WHERE email = $1 AND gid = $2
     `;
-    const userProgressRes = await pool.query(selectUserProgressQuery, [uid, gameId]);
+    const userProgressRes = await pool.query(selectUserProgressQuery, [
+      uid,
+      gameId,
+    ]);
     if (userProgressRes.rowCount === 0) {
       return false;
     }
@@ -114,9 +121,8 @@ const verifyQR = async (uid, gameId, result) => {
     return false;
   } catch (err) {
     console.error("⚠️ error accessing DB", err);
-  } 
+  }
 };
-
 
 // get all users
 const getUsers = async (req, res) => {
@@ -192,9 +198,83 @@ const createGame = async (email) => {
     const insertQuery = `INSERT INTO Games (email) VALUES ($1)`;
     const values = [email];
     const res = await pool.query(insertQuery, values);
+    const data = await getMyGame(email);
     console.log("🎉 game created successfully");
+    if (!data) return null;
+    else return data;
   } catch (err) {
     console.error("⚠️ error creating game", err);
   }
 };
-export default { getGames, getUsers, createUser, getUser, existedUser, verifyQR, getGameDeets, joinGame };
+
+// get a game by email
+const getMyGame = async (email) => {
+  try {
+    const selectQuery = `SELECT * FROM Games WHERE email = $1`;
+    const values = [email];
+    const data = await pool.query(selectQuery, values);
+    console.log("🎉 get my game successfully");
+    if (!data) return null;
+    else return data.rows[0];
+  } catch (err) {
+    console.error("⚠️ error creating game", err);
+  }
+};
+
+const getGame = async (gid) => {
+  try {
+    const selectQuery = `SELECT * FROM Games WHERE gid = $1`;
+    const values = [gid];
+    const data = await pool.query(selectQuery, values);
+    console.log("🎉 get game successfully");
+    return data.rows[0];
+  } catch (err) {
+    console.error("⚠️ error getting game", err);
+  }
+};
+
+const updateGameInfo = async (gid, body) => {
+  try {
+    const updateQuery = `UPDATE Games SET name = $1, description = $2, starttime = $3, endtime = $4 WHERE gid = $5`;
+    const values = [
+      body.gameName,
+      body.gameDescription,
+      body.startTime,
+      body.endTime,
+      gid,
+    ];
+    console.log(values);
+    const res = await pool.query(updateQuery, values);
+    console.log("🎉 game info updated successfully");
+  } catch (err) {
+    console.error("⚠️ error updating game", err);
+  }
+};
+
+const updateClueInfo = async (gid, body) => {
+  try {
+    const updateQuery = `UPDATE Games SET hints = $1 WHERE gid = $2`;
+    const values = [JSON.stringify(body), gid];
+    console.log(values);
+    const res = await pool.query(updateQuery, values);
+    console.log("🎉 clue info updated successfully");
+  } catch (err) {
+    console.error("⚠️ error updating clue info", err);
+  }
+};
+
+export default {
+  getGames,
+  getGame,
+  getUsers,
+  createUser,
+  getUser,
+  existedUser,
+  getMyGame,
+  createGame,
+  updateGameInfo,
+  updateClueInfo,
+  verifyQR,
+  getGameDeets,
+  joinGame,
+};
