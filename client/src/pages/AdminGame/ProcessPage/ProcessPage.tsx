@@ -8,22 +8,38 @@ import * as htmlToImage from "html-to-image";
 import { saveAs } from "file-saver";
 import { PDFDocument, rgb } from "pdf-lib";
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
+import axios from "axios";
+import { RequestOptions } from "http";
+
+interface clues {
+  "clueID": number,
+  "QR_text": string,
+  "clueText": string,
+  "imageURL": string,
+  "location": string
+}
 
 const Process = () => {
+  const queryParameters = new URLSearchParams(window.location.search)
+  const gameId = queryParameters.get("gameId")
+  var game_details = "";
+  const [clues, setclues] = useState<Array<clues>>([]);
+  console.log(gameId)
   let genPDF = false;
-  const clues = [
-    "Clue 1",
-    "Clue 2",
-    "Clue 3",
-    "Clue 4",
-    "Clue 5",
-    "Clue 6 ",
-    "Clue 7",
-    "Clue 8",
-    "Clue 9",
-    "Clue 10",
-  ];
 
+  // const clues = [
+  //   "Clue 1",
+  //   "Clue 2",
+  //   "Clue 3",
+  //   "Clue 4",
+  //   "Clue 5",
+  //   "Clue 6 ",
+  //   "Clue 7",
+  //   "Clue 8",
+  //   "Clue 9",
+  //   "Clue 10",
+  // ];
+  console.log("game_details: ", game_details)
   function dataURLtoBlob(dataUrl: string) {
     // Decode the dataURL
     const binary = atob(dataUrl.split(",")[1]);
@@ -41,7 +57,7 @@ const Process = () => {
   }
   const pdfDoc = PDFDocument.create();
   let pdfBlob: Blob;
-  const convertBlobToPDF = async (clue: string, blobData: Blob) => {
+  const convertBlobToPDF = async (blobData: Blob) => {
     try {
       // Convert the blob data to an array buffer
       const arrayBuffer = await blobData.arrayBuffer();
@@ -83,31 +99,59 @@ const Process = () => {
       console.error("Error converting blob to PDF:", error);
     }
   };
+
+  // get game details
+
+  const fectGameDeatils = async () => {
+
+    await fetch("http://localhost:9999/adminGetgameDetails", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        "gid": 2
+      })
+    }).then(response => response.text())
+      .then(result => { console.log("result: ", JSON.parse(result)[0]["hints"]), setclues(JSON.parse(result)[0]["hints"]) })
+      .catch(error => console.log('error', error));
+  }
+
   useEffect(() => {
-    if (genPDF === false) {
-      console.log("genpdf", genPDF);
-      clues.map((clue) => {
-        const node = document.getElementById(clue);
-        htmlToImage
-          .toPng(node!)
-          .then(function (dataUrl) {
-            const img = new Image();
-            img.src = dataUrl;
-            const blobData = dataURLtoBlob(dataUrl);
+    fectGameDeatils()
+    // setclues([1, 2, 3])
+  }, [])
 
-            console.log("dataUrl: ", QRCode, dataUrl);
 
-            convertBlobToPDF(clue, blobData);
-          })
-          .catch(function (error) {
-            console.error("oops, something went wrong!", error);
-          });
-      });
-      genPDF = true;
+  useEffect(() => {
+    console.log("cluesHema: ", clues)
+    if (clues.length !== 0) {
+      if (genPDF === false) {
+        console.log("genpdf", genPDF);
+        clues.map((clue) => {
+          console.log(" clue clue", clue)
+          const node = document.getElementById(clue.clueID.toString());
+          htmlToImage
+            .toPng(node!)
+            .then(function (dataUrl) {
+              const img = new Image();
+              img.src = dataUrl;
+              const blobData = dataURLtoBlob(dataUrl);
+
+              // console.log("dataUrl: ", QRCode, dataUrl);
+
+              convertBlobToPDF(blobData);
+            })
+            .catch(function (error) {
+              console.error("oops, something went wrong!", error);
+            });
+        });
+        genPDF = true;
+      }
     }
-  }, []);
+
+  }, [clues]);
+
   const pdfOnClick = () => {
-    saveAs(pdfBlob, "gameId.pdf");
+    saveAs(pdfBlob, "gameId_" + gameId + ".pdf");
   };
   return (
     <>
@@ -119,9 +163,9 @@ const Process = () => {
       </div>
       <div className="listOfQR">
         <ul className="allOfClues">
-          {clues.map((clue: string, index: number) => (
+          {clues.map((clue: clues, index: number) => (
             <li className="QRCodes" key={index}>
-              {clue}{" "}
+              {clue.clueText}{" "}
               <div
                 style={{
                   height: "auto",
@@ -132,9 +176,9 @@ const Process = () => {
               >
                 <QRCodeGenrator
                   size={256}
-                  id={clue}
+                  id={clue.clueID.toString()}
                   style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                  value={"https://myserver.com:3000/clue:" + clue}
+                  value={"{\"gid\":" + gameId + ",\"clueId\":" + clue.clueID + "}"}
                   viewBox={`0 0 256 256`}
                 />
               </div>
@@ -152,7 +196,7 @@ const Process = () => {
           Print QR Code
         </button>
 
-        <Link to="/mygame/scanQRCode" className="nav-btn">
+        <Link to="/mygame/scanQRCode?gameId=2" className="nav-btn">
           next
         </Link>
       </div>

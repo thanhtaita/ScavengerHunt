@@ -187,4 +187,4 @@ const createGame = async (email) => {
     console.error("⚠️ error creating game", err);
   }
 };
-export default { getGames, getUsers, createUser, getUser, existedUser, verifyQR, getGameDeets, joinGame };
+export default { getGames, getUsers, createUser, getUser, existedUser };

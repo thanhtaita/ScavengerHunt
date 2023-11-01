@@ -102,9 +102,8 @@ const FirstTab = () => {
               <div className="scroll-container">
                 {fixedCluesSize.map((num) => (
                   <button
-                    className={`scroll-item ${
-                      numProvidedClues.includes(num) ? "provided" : ""
-                    }`}
+                    className={`scroll-item ${numProvidedClues.includes(num) ? "provided" : ""
+                      }`}
                     key={num}
                     onClick={() => {
                       setCurrentClueNum(num);
@@ -153,7 +152,7 @@ const FirstTab = () => {
         </div>
 
         <Link
-          to="/mygame/process"
+          to="/mygame/process?gameId=2"
           onClick={() => setStep(step + 1)}
           className="nav-btn"
         >

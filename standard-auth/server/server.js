@@ -9,9 +9,6 @@ import { pool } from "./config/database.js";
 import seedTripsTable from "./config/reset.js";
 import gamesRouter from "./routes/games.js";
 import GamesController from "./controllers/games.js";
-import bodyParser from 'body-parser';
-
-
 const config = {
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOLGE_CLIENT_SECRET,
@@ -54,7 +51,8 @@ app.use(
     credentials: true,
   })
 );
-
+app.use(express.json());
+app.use(express.text());
 // Parse Cookie
 app.use(cookieParser());
 
@@ -157,6 +155,35 @@ app.get("/auth/logged_in", (req, res) => {
     res.json({ loggedIn: false });
   }
 });
+
+app.post("/adminGetgameDetails",async function (req,res){
+  try{
+   
+    const{gid}=req.body
+    console.log(gid)
+    const data=await GamesController.getGameDetails(gid)
+        console.log(gid,data.rows)
+
+    // getGameDetails
+    res.json(data.rows)
+  }catch{
+
+  }
+})
+
+app.post("/updateloc",async function(req,res){
+  console.log("updateloc")
+  try{
+    const{gid,clues}=req.body
+    console.log("updateloc ",gid,clues)
+    const data=await GamesController.updateloc(gid,clues)
+    // console.log(gid,data.rows)
+    res.json({"data":data})
+    // updateloc()
+  }catch{
+
+  }
+})
 
 app.post("/auth/logout", (_, res) => {
   // clear cookie
