@@ -9,6 +9,9 @@ import { pool } from "./config/database.js";
 import seedTripsTable from "./config/reset.js";
 import gamesRouter from "./routes/games.js";
 import GamesController from "./controllers/games.js";
+import bodyParser from 'body-parser';
+
+
 const config = {
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOLGE_CLIENT_SECRET,
@@ -41,6 +44,9 @@ const getTokenParams = (code) =>
   });
 
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
   cors({
@@ -165,6 +171,70 @@ app.get("/user/posts", auth, async (_, res) => {
     console.error("Error: ", err);
   }
 });
+
+app.get("/game/:gameId", async function (req, res){
+  try {
+      console.log("inside server processing database call ...")
+      const gameId = parseInt(req.params.gameId, 10); // Extract gameId from the route parameter and convert to number
+      console.log(gameId);
+      if (isNaN(gameId)) {
+          return res.status(400).json({ error: "Invalid game ID format." });
+      }
+
+      const gameDetails = await GamesController.getGameDeets(gameId);
+
+      if (!gameDetails) {
+          console.log("hi");
+          return res.status(404).json({ error: "Game not found." });
+      }
+
+      res.json(gameDetails);
+  } catch (err) {
+      console.error("Error fetching game details:", err);
+      res.status(500).json({ error: "Internal server error." });
+  }
+});
+
+app.post("/verifyQR", async (req, res) => {
+  try {
+    // Extract data from the request body
+    const { uid, result, gameId } = req.body;
+
+    // Call the verifyQR function from GamesController
+    const isVerified = await GamesController.verifyQR(uid, gameId, result);
+
+    // Send the result back to the client
+    res.json({ success: isVerified });
+  } catch (error) {
+    console.error("Error verifying QR:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/startGame", async(req,res) =>{
+  try {
+    const gameId = parseInt(req.query.gameId, 10);
+    const uid = req.query.uid;
+    console.log(uid);
+    console.log(gameId);
+
+    if (!gameId || !uid) {
+      return res.status(400).json({ success: false, message: "Missing gameId or uid." });
+    }
+    const isCreated = await GamesController.joinGame(uid, gameId);
+    if (isCreated) {
+      res.json({ success: true });
+    } else {
+      res.status(400).json({ success: false, message: "Failed to join the game." });
+    }
+  }catch (error) {
+    console.error("Error starting game:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+
 
 const PORT = process.env.PORT || 9999;
 

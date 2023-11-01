@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import "./GameDetails.css"
 import Navbar from "../../components/Navbar/Navbar.tsx";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../utils/context";
 
 interface GameDetailsProps {
     id: number;
@@ -11,43 +13,57 @@ interface GameDetailsProps {
     endDate: string;
     description: string;
     clues: number;
-    // Add other fields as necessary
   }
-
-const mockGameDetails=
-{
-  "id": 10,
-  "name": "Mystery of the Lost Pyramid",
-  "startDate": "2023-11-01",
-  "endDate": "2023-11-10",
-  "description": "In the heart of Egypt lies a mystery that has been unsolved for centuries: the Lost Pyramid. Many have tried to uncover its secrets, but none have succeeded. This game will take you on a thrilling adventure through the sands of time. Along the way, you'll encounter challenging puzzles, cryptic clues, and a story that spans millennia. Do you have what it takes to solve the Mystery of the Lost Pyramid? Join the adventure and find out!",
-  "clues":10
-}
-
 
   function GameDetails() {
     const { gameId } = useParams<{ gameId: string }>();
-    // const [gameDetails, setGameDetails] = useState<GameDetailsProps | null>(null);
-    const [gameDetails, setGameDetails] = useState<GameDetailsProps | null>(mockGameDetails);
+    const [gameDetails, setGameDetails] = useState<GameDetailsProps | null>(null);    
     const [gameIdd, setGameId] = useState(0);
+    const { user } = useContext(AuthContext);
   
-    // useEffect(() => {
-    //   // Fetch game details from your API
-    //   const fetchGameDetails = async () => {
-    //     try {
-    //       const response = await axios.get(`/path-to-your-api/games/${gameId}`);
-    //       setGameDetails(response.data);
-    //     } catch (error) {
-    //       console.error("Failed to fetch game details:", error);
-    //     }
-    //   };
-  
-    //   fetchGameDetails();
-    // }, [gameId]);
     const navigate = useNavigate();
-    const handleStartGame = (gameId: number) => {
-      navigate(`/start-game/${gameId}`);
-    }
+    const handleStartGame = async (gameId: number) => {
+      if (!user) {
+        // Notify the user that they need to be logged in
+        window.alert("Please log in to start the game.");
+        return;
+      }
+    
+      const uid = user.email;
+    
+      try {
+        const response = await fetch(`http://localhost:9999/startGame?gameId=${gameId}&uid=${uid}`);
+
+        const data = await response.json();
+    
+        if (data.success) {
+          navigate(`/playerview/${gameId}`);
+        } else {
+          // Handle any errors or issues reported by the server
+          console.error("Error starting the game:", data.message);
+          window.alert("Error starting the game. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error making API call:", error);
+        window.alert("Error starting the game. Please try again.");
+      }
+    };
+
+    useEffect(() => {
+      // Fetch game details from API
+      const fetchGameDetails = async () => {
+          try {
+              const response = await fetch(`http://localhost:9999/game/${gameId}`);
+              console.log(response);
+              const data = await response.json();
+              setGameDetails(data);
+          } catch (error) {
+              console.error("Error fetching game details:", error);
+          }
+      };
+
+      fetchGameDetails();
+    }, [gameId]); 
   
     return (
       <>
