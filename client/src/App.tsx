@@ -22,6 +22,7 @@ import { Scanning } from "./pages/AdminGame/ScanQRCode/ScanningQR.tsx";
 import GameDetails from "./pages/GameDetails/GameDetails.tsx";
 // import Scan from "./components/ScanFolder/ScanFile.tsx";
 import AuthenticateFail from "./pages/AuthenticateFail/AuthenticateFail.tsx";
+import PlayerView from "./pages/PlayerView/playerView.tsx";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
@@ -70,7 +71,7 @@ const Callback = () => {
           const res = await axios.get(
             `${serverUrl}/auth/token${window.location.search}`
           );
-          console.log("response: ", res);
+          console.log("response: ", res.data.user);
           checkLoginState();
           navigate("/");
         } catch (err) {
@@ -115,6 +116,14 @@ const router = createBrowserRouter([
   {
     path: "/scanQr",
     element: <Scanning />,
+  },
+  {
+    path: "/playerview/:gameId",
+    element: <PlayerView />,
+  },
+  {
+    path: "/playerview/:gameId",
+    element: <PlayerView />,
   },
   {
     path: "/tutorials",
