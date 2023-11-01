@@ -1,5 +1,5 @@
 import "./config/dotenv.js";
-import express from "express";
+import express, { query } from "express";
 import cors from "cors";
 import axios from "axios";
 import queryString from "query-string";
@@ -8,7 +8,11 @@ import cookieParser from "cookie-parser";
 import { pool } from "./config/database.js";
 import seedTripsTable from "./config/reset.js";
 import gamesRouter from "./routes/games.js";
+import { URL } from "url";
+import url from "url";
 import GamesController from "./controllers/games.js";
+import { URLSearchParams } from "url";
+
 const config = {
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOLGE_CLIENT_SECRET,
@@ -52,6 +56,9 @@ app.use(
 // Parse Cookie
 app.use(cookieParser());
 
+// Parse JSON bodies (as sent by API clients)
+app.use(express.json());
+
 // app.use("", gamesRouter);
 
 // Verify auth
@@ -72,10 +79,55 @@ app.get("/", async function (req, res) {
   console.log("Connected to backend");
 });
 
-// app.get("/mygame", async function (req, res) {});
+app.get("/mygame", async function (req, res) {
+  const form = new URL(`${process.env.SERVER_URL}${req.url}`);
+  const email = form.searchParams.get("email");
+  console.log(email);
+  let data = await GamesController.getMyGame(email);
+  if (!data) {
+    data = await GamesController.createGame(email);
+  }
+  res.json({
+    url: `${config.clientUrl}/mygame/${data.gid}`,
+  });
+});
+
 app.get("/mygame/:id", async function (req, res) {
-  GamesController.getGames(req, res);
-  console.log("Connected to backend");
+  console.log("getting my game");
+  const { id } = req.params;
+  console.log(id);
+  const data = await GamesController.getGame(id);
+  res.json(data);
+});
+
+app.post("/mygame/:id", async function (req, res) {
+  console.log("updating my game");
+  const { id } = req.params;
+  console.log(id);
+  const body = req.body;
+  console.log(body);
+  const data = await GamesController.updateGameInfo(id, body);
+  console.log(data);
+});
+
+app.post("/mygame/:gId/:hintId", async function (req, res) {
+  console.log("updating clue game");
+  const { gId, hintId } = req.params;
+  console.log(gId);
+  const body = req.body;
+  console.log(body);
+  // update clue info only
+  const data = await GamesController.updateClueInfo(gId, body);
+});
+
+app.post("/", async function (req, res) {
+  const form = new URL(req.url);
+  const email = form.searchParams.get("email");
+  const data = await GamesController.createGame(email);
+  console.log(email);
+  if (data) {
+    return res.json("");
+  }
 });
 
 app.get("/auth/url", (_, res) => {

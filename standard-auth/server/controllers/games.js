@@ -64,9 +64,80 @@ const createGame = async (email) => {
     const insertQuery = `INSERT INTO Games (email) VALUES ($1)`;
     const values = [email];
     const res = await pool.query(insertQuery, values);
+    const data = await getMyGame(email);
     console.log("🎉 game created successfully");
+    if (!data) return null;
+    else return data;
   } catch (err) {
     console.error("⚠️ error creating game", err);
   }
 };
-export default { getGames, getUsers, createUser, getUser, existedUser };
+
+// get a game by email
+const getMyGame = async (email) => {
+  try {
+    const selectQuery = `SELECT * FROM Games WHERE email = $1`;
+    const values = [email];
+    const data = await pool.query(selectQuery, values);
+    console.log("🎉 get my game successfully");
+    if (!data) return null;
+    else return data.rows[0];
+  } catch (err) {
+    console.error("⚠️ error creating game", err);
+  }
+};
+
+const getGame = async (gid) => {
+  try {
+    const selectQuery = `SELECT * FROM Games WHERE gid = $1`;
+    const values = [gid];
+    const data = await pool.query(selectQuery, values);
+    console.log("🎉 get game successfully");
+    return data.rows[0];
+  } catch (err) {
+    console.error("⚠️ error getting game", err);
+  }
+};
+
+const updateGameInfo = async (gid, body) => {
+  try {
+    const updateQuery = `UPDATE Games SET name = $1, description = $2, starttime = $3, endtime = $4 WHERE gid = $5`;
+    const values = [
+      body.gameName,
+      body.gameDescription,
+      body.startTime,
+      body.endTime,
+      gid,
+    ];
+    console.log(values);
+    const res = await pool.query(updateQuery, values);
+    console.log("🎉 game info updated successfully");
+  } catch (err) {
+    console.error("⚠️ error updating game", err);
+  }
+};
+
+const updateClueInfo = async (gid, body) => {
+  try {
+    const updateQuery = `UPDATE Games SET hints = $1 WHERE gid = $2`;
+    const values = [JSON.stringify(body), gid];
+    console.log(values);
+    const res = await pool.query(updateQuery, values);
+    console.log("🎉 clue info updated successfully");
+  } catch (err) {
+    console.error("⚠️ error updating clue info", err);
+  }
+};
+
+export default {
+  getGames,
+  getGame,
+  getUsers,
+  createUser,
+  getUser,
+  existedUser,
+  getMyGame,
+  createGame,
+  updateGameInfo,
+  updateClueInfo,
+};

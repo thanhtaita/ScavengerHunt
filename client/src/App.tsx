@@ -96,7 +96,7 @@ const router = createBrowserRouter([
     element: <MainPage />,
   },
   {
-    path: "/mygame",
+    path: "/mygame/:gId",
     element: <AdminGame />,
     children: [
       {

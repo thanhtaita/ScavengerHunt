@@ -16,3 +16,11 @@ export interface AuthContextType {
   user: User | null;
   checkLoginState: () => void;
 }
+
+export interface ClueInfo {
+  clueID: number;
+  clueText: string;
+  imageURL: string;
+  location: string;
+  QR_text: string;
+}
