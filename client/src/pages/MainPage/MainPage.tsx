@@ -6,35 +6,6 @@ import { GameRow } from "../../utils/types.ts";
 import { useContext } from "react";
 import { AuthContext } from "../../utils/context";
 
-const games = [
-  {
-    id: 1,
-    name: "Game A",
-    startDate: "2023-10-13",
-    clues: 4,
-  },
-
-  {
-    id: 2,
-    name: "Game B",
-    startDate: "2023-10-13",
-    clues: 2,
-  },
-
-  {
-    id: 10,
-    name: "Game 20",
-    startDate: "2023-10-13",
-    clues: 10,
-  },
-  {
-    id: 5,
-    name: "Game C",
-    startDate: "2023-10-13",
-    clues: 4,
-  },
-];
-
 const MainPage = () => {
   const { user, loggedIn } = useContext(AuthContext);
   const [gameId, setGameId] = useState(0);
@@ -49,7 +20,7 @@ const MainPage = () => {
     // call api to check if the user has a game
     // only allow user to create a game if they don't have one
     const res = await fetch(
-      `https://shserver-q8el.onrender.com/mygame?email=${user?.email}`
+      `http://localhost:9999/mygame?email=${user?.email}`
     );
     const data = await res.json();
     console.log(data);
@@ -64,7 +35,7 @@ const MainPage = () => {
     console.log("Fetching games...");
     const fetchGames = async () => {
       try {
-        const res = await fetch("https://shserver-q8el.onrender.com/");
+        const res = await fetch("http://localhost:9999/");
         const data = await res.json();
         setFetchedGames(data);
       } catch (error) {
@@ -86,16 +57,16 @@ const MainPage = () => {
             create your own one!
           </p>
         </div>
-      </div>
 
-      <Leaderboards
-        games={fetchedGames}
-        gameId={gameId}
-        onClick={handleRowClick}
-      />
-      <button className="add-button" onClick={() => handleCreateGame()}>
-        Create Game +
-      </button>
+        <Leaderboards
+          games={fetchedGames}
+          gameId={gameId}
+          onClick={handleRowClick}
+        />
+        <button className="add-button" onClick={() => handleCreateGame()}>
+          Create Game +
+        </button>
+      </div>
     </div>
   );
 };

@@ -10,7 +10,7 @@ interface NavbarProps {
   setGameId: (gameId: number) => void;
 }
 
-const serverUrl = "https://shserver-q8el.onrender.com";
+const serverUrl = "http://localhost:9999";
 
 const Navbar = ({ gameId, setGameId }: NavbarProps) => {
   const { loggedIn, user } = useContext(AuthContext);
@@ -32,6 +32,7 @@ const Navbar = ({ gameId, setGameId }: NavbarProps) => {
     <div>
       <div className="search">
         <input
+          className="search-bar"
           type="number"
           placeholder="Search with Game ID (only number)"
           value={gameId ? gameId : ""}

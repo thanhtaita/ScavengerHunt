@@ -27,7 +27,7 @@ import PlayerView from "./pages/PlayerView/playerView.tsx";
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
 
-const serverUrl = "https://shserver-q8el.onrender.com";
+const serverUrl = "http://localhost:9999";
 
 // a React context to hold the logged-in and user states so they can be shared globally
 const AuthContextProvider = ({ children }) => {

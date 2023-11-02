@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import "./GameDetails.css"
+import "./GameDetails.css";
 import Navbar from "../../components/Navbar/Navbar.tsx";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -32,7 +32,9 @@ function GameDetails() {
     const uid = user.email;
 
     try {
-      const response = await fetch(`https://shserver-q8el.onrender.com/startGame?gameId=${gameId}&uid=${uid}`);
+      const response = await fetch(
+        `http://localhost:9999/startGame?gameId=${gameId}&uid=${uid}`
+      );
 
       const data = await response.json();
 
@@ -53,7 +55,7 @@ function GameDetails() {
     // Fetch game details from API
     const fetchGameDetails = async () => {
       try {
-        const response = await fetch(`https://shserver-q8el.onrender.com/game/${gameId}`);
+        const response = await fetch(`http://localhost:9999/game/${gameId}`);
         console.log(response);
         const data = await response.json();
         setGameDetails(data);
@@ -76,14 +78,21 @@ function GameDetails() {
               <h1>{gameId}</h1>
             </div>
             <div className="content">
-              <p className="description">Description: {gameDetails.description}</p>
+              <p className="description">
+                Description: {gameDetails.description}
+              </p>
               <div className="extraDeets">
                 <p>Start Date: {gameDetails.startDate}</p>
                 <p>End Date: {gameDetails.endDate}</p>
                 <p>Clues: {gameDetails.clues}</p>
               </div>
             </div>
-            <button className={"startgamebutton"} onClick={() => handleStartGame(gameDetails.id)}>Start Game</button>
+            <button
+              className={"startgamebutton"}
+              onClick={() => handleStartGame(gameDetails.id)}
+            >
+              Start Game
+            </button>
           </>
         ) : (
           <p>Loading game details...</p>

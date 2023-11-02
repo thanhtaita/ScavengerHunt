@@ -14,8 +14,8 @@ input[type="number"] {
   text-align: center;
   width: 50%;
   color: rgb(226, 226, 226);
-  background-color: rgb(59, 56, 56);
-  box-shadow: 5px 5px 5px #696666e1;
+  background-color: rgba(255, 255, 255, 0.853);
+  box-shadow: 5px 5px 5px #69666656;
   padding: 0.7rem 1rem;
   padding-left: 3rem;
   font-size: 0.9rem;
