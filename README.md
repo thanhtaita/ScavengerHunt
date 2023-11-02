@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-By: Ali Saeed
-Tai
-Hema
-=======
-Tai Ta
-Ali
->>>>>>> nav-bar
-
 # Geo Scavenger Hunt: https://scavenger-hunt-rust.vercel.app/
 
 # Member information
