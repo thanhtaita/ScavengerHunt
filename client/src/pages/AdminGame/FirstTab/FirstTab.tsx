@@ -60,6 +60,7 @@ const FirstTab = () => {
       tempClues.push(currentClueInfo);
     }
     setProvidedClues(tempClues);
+    console.log(tempClues);
 
     // update clues information to backend
     await fetch(`http://localhost:9999/mygame/${gId}/${currentClueNum}`, {
@@ -90,24 +91,28 @@ const FirstTab = () => {
     // load provided game information from backend
     const loadedGameInfo = async () => {
       try {
-        console.log(gId);
+        // console.log(gId);
         const response = await fetch(`http://localhost:9999/mygame/${gId}`);
         if (response.ok) {
           const data = await response.json();
           //     // Handle the data and set state accordingly
-          console.log(data);
+          // console.log(data);
+          if (Object.keys(data.hints).length === 0) {
+            setLatestClueNum(1);
+          } else {
+            setLatestClueNum(data?.hints.length + 1);
+            const numProvidedCluesTemp = data?.hints.map(
+              (clue: ClueInfo) => clue.clueID
+            );
+            setNumProvidedClues(numProvidedCluesTemp);
+            setProvidedClues(data?.hints);
+          }
           setGameName(data?.name);
           setGameDescription(data?.description);
           setStartTime(data?.starttime);
           setEndTime(data?.endtime);
-          setProvidedClues(data?.hints);
-          console.log(data?.hints);
-          setLatestClueNum(data?.hints.length + 1);
+
           setCurrentClueInfo(data?.hints[0]);
-          const numProvidedCluesTemp = data?.hints.map(
-            (clue: ClueInfo) => clue.clueID
-          );
-          setNumProvidedClues(numProvidedCluesTemp);
         } else {
           // Handle the situation when the response is not ok (e.g., error handling)
           console.error("Error fetching data:", response.status);
@@ -193,7 +198,7 @@ const FirstTab = () => {
               <input
                 type="text"
                 placeholder="Question"
-                value={currentClueInfo.clueText}
+                value={currentClueInfo?.clueText}
                 onChange={(e) => {
                   setCurrentClueInfo({
                     ...currentClueInfo,
@@ -204,7 +209,7 @@ const FirstTab = () => {
               <input
                 type="text"
                 placeholder="Image URL"
-                value={currentClueInfo.imageURL}
+                value={currentClueInfo?.imageURL}
                 onChange={(e) => {
                   setCurrentClueInfo({
                     ...currentClueInfo,

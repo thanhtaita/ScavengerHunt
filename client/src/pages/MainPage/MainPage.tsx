@@ -19,6 +19,11 @@ const MainPage = () => {
   const handleCreateGame = async () => {
     // call api to check if the user has a game
     // only allow user to create a game if they don't have one
+    if (!user) {
+      // Notify the user that they need to be logged in
+      window.alert("Please log in to create a game.");
+      return;
+    }
     const res = await fetch(
       `http://localhost:9999/mygame?email=${user?.email}`
     );

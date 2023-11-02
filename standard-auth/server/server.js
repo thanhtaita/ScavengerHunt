@@ -101,6 +101,7 @@ app.get("/mygame/:id", async function (req, res) {
   const { id } = req.params;
   console.log(id);
   const data = await GamesController.getGame(id);
+  console.log(data);
   res.json(data);
 });
 
