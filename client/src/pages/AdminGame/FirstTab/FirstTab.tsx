@@ -57,6 +57,9 @@ const FirstTab = () => {
     if (currentClueNum < latestClueNum) {
       tempClues[currentClueNum - 1] = currentClueInfo;
     } else {
+      if (numProvidedClues.length === 0) {
+        setNumProvidedClues([1]);
+      }
       tempClues.push(currentClueInfo);
     }
     setProvidedClues(tempClues);
