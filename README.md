@@ -1,6 +1,7 @@
 # snapShot/Video Walkthrough of ScavenegerHunt Final project
-https://drive.google.com/drive/u/1/my-drive
-# Geo Scavenger Hunt: https://scavenger-hunt-rust.vercel.app/
+https://drive.google.com/file/d/1F8pPG2kv2FXA0FBdTqoFCLFpjJVUUXPR/view?usp=sharing
+
+# Geo Scavenger Hunt: https://scaven ger-hunt-rust.vercel.app/
 
 # Member information
 
