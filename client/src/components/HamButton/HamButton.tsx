@@ -3,7 +3,7 @@ import { useContext } from "react";
 import axios from "axios";
 import "./HamButton.css";
 
-const serverUrl = "http://localhost:9999";
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 const HamButton = () => {
   const { user, loggedIn } = useContext(AuthContext);
   const handleLogout = async () => {
@@ -17,9 +17,7 @@ const HamButton = () => {
     }
   };
   const handleMyGame = async () => {
-    const res = await fetch(
-      `http://localhost:9999/mygame?email=${user?.email}`
-    );
+    const res = await fetch(`${serverUrl}/mygame?email=${user?.email}`);
     const data = await res.json();
     console.log(data);
     const redirectURL = data.url;

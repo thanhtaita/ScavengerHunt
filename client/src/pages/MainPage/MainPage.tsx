@@ -6,6 +6,8 @@ import { GameRow } from "../../utils/types.ts";
 import { useContext } from "react";
 import { AuthContext } from "../../utils/context";
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 const MainPage = () => {
   const { user, loggedIn } = useContext(AuthContext);
   const [gameId, setGameId] = useState(0);
@@ -24,9 +26,7 @@ const MainPage = () => {
       window.alert("Please log in to create a game.");
       return;
     }
-    const res = await fetch(
-      `http://localhost:9999/mygame?email=${user?.email}`
-    );
+    const res = await fetch(`${serverUrl}/mygame?email=${user?.email}`);
     const data = await res.json();
     console.log(data);
     const redirectURL = data.url;
@@ -40,7 +40,7 @@ const MainPage = () => {
     console.log("Fetching games...");
     const fetchGames = async () => {
       try {
-        const res = await fetch("http://localhost:9999/");
+        const res = await fetch(`${serverUrl}/`);
         const data = await res.json();
         setFetchedGames(data);
       } catch (error) {

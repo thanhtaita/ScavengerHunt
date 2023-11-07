@@ -4,6 +4,8 @@ import { Link, useOutletContext, useParams } from "react-router-dom";
 import { AuthContext } from "../../../utils/context";
 import { ClueInfo } from "../../../utils/types";
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 const fixedCluesSize = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // this is fixed
 
 const defaultClueInfo: ClueInfo = {
@@ -36,7 +38,7 @@ const FirstTab = () => {
 
   const saveGameInfo = async () => {
     // save game information to backend
-    await fetch(`http://localhost:9999/mygame/${gId}`, {
+    await fetch(`${serverUrl}/mygame/${gId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +68,7 @@ const FirstTab = () => {
     console.log(tempClues);
 
     // update clues information to backend
-    await fetch(`http://localhost:9999/mygame/${gId}/${currentClueNum}`, {
+    await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -79,9 +81,9 @@ const FirstTab = () => {
     setStep(step + 1);
     const tempClues = providedClues;
     for (let i = 0; i < tempClues.length; i++) {
-      tempClues[i].QR_text = `http://localhost:9999/${gId}/${i + 1}`;
+      tempClues[i].QR_text = `${serverUrl}}/${gId}/${i + 1}`;
     }
-    await fetch(`http://localhost:9999/mygame/${gId}/${currentClueNum}`, {
+    await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -95,7 +97,7 @@ const FirstTab = () => {
     const loadedGameInfo = async () => {
       try {
         // console.log(gId);
-        const response = await fetch(`http://localhost:9999/mygame/${gId}`);
+        const response = await fetch(`${serverUrl}/mygame/${gId}`);
         if (response.ok) {
           const data = await response.json();
           //     // Handle the data and set state accordingly
