@@ -1,0 +1,74 @@
+.progressContainer {
+  display: flex;
+  flex-direction: row;
+}
+.clues {
+  padding-left: 3.5%;
+  padding-top: 3%;
+  padding-right: 10%;
+}
+.currentClue {
+  padding-bottom: 5%;
+}
+.currentClue-title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+.currentClue-bio {
+  font-size: 2rem;
+  width: 100%;
+  margin-left: 3%;
+}
+.currentClue-bio::before {
+  content: "\25CF"; /* Unicode for the circle emoji (●) */
+  margin-right: 8px; /* Optional: Add spacing between the emoji and text */
+  color: #e5ca00;
+}
+
+.listOfClues {
+  max-height: 500px; /* Set the maximum height as per your requirements */
+  overflow-y: auto; /* Enable vertical scrolling when the content overflows */
+}
+
+.solvedClue-title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+.scrollableList {
+  list-style: circle;
+  font-size: 1.5rem;
+  width: 80%;
+  margin-left: 3%;
+  padding-top: 1%;
+}
+.eachClue {
+  padding-bottom: 2%;
+}
+
+.solvedClues li::before,
+.currentClue li::before {
+  content: "";
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: -1em;
+  border-radius: 50%;
+  background-color: #18c205;
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
+/* ----------------------------------------- */
+.chartjs-datalabels-label {
+  color: black;
+}
+.pieChart {
+  width: 60%;
+  padding-right: 5%;
+  padding-top: 5%;
+}
+
+@media screen and (max-width: 800px) {
+  .pieChart {
+    display: none;
+  }
+}

@@ -1,0 +1,36 @@
+.leaderboardsContainer {
+  padding-top: 7vh;
+  height: 95vh;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.leaderboards-title {
+  font-size: 5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #010101;
+}
+.leaderboards-table {
+  width: 70%;
+}
+.first-row-table {
+  background-color: #010101;
+}
+.first-row-table th {
+  padding: 1rem;
+  text-align: left;
+  color: #fff;
+  font-size: 2rem;
+}
+.data-rows {
+  background-color: beige;
+}
+.data-rows td {
+  padding: 1rem;
+  text-align: left;
+  color: #010101;
+  font-size: 1.8rem;
+}
