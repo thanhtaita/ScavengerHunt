@@ -15,6 +15,8 @@ interface GameDetailsProps {
   clues: number;
 }
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 function GameDetails() {
   const { gameId } = useParams<{ gameId: string }>();
   const [gameDetails, setGameDetails] = useState<GameDetailsProps | null>(null);
@@ -33,7 +35,7 @@ function GameDetails() {
 
     try {
       const response = await fetch(
-        `http://localhost:9999/startGame?gameId=${gameId}&uid=${uid}`
+        `${serverUrl}/startGame?gameId=${gameId}&uid=${uid}`
       );
 
       const data = await response.json();
@@ -55,7 +57,7 @@ function GameDetails() {
     // Fetch game details from API
     const fetchGameDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:9999/game/${gameId}`);
+        const response = await fetch(`${serverUrl}/game/${gameId}`);
         console.log(response);
         const data = await response.json();
         setGameDetails(data);

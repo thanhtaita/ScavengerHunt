@@ -1,5 +1,4 @@
 import "./App.css";
-import "../dotenv.tsx";
 import {
   RouterProvider,
   createBrowserRouter,
@@ -7,7 +6,6 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useRef, useState, useContext, useCallback } from "react";
-import "../dotenv.tsx";
 import { AuthContext } from "../src/utils/context.ts"; // context to store info about logged in user
 
 // page import
@@ -27,7 +25,8 @@ import PlayerView from "./pages/PlayerView/playerView.tsx";
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
 
-const serverUrl = "http://localhost:9999";
+console.log("env: ", import.meta.env.VITE_SERVER_URL);
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 // a React context to hold the logged-in and user states so they can be shared globally
 const AuthContextProvider = ({ children }) => {

@@ -10,7 +10,7 @@ interface NavbarProps {
   setGameId: (gameId: number) => void;
 }
 
-const serverUrl = "http://localhost:9999";
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const Navbar = ({ gameId, setGameId }: NavbarProps) => {
   const { loggedIn, user } = useContext(AuthContext);
