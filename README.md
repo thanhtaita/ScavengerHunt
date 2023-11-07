@@ -1,4 +1,5 @@
 # snapShot/Video Walkthrough of ScavenegerHunt Final project
+
 https://drive.google.com/file/d/1F8pPG2kv2FXA0FBdTqoFCLFpjJVUUXPR/view?usp=sharing
 
 # Geo Scavenger Hunt: https://scaven ger-hunt-rust.vercel.app/
@@ -6,6 +7,8 @@ https://drive.google.com/file/d/1F8pPG2kv2FXA0FBdTqoFCLFpjJVUUXPR/view?usp=shari
 # Member information
 
 Tai Ta - nta3@uic.edu , Ali Saeed - asaee2@uic.edu, Hemalatha Ningappa kondakundi - hning4@uic.edu, Vishaal Karthik Muralidharan - vmural9@uic.edu
+
+Change
 
 # To run the project
 
