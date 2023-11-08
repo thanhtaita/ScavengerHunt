@@ -18,7 +18,7 @@ const solvedClues = [
   "It's the first meal of the day, often with toast. Some like it with bacon, or jam as a boast.",
 ];
 const currentClue =
-  "This instrument has black and white keys in a row. It's not a wind instrument, but its music can flow.";
+  "This instrument has black and white keys in a row. It's not a wind instrument, but its music can flo.";
 const totalClues = 20;
 
 const Progress = () => {
