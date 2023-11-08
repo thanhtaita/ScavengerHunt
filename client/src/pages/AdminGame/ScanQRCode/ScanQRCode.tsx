@@ -1,12 +1,13 @@
 import "./ScanQRCode.css";
 import { useState } from "react";
-import { Link, useOutletContext, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { GetContext } from "../AdminGame";
 
 const Scan = () => {
   const { gId } = useParams();
   console.log(gId);
-  const [step, setStep] = useOutletContext();
-  const [clues, setClues] = useState<Array<string>>([
+  const { step, setStep } = GetContext();
+  const [clues] = useState<Array<string>>([
     "Clue 1",
     "Clue 2",
     "Clue 3",
@@ -15,7 +16,7 @@ const Scan = () => {
     "Clue 6",
     "Clue 7",
   ]);
-  const [disabled, setDisabled] = useState<Array<boolean>>(
+  const [, setDisabled] = useState<Array<boolean>>(
     Array.from({ length: clues.length }, () => false)
   );
   // To fix the issue, wrap the boolean value in an array and set it to the corresponding index of the `disabled` state array
@@ -57,7 +58,6 @@ const Scan = () => {
               className="QRCodes2"
               key={index}
               onClick={() => locationOnClick(index)}
-              disabled={disabled[index]}
             >
               {clue}
             </Link>

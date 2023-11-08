@@ -29,10 +29,9 @@ console.log(import.meta.env.VITE_SERVER_URL);
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 // a React context to hold the logged-in and user states so they can be shared globally
-const AuthContextProvider = ({ children }) => {
+const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedIn, setLoggedIn] = useState(null);
   const [user, setUser] = useState(null);
-
   const checkLoginState = useCallback(async () => {
     try {
       const {

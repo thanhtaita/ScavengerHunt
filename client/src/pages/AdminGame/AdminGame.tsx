@@ -1,13 +1,20 @@
-import { Link, Outlet } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 import Navbar from "../../components/AdminGame/NavBar/NavBar.tsx";
 import ProcessBar from "../../components/ProcessBar/ProcessBar.tsx";
 import { AuthContext } from "../../utils/context.ts";
+import {} from "react-router-dom";
 
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
+
+type ContextType = {
+  step: number;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+};
 
 const AdminGame = () => {
   const { loggedIn } = useContext(AuthContext);
   const [step, setStep] = useState(0);
+  console.log(step);
 
   if (loggedIn === null) return null;
   if (loggedIn === false) window.location.assign("/authfail");
@@ -17,10 +24,14 @@ const AdminGame = () => {
       <div>
         <Navbar />
         <ProcessBar step={step} />
-        <Outlet context={[step, setStep]} />
+        <Outlet context={{ step, setStep }} />
       </div>
     )
   );
 };
 
 export default AdminGame;
+
+export function GetContext() {
+  return useOutletContext<ContextType>();
+}

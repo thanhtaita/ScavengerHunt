@@ -1,8 +1,10 @@
 import "./FirstTab.css";
 import { useContext, useEffect, useState } from "react";
-import { Link, useOutletContext, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../../../utils/context";
 import { ClueInfo } from "../../../utils/types";
+
+import { GetContext } from "../AdminGame";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -34,7 +36,7 @@ const FirstTab = () => {
   const [currentClueInfo, setCurrentClueInfo] = useState(defaultClueInfo);
   const [latestClueNum, setLatestClueNum] = useState(1); // this is the latest clue number that has been saved
 
-  const [step, setStep] = useOutletContext();
+  const { step, setStep } = GetContext();
 
   const saveGameInfo = async () => {
     // save game information to backend

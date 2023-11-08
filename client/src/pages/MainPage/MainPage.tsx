@@ -9,7 +9,7 @@ import { AuthContext } from "../../utils/context";
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const MainPage = () => {
-  const { user, loggedIn } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [gameId, setGameId] = useState(0);
   const [fetchedGames, setFetchedGames] = useState<GameRow[]>([]);
 

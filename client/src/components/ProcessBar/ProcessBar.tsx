@@ -3,7 +3,11 @@ import { BiQrScan } from "react-icons/bi";
 import { BsClipboardDataFill } from "react-icons/bs";
 import { FaLocationDot } from "react-icons/fa6";
 
-const ProcessBar = ({ step }) => {
+type Props = {
+  step: number;
+};
+
+const ProcessBar = ({ step }: Props) => {
   // const handleStepClick = (stepIndex) => {
   //   setStep(stepIndex);
   // };

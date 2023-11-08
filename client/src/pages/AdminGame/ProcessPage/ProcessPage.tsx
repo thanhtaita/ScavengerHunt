@@ -1,18 +1,19 @@
 import "./ProcessPage.css";
-import { useEffect, useState } from "react";
-import { Link, useParams, useOutletContext } from "react-router-dom";
-import jsPDF from "jspdf";
+import { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import { GetContext } from "../AdminGame";
+// import jsPDF from "jspdf";
 import QRCode from "../../../../public/QRCode.png";
 import QRCodeGenrator from "react-qr-code";
 import * as htmlToImage from "html-to-image";
 import { saveAs } from "file-saver";
 import { PDFDocument, rgb } from "pdf-lib";
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
+// import { toPng, toJpeg, toBlob, toPixelData, toSvg } from "html-to-image";
 
 const Process = () => {
   const { gId } = useParams();
   console.log(gId);
-  const [step, setStep] = useOutletContext();
+  const { step, setStep } = GetContext();
   let genPDF = false;
   const clues = [
     "Clue 1",
@@ -44,7 +45,7 @@ const Process = () => {
   }
   const pdfDoc = PDFDocument.create();
   let pdfBlob: Blob;
-  const convertBlobToPDF = async (clue: string, blobData: Blob) => {
+  const convertBlobToPDF = async (blobData: Blob) => {
     try {
       // Convert the blob data to an array buffer
       const arrayBuffer = await blobData.arrayBuffer();
@@ -100,7 +101,7 @@ const Process = () => {
 
             console.log("dataUrl: ", QRCode, dataUrl);
 
-            convertBlobToPDF(clue, blobData);
+            convertBlobToPDF(blobData);
           })
           .catch(function (error) {
             console.error("oops, something went wrong!", error);

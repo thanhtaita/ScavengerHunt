@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import QrScanner from "qr-scanner";
 
 const ScanQR = () => {
-  const modal = useRef<HTMLIonModalElement>(null);
+  // const modal = useRef<HTMLIonModalElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [qrScanner, setQrScanner] = useState<QrScanner>();
   const [scanCode, setScanCode] = useState("");
@@ -15,11 +15,11 @@ const ScanQR = () => {
     qrScanner?.destroy();
   }
 
-  async function close() {
-    qrScanner?.stop();
-    qrScanner?.destroy();
-    setQrScanner(undefined);
-  }
+  // async function close() {
+  //   qrScanner?.stop();
+  //   qrScanner?.destroy();
+  //   setQrScanner(undefined);
+  // }
 
   useEffect(() => {
     if (video.current) {

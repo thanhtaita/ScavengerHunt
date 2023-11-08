@@ -1,4 +1,3 @@
-import React from "react";
 import "./Navbar.css";
 import axios from "axios";
 import { useContext } from "react";
@@ -13,7 +12,7 @@ interface NavbarProps {
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const Navbar = ({ gameId, setGameId }: NavbarProps) => {
-  const { loggedIn, user } = useContext(AuthContext);
+  const { loggedIn } = useContext(AuthContext);
 
   const handleLogin = async () => {
     try {

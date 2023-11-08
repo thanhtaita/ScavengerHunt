@@ -1,8 +1,9 @@
 import Scan from "../../../components/ScanFolder/ScanFile.tsx";
-import { Link, useParams, useOutletContext } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { GetContext } from "../AdminGame.tsx";
 
 export function Scanning() {
-  const [step, setStep] = useOutletContext(); // this is the step number
+  const { step, setStep } = GetContext(); // this is the step number
   const { gId } = useParams();
 
   return (
