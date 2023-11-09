@@ -1,5 +1,3 @@
-try
-
 # Geo Scavenger Hunt: https://play-scavenger-hunt.netlify.app/
 
 # Server link: https://play-scavenger-hunt-e1eecdb42480.herokuapp.com/
