@@ -3,6 +3,9 @@
 # Geo Scavenger Hunt: https://play-scavenger-hunt.netlify.app/
 # Server link: https://play-scavenger-hunt-e1eecdb42480.herokuapp.com/
 
+# snapShot/Video Walkthrough of ScavenegerHunt Final project
+https://drive.google.com/file/d/1F8pPG2kv2FXA0FBdTqoFCLFpjJVUUXPR/view?usp=sharing
+
 # Member information
 
 Tai Ta - nta3@uic.edu , Ali Saeed - asaee2@uic.edu, Hemalatha Ningappa kondakundi - hning4@uic.edu, Vishaal Karthik Muralidharan - vmural9@uic.edu
