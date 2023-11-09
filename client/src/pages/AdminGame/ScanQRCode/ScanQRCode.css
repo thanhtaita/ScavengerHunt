@@ -1,0 +1,61 @@
+.titlePage2 {
+  text-align: center;
+  color: black;
+  font-size: 50px;
+  font-weight: bold;
+  padding-top: 7rem;
+}
+.bioPage2 {
+  text-align: center;
+  color: rgb(0, 0, 0);
+  font-size: 30px;
+}
+.footer2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2.5rem;
+  gap: 2rem;
+  font-size: 25px;
+  padding-bottom: 2rem;
+}
+.listOfQR2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2%;
+  background-image: linear-gradient(
+    to right,
+    rgba(207, 195, 104, 0.348),
+    rgba(99, 177, 211, 0.366)
+  );
+  border-radius: 25px;
+}
+.allOfClues2 {
+  height: 30rem;
+  overflow-y: scroll;
+  width: 40rem;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 2rem 1rem;
+}
+.QRCodes2 {
+  text-align: center;
+  padding: 1rem 5rem;
+  font-size: 1.5rem;
+  z-index: 50;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+.qr-btn {
+  z-index: 50;
+}

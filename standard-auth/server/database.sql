@@ -1,3 +1,0 @@
-CREATE ROLE sh_admin WITH LOGIN PASSWORD 'root';
-GRANT ALL PRIVILEGES ON DATABASE sh_dbbb TO sh_admin;
-ALTER DATABASE sh_dbbb OWNER TO sh_admin;

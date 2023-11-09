@@ -1,0 +1,23 @@
+.nav-bar {
+  background-color: rgba(0, 0, 0, 0);
+  padding: 1.5rem 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-bar .title {
+  margin-right: 3rem;
+  font-size: 2rem;
+  margin-top: -3rem;
+  color: #333333;
+}
+.nav-bar .nav-btn {
+  margin-top: 0.9rem;
+}
+@media screen and (max-width: 768px) {
+  .nav-bar .title {
+    display: none;
+  }
+}
