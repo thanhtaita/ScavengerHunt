@@ -1,6 +1,7 @@
 
 
 # Geo Scavenger Hunt: https://play-scavenger-hunt.netlify.app/
+# Server link: https://play-scavenger-hunt-e1eecdb42480.herokuapp.com/
 
 # Member information
 
@@ -13,9 +14,6 @@ Tai Ta - nta3@uic.edu , Ali Saeed - asaee2@uic.edu, Hemalatha Ningappa kondakund
 3. Direct to the client folder from the root `cd client`, then install package `npm i`
 4. Run `npm run dev` to run the client
 
-# Github link
-
-https://github.com/thanhtaita/ScavengerHunt
 
 ## What does your application do?
 
