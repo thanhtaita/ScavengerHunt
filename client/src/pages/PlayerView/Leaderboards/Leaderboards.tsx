@@ -12,24 +12,24 @@ interface leader {
 }
 
 const Leaderboards = () => {
-  // will be use to get the user information
-  
   // to get the game id from url
-  const { gId } = useParams();
+  const { gameId } = useParams();
   
-  // console.log("should be the gameid: ",gId);
-  const isMounted = useRef(false);
-
+  console.log("should be the gameid: ",gameId);
+  
   // something to store the data that we get from the backend
   const [data, setData] = useState<Array<leader>>([]);
+  const isMounted = useRef(false);
 
   // everything will be in a useEffect hook:
   useEffect(() => {
+    // prevents from rerendering
     if (!isMounted.current) {
       const fetchLeaderboards = async () => {
+
         // fetch the data from the backend
         const response = await fetch(`${serverUrl}/playerview/
-    ${gId}`, {
+    ${gameId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -37,24 +37,33 @@ const Leaderboards = () => {
         }
         )
         const eachData = await response.json();
+        // checking if the data is not empty
         if (eachData.length > 0) {
+
+          // creating a new array to store the data in the format we want
           const newData: Array<leader> = [];
+
+          // looping through the data that we get from the backend
           for (let i = 0; i < eachData.length; i++) {
-            console.log("eachData: ", eachData[i]);
-            let nonNullValues: Array<unknown> = [];
+            
+            let nonNullValues: Array<unknown> = []; // creating array to store all the non null values
+
+            // checking to see if the solved clues array is not empty
             if (eachData[i].solvedclues.length > 0) {
               const solvedCluesArray = JSON.parse(eachData[i]?.solvedclues);
               nonNullValues = solvedCluesArray.filter((value: unknown) => value !== null);
             }
+            // creating a new object of leader type
             const eachLeader: leader = {
               ranking: eachData[i].points,
               player_name: eachData[i].email,
               solved_clues: nonNullValues.length,
               time: eachData[i].latest_time_date,
             };
-            newData.push(eachLeader);
+
+            newData.push(eachLeader); // pushing leader object into the array
             }
-          setData([...data, ...newData]);
+          setData(newData); // usdating the leaderboard
         }
         else {
           console.log("no data");
@@ -65,7 +74,7 @@ const Leaderboards = () => {
       }
     isMounted.current = true;
   }, []);
-  console.log("data: ", data);
+  // console.log("data: ", data);
 
   return (
     <div className="leaderboardsContainer">

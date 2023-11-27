@@ -301,9 +301,7 @@ app.get("/startGame", async (req, res) => {
 
 app.get("/playerview/:id", async function (req, res) {
   try {
-    console.log("Here\n");
-    // const id = parseInt(req.params.id);
-    const id = 0;
+    const id = parseInt(req.params.id, 10);
     const leaderboard = await GamesController.leaderboardInfo(id);
     console.log("in the server: " ,leaderboard);
     res.json(leaderboard);
