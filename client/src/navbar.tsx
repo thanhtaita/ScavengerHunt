@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Progress from "./pages/PlayerView/progress";
-import Leaderboards from "./pages/PlayerView/Leaderboards";
+import Leaderboards from "./pages/PlayerView/Leaderboards/Leaderboards";
 import Scan from "./pages/PlayerView/Scan";
 import "./pages/PlayerView/playerView.css";
 

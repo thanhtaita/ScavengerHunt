@@ -299,6 +299,19 @@ app.get("/startGame", async (req, res) => {
   }
 });
 
+app.get("/playerview/:id", async function (req, res) {
+  try {
+    console.log("Here\n");
+    // const id = parseInt(req.params.id);
+    const id = 0;
+    const leaderboard = await GamesController.leaderboardInfo(id);
+    console.log("in the server: " ,leaderboard);
+    res.json(leaderboard);
+  } catch (error) {
+    console.error("Error getting leaderboard:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 const PORT = process.env.PORT || 9999;
 
 app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));

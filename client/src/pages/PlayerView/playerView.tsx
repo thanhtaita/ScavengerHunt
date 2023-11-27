@@ -11,6 +11,7 @@ const PlayerView = () => {
     return (
         <div className="mainContainer">
             <Navbar />
+            
             {/* <h1>This is the Player page of game {id}</h1> */}
         </div>
     );

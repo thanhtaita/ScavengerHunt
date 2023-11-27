@@ -21,6 +21,8 @@ import GameDetails from "./pages/GameDetails/GameDetails.tsx";
 // import Scan from "./components/ScanFolder/ScanFile.tsx";
 import AuthenticateFail from "./pages/AuthenticateFail/AuthenticateFail.tsx";
 import PlayerView from "./pages/PlayerView/playerView.tsx";
+//import { Leaderboards } from "./components/Gamelist/Gamelist.tsx";
+import Leaderboards from "./pages/PlayerView/Leaderboards/Leaderboards.tsx";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
@@ -120,14 +122,15 @@ const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: "/playerview/:gameId",
     element: <PlayerView />,
-  },
-  {
-    path: "/playerview/:gameId",
-    element: <PlayerView />,
+    children: [
+      {
+        path: "leaderboards",
+        element: <Leaderboards />,
+      },
+    ],
   },
   {
     path: "/tutorials",

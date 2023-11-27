@@ -92,7 +92,7 @@ h3{
     align-items: center;
 }
 #leaderboards{
-    border:px solid #f7f7f7 !important; 
+    border:px solid #221e1e !important; 
     align-items: center;
 }
 #leaderboards{
@@ -103,11 +103,14 @@ h3{
 #leaderboards th{
     padding:1vh 1vh 1vh 1vh;
     height: fit-content;
+    color: #212529;
 }
 #leaderboards td{
     padding:1vh 1vh 1vh 1vh;
     height: fit-content;
+    color: black;
 }
+
 
 /* -------------------------------------------------- */
 .scanContainer{
