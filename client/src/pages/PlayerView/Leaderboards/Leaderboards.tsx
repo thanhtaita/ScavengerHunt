@@ -62,8 +62,10 @@ const Leaderboards = () => {
             };
 
             newData.push(eachLeader); // pushing leader object into the array
-            }
-          setData(newData); // usdating the leaderboard
+          }
+          newData.sort((a, b) => b.solved_clues - a.solved_clues); // sorting the array in descending order of solved clues
+          const firstFiveData: Array<leader> = newData.slice(0, 5); // getting the first five elements of the array
+          setData(firstFiveData); // updating the leaderboard
         }
         else {
           console.log("no data");
@@ -74,7 +76,7 @@ const Leaderboards = () => {
       }
     isMounted.current = true;
   }, []);
-  // console.log("data: ", data);
+  
 
   return (
     <div className="leaderboardsContainer">

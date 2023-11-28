@@ -72,7 +72,7 @@ const Scan = () => {
         >
           Back
         </Link>
-        <Link to="/" className="nav-btn">
+        <Link to="/MainPage" className="nav-btn">
           Create Game
         </Link>
       </div>

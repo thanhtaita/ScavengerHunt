@@ -38,7 +38,7 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
-  background-image: url("../public/main2.png");
+  /* background-image: url("../public/main2.png"); */
 }
 
 h1 {
@@ -169,7 +169,7 @@ time,
 mark,
 audio,
 video {
-  font-family: "Kalam", cursive;
+  font-family: FreeMono, monospace;
   margin: 0;
   padding: 0;
   border: 0;
