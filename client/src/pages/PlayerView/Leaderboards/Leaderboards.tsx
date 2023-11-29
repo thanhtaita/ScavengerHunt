@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import "../playerView.css";
+import "./Leaderboards.css";
 import { useParams } from "react-router-dom";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
@@ -80,8 +80,8 @@ const Leaderboards = () => {
 
   return (
     <div className="leaderboardsContainer">
-      <h1>Leaderboards</h1>
-      <table id="leaderboards">
+      <p className="titleOfLeaderBoards">Leaderboards</p>
+      <table className="leaderboards">
         <tbody>
           <tr>
             <th>Rankings</th>

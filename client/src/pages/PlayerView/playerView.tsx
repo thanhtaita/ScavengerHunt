@@ -1,7 +1,7 @@
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from "../../navbar";
+import Navbar from "./navbar";
 import "./playerView.css";
 
 const PlayerView = () => {

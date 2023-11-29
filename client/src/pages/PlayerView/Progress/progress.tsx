@@ -1,4 +1,4 @@
-import "./playerView.css";
+import "./progress.css";
 import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto'; 
 
@@ -35,15 +35,19 @@ const Progress = () => {
         }]
     }
 
+
     return (
             <div className="progressContainer">
+                
+            <p className="progressTitle">Progress</p>
+            
                 <div className="clues">
                     <div className="currentClue">
-                        <h4>Current Clue</h4>
+                    <p className="currentClues"> Current Clue</p>
                         <ul><li>{currentClue}</li></ul>
                     </div>
                     <div className="solvedClues">
-                        <h4>Solved Clues</h4>
+                        <p className="solvedTitle"> Solved Clues</p>
                         <ul className="scrollableList">
                             {solvedClues.map((clue, index) => (
                                 <li key={index}>{clue}</li>
@@ -52,7 +56,7 @@ const Progress = () => {
                     </div>
                 </div>
                 <div className="pieChart">
-                    <Pie data={pieData}/>
+                    <Pie data={pieData} />
                 </div>
             </div>
     );

@@ -2,9 +2,9 @@ import { useRef, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // import { OverlayEventDetail } from '@ionic/core';
 import QrScanner from "qr-scanner";
-import "./playerView.css";
+import "./Scan.css";
 import { useContext } from "react";
-import { AuthContext } from "../../utils/context";
+import { AuthContext } from "../../../utils/context";
 
 const Scan = () => {
   const { user } = useContext(AuthContext);
@@ -84,10 +84,14 @@ const Scan = () => {
   }, [video.current]);
 
   return (
-    <div className="scanContainer">
+    <div className="scanContainer2">
+      <p className="ScanTitle">Scan QR Code</p>
+      <div className="scanContainer">
       {scanCode === "" && <video ref={video}></video>}
       {scanCode !== "" && <h1> {scanCode}</h1>}
+      </div>
     </div>
+    
   );
 };
 

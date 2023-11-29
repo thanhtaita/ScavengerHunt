@@ -28,12 +28,11 @@
     flex-direction: row;
     justify-content:space-between;
     font-size: 3rem;
-    font-weight: bold;
     padding-bottom: 2vh;
     margin-bottom: 4vh;
-    font-style: normal;
     border-bottom: 1px solid black;
     text-transform:uppercase;
+    font-weight: bold;
     
 }
 .extradeets{
