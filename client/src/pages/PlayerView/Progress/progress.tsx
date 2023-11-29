@@ -43,7 +43,7 @@ const Progress = () => {
             
                 <div className="clues">
                     <div className="currentClue">
-                    <p className="currentClues"> Current Clue</p>
+                    <p className="currentClues">Current Clue</p>
                         <ul><li>{currentClue}</li></ul>
                     </div>
                     <div className="solvedClues">
