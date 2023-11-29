@@ -8,13 +8,13 @@
 }
 
 .nav-bar .title {
-  margin-right: 3rem;
+  margin-right: 10rem;
   font-size: 2rem;
   margin-top: -3rem;
-  color: #333333;
+  color: #111010;
 }
 .nav-bar .nav-btn {
-  margin-top: 0.9rem;
+  margin-top: 3.5rem;
 }
 @media screen and (max-width: 768px) {
   .nav-bar .title {

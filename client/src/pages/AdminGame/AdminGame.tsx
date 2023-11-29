@@ -2,7 +2,8 @@ import { Outlet, useOutletContext } from "react-router-dom";
 import Navbar from "../../components/AdminGame/NavBar/NavBar.tsx";
 import ProcessBar from "../../components/ProcessBar/ProcessBar.tsx";
 import { AuthContext } from "../../utils/context.ts";
-import {} from "react-router-dom";
+import { } from "react-router-dom";
+import "./AdminGame.css";
 
 import { useState, useContext } from "react";
 
@@ -20,13 +21,15 @@ const AdminGame = () => {
   if (loggedIn === false) window.location.assign("/authfail");
 
   return (
-    loggedIn && (
-      <div>
-        <Navbar />
-        <ProcessBar step={step} />
-        <Outlet context={{ step, setStep }} />
-      </div>
-    )
+    <div className="fullPage">
+      {loggedIn && (
+        <div>
+          <Navbar />
+          <ProcessBar step={step} />
+          <Outlet context={{ step, setStep }} />
+        </div>
+      )}
+  </div>
   );
 };
 
