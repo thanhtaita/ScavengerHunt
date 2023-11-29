@@ -1,24 +1,44 @@
+.main-page{
+  min-width: 320px;
+  min-height: 100vh;
+    
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: relative;
+  background-image: url("../public/mainPageBack.png");
+  margin-top: -2.15%;
+}
+.shade{
+  background-color: #00000075;
+  margin-top: 5rem;
+  max-width: 97%;
+  margin-left: 1.3rem;
+  padding: 20px;
+  border-radius: 2%;
+}
 .titleHeader {
   display: flex;
   flex-direction: column;
   text-align: center;
   font-family: "Kalam", cursive;
   font-weight: 550;
+
   margin-top: -1rem;
 }
 .title {
-  color: rgb(165, 65, 42);
+  color: #8DFFCD;
   font-size: 3.5rem;
   padding-top: 4rem;
-  margin-left: 4rem;
+  margin-left: 2.5rem;
 }
 .bio {
   font-size: 1.8rem;
-  color: #000000f3;
+  color: #BCFFDB;
   margin-left: 10%;
 }
 .add-button {
-  background-color: #181717;
+  background-color: #e55d23;
   padding: 0.7rem 0.7rem;
 }
 

@@ -1,34 +1,38 @@
+
 .main-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: rgba(89, 86, 86, 0.774);
+  padding: 2rem 0.5rem;
+  border-radius: 2%;
 }
-table {
+.tableHeader {
   position: relative;
   width: 90%;
   border-collapse: collapse;
+  margin-top: 1%;
+  text-align: center;
 }
 thead {
-  background-color: #767373;
+  background-color: #BCFFDB;
 }
+
 table,
 th,
 td {
-  font-size: 1.5rem;
-  border: 2px solid #222020;
+  padding: 8px 12px;
   font-size: 1.5rem;
   font-weight: 500;
 }
-
-th,
 td {
   padding: 8px 12px;
-  text-align: left;
-  color: #ffffff;
+  color: rgb(245, 245, 235);
 }
 
 tbody tr:hover {
-  background-color: #8bd961;
+  background-color: #4F9D69;
   cursor: pointer;
 }
+

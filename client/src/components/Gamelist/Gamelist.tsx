@@ -25,16 +25,16 @@ export function Leaderboards({ games, gameId }: LeaderboardsProps) {
   return (
     <div className="container">
       <div className="main-content">
-        <table>
+        <table className="tableHeader">
           <thead>
             <tr>
-              <th>Game ID</th>
-              <th>Name</th>
-              <th>Start Date</th>
-              <th>Clues</th>
+              <th >Game ID</th>
+              <th >Name</th>
+              <th >Start Date</th>
+              <th >Clues</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="things">
             {gameId ? (
               filteredGame ? (
                 <tr>
@@ -51,14 +51,14 @@ export function Leaderboards({ games, gameId }: LeaderboardsProps) {
             ) : (
               games.map((game) => (
                 <tr key={game.id} onClick={()=>handleRowClick(game.id)}>
-                  <td>{game.id}</td>
-                  <td>{game.name}</td>
-                  <td>{game.startDate}</td>
-                  <td>{game.clues}</td>
+                  <td >{game.id}</td>
+                  <td >{game.name}</td>
+                  <td >{game.startDate}</td>
+                  <td >{game.clues}</td>
                 </tr>
               ))
             )}
-          </tbody>
+            </tbody>
         </table>
       </div>
     </div>

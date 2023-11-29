@@ -53,6 +53,9 @@ const MainPage = () => {
   return (
     <div className="main-page">
       <Navbar gameId={gameId} setGameId={setGameId} />
+      
+      <div className="shade">
+      
 
       <div className="main-page-content">
         <div className="titleHeader">
@@ -70,7 +73,8 @@ const MainPage = () => {
         />
         <button className="add-button" onClick={() => handleCreateGame()}>
           Create Game +
-        </button>
+          </button>
+          </div>
       </div>
     </div>
   );
