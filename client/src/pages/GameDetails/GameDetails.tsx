@@ -70,8 +70,9 @@ function GameDetails() {
   }, [gameId]);
 
   return (
-    <>
+    <div className="game-details">
       <Navbar gameId={gameIdd} setGameId={setGameId} />
+      
       <div className="game-details-container">
         {gameDetails ? (
           <>
@@ -86,21 +87,27 @@ function GameDetails() {
               <div className="extraDeets">
                 <p>Start Date: {gameDetails.startDate}</p>
                 <p>End Date: {gameDetails.endDate}</p>
-                <p>Clues: {gameDetails.clues}</p>
+                <p> Number of Clues: {gameDetails.clues}</p>
               </div>
             </div>
             <button
-              className={"startgamebutton"}
+              className="startgamebutton"
               onClick={() => handleStartGame(gameDetails.id)}
             >
-              Start Game
+              Join Game
+              </button>
+              <button
+              className="backPage"
+              onClick={() => navigate("/MainPage")}
+            >
+              back
             </button>
           </>
         ) : (
           <p>Loading game details...</p>
-        )}
-      </div>
-    </>
+          )}
+          </div>
+    </div>
   );
 }
 
