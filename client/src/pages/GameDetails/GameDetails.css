@@ -1,15 +1,25 @@
+.game-details{
+    min-width: 320px;
+    min-height: 130vh;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-image: url("../public/mainPageBack.png");
+}
+
 .game-details-container{
     /* background-color: #f7f7f7; */
-    color: black;
+    color: rgb(4, 4, 4);
     width: 84vw;
     height:80vh;
-    font-size: large;
-    margin-top: 5vh;
+    margin-top: 8rem;
     margin-left: 8vw;
     margin-right: 8vw;
-    font-size: 3vh;
     display:flex;
     flex-direction: column;
+    justify-content: space-between;
     
 }
 
@@ -17,13 +27,12 @@
     display: flex;
     flex-direction: row;
     justify-content:space-between;
-    font-size: 4.5vh;
-    font-weight: bold;
+    font-size: 3rem;
     padding-bottom: 2vh;
     margin-bottom: 4vh;
-    font-style: normal;
     border-bottom: 1px solid black;
     text-transform:uppercase;
+    font-weight: bold;
     
 }
 .extradeets{
@@ -38,12 +47,33 @@
     margin: 0 0 0 0;
     background-color: transparent;
     align-items: flex-start;
+    font-size: 25px;
 }
 .description{
     width:40vw;
-    height:55vh;
+    height:70vh;
+    font-size: 25px;
 }
 .startgamebutton{
-    width: 15vw;
-    padding:1vw 1vw 1vw 1vw;
+    position: absolute;
+    background-color: #e55d23;
+    color: white;
+    border-radius: 10px;
+    border: #767373;
+    cursor: pointer;
+    font-size: 1.5rem;
+    right: 25%;
+    top: 90%;
+}
+.backPage{
+    position: absolute;
+    background-color: #e55d23;
+    color: white;
+    border-radius: 10px;
+    border: #767373;
+    cursor: pointer;
+    font-size: 1.5rem;
+    width: 10%;
+    left: 35%;
+    top: 90%;
 }

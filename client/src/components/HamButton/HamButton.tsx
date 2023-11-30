@@ -16,7 +16,7 @@ const HamButton = () => {
     if (loggedIn) {
       try {
         await axios.post(`${serverUrl}/auth/logout`);
-        window.location.assign("/");
+        window.location.assign("/MainPage");
       } catch (err) {
         console.error(err);
       }

@@ -262,7 +262,18 @@ const updateClueInfo = async (gid, body) => {
     console.error("⚠️ error updating clue info", err);
   }
 };
-
+const leaderboardInfo = async (gid) => {
+  try {
+    const selectQuery = `SELECT * FROM user_progress WHERE gid = $1`;
+    const values = [gid];
+    const data = await pool.query(selectQuery, values);
+    console.log("🎉 get leaderboards successful");
+    // console.log(data.rows);
+    return data.rows;
+  } catch (err) {
+    console.error("⚠️ error getting game", err);
+  }
+}
 export default {
   getGames,
   getGame,
@@ -277,4 +288,5 @@ export default {
   verifyQR,
   getGameDeets,
   joinGame,
+  leaderboardInfo,
 };

@@ -1,0 +1,108 @@
+
+.StartingPage{
+    min-width: 310px;
+    min-height: 120vh;
+    
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: relative;
+    background-image: url("../public/Wall4.png");
+}   
+
+.welcomeSign{
+    margin-left: 2rem;
+    color: black;
+    font-size: 50px;
+}
+.Scaveneger3{
+    margin-top: -1rem;
+    margin-left: 2rem;
+    font-family: Pilowlava, regular;
+    color: rgb(235, 138, 11);
+    font-size: 80px;
+}
+.Hunt{
+    margin-top: -2rem;
+    margin-left: 2rem;
+    font-family: Pilowlava, regular;
+    color: rgb(39, 189, 159);
+    font-size: 80px;
+}
+.startToGame{
+    margin-top: 2rem;
+    margin-left: 10rem;
+    width: 20%;
+    min-height: 5%;
+    background-color: rgba(179, 168, 168, 0);
+    padding: 0.5rem 1rem;
+
+border-radius: 2rem;}
+.arrow{
+    width: 6rem;
+    height: 4.5rem;
+}
+.treasuremap{
+   
+   width: 7rem;
+    margin-left: 2rem;
+    margin-top: 10rem;
+}
+.line{
+    display: flex;
+    width: 2rem;
+    height: 20rem;
+    margin-left: 2rem;
+}
+.deraction{
+    color: black;
+    margin-top: 10rem;
+    margin-bottom: -1.5rem;
+    margin-left: 11.5rem;
+}
+.kid{
+    width: 50%;
+    margin-right: 6rem;
+    margin-top: 13rem;
+    float: right;
+}
+@media screen and (max-width: 1100px) {
+    .StartingPage{
+        min-width: 310px;
+        min-height: 120vh;
+        
+        background-image: none;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: relative;
+        background-color: rgb(39, 189, 159);
+    }  
+    .kid{
+        margin-top:21rem;
+        margin-right: 0rem;
+        width: 25rem;
+    } 
+    .startToGame{
+        margin-top: 2rem;
+        margin-left: 27rem;
+    }
+    .deraction{
+        margin-left: 24rem;
+    }
+    .Hunt{
+        color: rgb(235, 138, 11);
+    }
+}
+@media screen and (max-width: 800px) {
+    
+    .kid{
+        display: none;
+    } 
+    .startToGame{
+        margin-left: 20rem;
+    }
+    .deraction{
+        margin-left: 15rem;
+    }
+}

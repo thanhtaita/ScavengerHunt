@@ -29,7 +29,8 @@
   color: #fff;
   height: 2rem;
   padding: 1.5rem 1rem;
-  width: 10rem;
+  width: 12rem;
+  margin-top: 2rem;
 }
 
 .menu {
@@ -150,7 +151,7 @@
 }
 
 .menu li {
-  z-index: 9999;
+  z-index: 1;
 }
 
 /* end of hamburger button */

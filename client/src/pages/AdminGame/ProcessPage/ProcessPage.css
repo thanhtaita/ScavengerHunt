@@ -33,16 +33,14 @@
   justify-content: center;
   align-items: center;
   margin-top: 2%;
-  background-image: linear-gradient(
-    to right,
-    rgba(207, 195, 104, 0.348),
-    rgba(99, 177, 211, 0.366)
-  );
+  background-color:#1a1a1aad;
+  margin-left: 10%;
+  margin-right: 10%;
   border-radius: 25px;
 }
 .allOfClues {
   height: 30rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 40rem;
   list-style-type: none;
   display: flex;
