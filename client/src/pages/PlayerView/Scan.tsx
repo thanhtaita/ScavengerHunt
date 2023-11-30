@@ -6,6 +6,8 @@ import "./playerView.css";
 import { useContext } from "react";
 import { AuthContext } from "../../utils/context";
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 const Scan = () => {
   const { user } = useContext(AuthContext);
   const { gameId } = useParams<{ gameId: string }>();
@@ -27,20 +29,27 @@ const Scan = () => {
     if (user) {
       const uid = user.email;
       try {
-        const response = await fetch(
-          "https://shserver-q8el.onrender.com/verifyQR",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              uid: uid,
-              result: result.data,
-              gameId: gameId,
-            }),
-          }
-        );
+        const response = await fetch(`${serverUrl}/verifyQR`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            uid: uid,
+            result: result.data,
+            gameId: gameId,
+          }),
+        });
+
+        if (response.status === 401) {
+          // navigate("/authfail");
+          return;
+        }
+        if (!response.ok) {
+          window.alert("Error happens. Please try again.");
+          return;
+        }
 
         const data = await response.json();
 

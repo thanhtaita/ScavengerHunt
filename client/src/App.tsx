@@ -36,9 +36,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const {
         data: { loggedIn: logged_in, user },
-      } = await axios.get(`${serverUrl}/auth/logged_in`, {
-        withCredentials: true,
-      });
+      } = await axios.get(`${serverUrl}/auth/logged_in`);
       setLoggedIn(logged_in);
       user && setUser(user);
     } catch (err) {
@@ -69,10 +67,7 @@ const Callback = () => {
           if (called.current) return; // prevent rerender caused by StrictMode
           called.current = true;
           const res = await axios.get(
-            `${serverUrl}/auth/token${window.location.search}`,
-            {
-              withCredentials: true,
-            }
+            `${serverUrl}/auth/token${window.location.search}`
           );
           console.log("response: ", res.data.user);
           checkLoginState();

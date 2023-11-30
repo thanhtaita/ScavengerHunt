@@ -35,8 +35,20 @@ function GameDetails() {
 
     try {
       const response = await fetch(
-        `${serverUrl}/startGame?gameId=${gameId}&uid=${uid}`
+        `${serverUrl}/startGame?gameId=${gameId}&uid=${uid}`,
+        {
+          credentials: "include",
+        }
       );
+
+      if (response.status === 401) {
+        navigate("/authfail");
+        return;
+      }
+      if (!response.ok) {
+        window.alert("Error happens. Please try again.");
+        return;
+      }
 
       const data = await response.json();
 
@@ -57,8 +69,20 @@ function GameDetails() {
     // Fetch game details from API
     const fetchGameDetails = async () => {
       try {
-        const response = await fetch(`${serverUrl}/game/${gameId}`);
-        console.log(response);
+        const response = await fetch(`${serverUrl}/game/${gameId}`, {
+          credentials: "include",
+        });
+
+        if (response.status === 401) {
+          navigate("/authfail");
+          return;
+        }
+
+        if (!response.ok) {
+          window.alert("Error happens. Please try again.");
+          return;
+        }
+
         const data = await response.json();
         setGameDetails(data);
       } catch (error) {
