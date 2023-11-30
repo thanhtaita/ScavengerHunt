@@ -23,6 +23,7 @@ import PlayerView from "./pages/PlayerView/playerView.tsx";
 //import { Leaderboards } from "./components/Gamelist/Gamelist.tsx";
 import Leaderboards from "./pages/PlayerView/Leaderboards/Leaderboards.tsx";
 import { StartingPage } from "./pages/MainPage/StartingPage.tsx";
+import Map from "./components/Map/Map.tsx";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
   {
     path: "/game/:gameId",
     element: <GameDetails />,
+  },
+  {
+    path: "/map",
+    element: <Map />,
   },
   {
     path: "/",

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Progress from "./Progress/progress";
 import Leaderboards from "./Leaderboards/Leaderboards";
+import Map from "../../components/Map/Map";
 import Scan from "./Scan/Scan";
 import "./playerView.css";
 import { useParams } from "react-router-dom";
@@ -56,6 +57,17 @@ const Navbar = () => {
                 Scan
               </a>
             </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                onClick={() => {
+                  setBasicActive("Map");
+                }}
+                href="#"
+              >
+                Map
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
@@ -63,6 +75,7 @@ const Navbar = () => {
       {basicActive === "Home" && <Progress />}
       {basicActive === "Leaderboard" && <Leaderboards />}
       {basicActive === "Scan" && <Scan />}
+      {basicActive === "Map" && <Map />}
     </div>
   );
 };

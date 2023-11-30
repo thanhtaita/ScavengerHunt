@@ -1,0 +1,15 @@
+.map {
+  height: 100vh;
+  width: 100%;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* sizing for the map */
+.leaflet-container {
+  height: 70vh;
+  width: 80%;
+}
