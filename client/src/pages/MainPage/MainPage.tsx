@@ -56,7 +56,7 @@ const MainPage = () => {
 
       <div className="main-page-content">
         <div className="titleHeader">
-          <div className="title">Scavenger Hunt!</div>
+          <div className="title">New Scavenger Hunt!</div>
           <p className="bio">
             Hey {user?.name || "you"}! Welcome to Scavenger Hunt! Join a game or
             create your own one!

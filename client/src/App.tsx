@@ -32,6 +32,7 @@ const serverUrl = import.meta.env.VITE_SERVER_URL;
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [loggedIn, setLoggedIn] = useState(null);
   const [user, setUser] = useState(null);
+
   const checkLoginState = useCallback(async () => {
     try {
       const {
