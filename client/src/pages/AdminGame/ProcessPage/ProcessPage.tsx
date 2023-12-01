@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { GetContext } from "../AdminGame";
 // import jsPDF from "jspdf";
-import QRCode from "../../../../public/QRCode.png";
+import QRCode from "../../../QRCode.png";
 import QRCodeGenrator from "react-qr-code";
 import * as htmlToImage from "html-to-image";
 import { saveAs } from "file-saver";
