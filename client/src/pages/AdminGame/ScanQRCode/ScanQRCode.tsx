@@ -1,40 +1,40 @@
 import "./ScanQRCode.css";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { GetContext } from "../AdminGame";
 import { ClueInfo } from "../../../utils/types";
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const Scan = () => {
+  const navigate = useNavigate();
   const { gId } = useParams();
   console.log(gId);
   const { step, setStep } = GetContext();
   const [clues, setclues] = useState<Array<ClueInfo>>([]);
-  const [, setDisabled] = useState<Array<boolean>>(
-    Array.from({ length: clues.length }, () => false)
-  );
   // To fix the issue, wrap the boolean value in an array and set it to the corresponding index of the `disabled` state array
   const fectGameDeatils = async () => {
-    const url = "http://localhost:9999/mygame/" + gId
-    console.log(
-      url
-    )
-
     try {
-      const res = await fetch(`${serverUrl}/mygame/${gId}`);
+      const res = await fetch(`${serverUrl}/mygame/${gId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (res.status === 401) {
+        navigate("/authfail");
+        return;
+      }
       const data = await res.json();
-      console.log(data["hints"], data); setclues(data["hints"])
+      console.log(data["hints"], data);
+      setclues(data["hints"]);
     } catch (error) {
       console.error("Error fetching game:", error);
     }
-
-
-  }
+  };
 
   useEffect(() => {
-    fectGameDeatils()
-
-  }, [])
+    fectGameDeatils();
+  }, []);
 
   return (
     <div>
@@ -50,9 +50,10 @@ const Scan = () => {
               className="QRCodes2"
               key={clue.clueID}
             >
-              Clue {clue.clueID} {
-                clue.location !== "" && <i className='fas fa-map-marker-alt font-size:36px' ></i>
-              }
+              Clue {clue.clueID}{" "}
+              {clue.location !== "" && (
+                <i className="fas fa-map-marker-alt font-size:36px"></i>
+              )}
             </Link>
           ))}
         </ul>

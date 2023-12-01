@@ -1,6 +1,6 @@
 import "./ProcessPage.css";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { GetContext } from "../AdminGame";
 // import jsPDF from "jspdf";
 import QRCode from "../../../QRCode.png";
@@ -13,6 +13,7 @@ import { ClueInfo } from "../../../utils/types";
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const Process = () => {
+  const navigate = useNavigate();
   const { gId } = useParams();
   console.log(gId);
   const { step, setStep } = GetContext();
@@ -79,12 +80,21 @@ const Process = () => {
     }
   };
 
-  const fectGameDeatils = async () => {
-    const url = "http://localhost:9999/mygame/" + gId;
-    console.log(url);
-
+  const fetchGameDetails = async () => {
     try {
-      const res = await fetch(`${serverUrl}/mygame/${gId}`);
+      const res = await fetch(`${serverUrl}/mygame/${gId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (res.status === 401) {
+        navigate("/authfail");
+        return;
+      }
+
       const data = await res.json();
       console.log(data["hints"], data);
       setclues(data["hints"]);
@@ -94,7 +104,7 @@ const Process = () => {
   };
 
   useEffect(() => {
-    fectGameDeatils();
+    fetchGameDetails();
   }, []);
 
   useEffect(() => {

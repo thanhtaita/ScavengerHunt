@@ -126,7 +126,7 @@ const FirstTab = () => {
   }
   const handletoProcess = async () => {
     setStep(step + 1);
-    var tempClues = providedClues;
+    let tempClues = providedClues;
     const qrCodes = generateUniqueNumbersForGame(
       tempClues.length,
       10,
@@ -195,29 +195,6 @@ const FirstTab = () => {
           // Handle the situation when the response is not ok (e.g., error handling)
           console.error("Error fetching data:", response.status);
         }
-        if (!response.ok) {
-          window.alert("Error happens. Please try again.");
-          return;
-        }
-        const data = await response.json();
-        //     // Handle the data and set state accordingly
-        // console.log(data);
-        if (Object.keys(data.hints).length === 0) {
-          setLatestClueNum(1);
-        } else {
-          setLatestClueNum(data?.hints.length + 1);
-          const numProvidedCluesTemp = data?.hints.map(
-            (clue: ClueInfo) => clue.clueID
-          );
-          setNumProvidedClues(numProvidedCluesTemp);
-          setProvidedClues(data?.hints);
-        }
-        setGameName(data?.name);
-        setGameDescription(data?.description);
-        setStartTime(data?.starttime);
-        setEndTime(data?.endtime);
-
-        setCurrentClueInfo(data?.hints[0]);
       } catch (error) {
         // Handle any other errors that might occur during the fetch process
         console.error("Error:", error);

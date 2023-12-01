@@ -12,10 +12,19 @@ interface Position {
   // Add other properties if needed
 }
 
-const destionation = {
-  lat: 41.8737696,
-  lng: -87.650714,
-};
+interface NormalPosition {
+  lat: number;
+  lng: number;
+}
+
+const destinations = [
+  {
+    lat: 41.8737696,
+    lng: -87.650714,
+  },
+  { lat: 41.875, lng: -87.650714 },
+  { lat: 41.873, lng: -87.66714 },
+];
 
 const colorScheme = [
   "#FF2E2E",
@@ -76,16 +85,45 @@ function haversineDistance(
   return distance;
 }
 
+const getSmallestDistance = (lat: number, lng: number) => {
+  let distance = 100000000;
+  for (let i = 0; i < destinations.length; i++) {
+    const temp = haversineDistance(
+      lat,
+      lng,
+      destinations[i].lat,
+      destinations[i].lng
+    );
+    if (temp < distance) {
+      distance = temp;
+    }
+  }
+  return distance;
+};
+
 const Map = () => {
   const [currentPosition, setCurrentPosition] = useState<Position | null>(null);
   const [backgroundColor, setBackgroundColor] = useState<string>(
     colorScheme[colorScheme.length - 1]
   );
+  const [destinations, setDestinations] = useState<NormalPosition[]>([]);
   useEffect(() => {
     if (!navigator.geolocation) {
       console.log("Your browser doesn't support geolocation feature!");
       return;
     }
+
+    // Get all unsolved destinations
+    const getUnsolvedDestinations = async () => {
+      try {
+        const res = await fetch(`${serverUrl}/mygame/${gId}`);
+        const data = await res.json();
+        console.log(data["hints"], data);
+        setDestinations(data["hints"]);
+      } catch (error) {
+        console.error("Error fetching game:", error);
+      }
+    };
 
     setInterval(() => {
       navigator.geolocation.watchPosition(
@@ -103,11 +141,9 @@ const Map = () => {
 
   useEffect(() => {
     if (currentPosition) {
-      const distance = haversineDistance(
+      const distance = getSmallestDistance(
         currentPosition.coords.latitude,
-        currentPosition.coords.longitude,
-        destionation.lat,
-        destionation.lng
+        currentPosition.coords.longitude
       );
       console.log(distance);
       const temp = getColorScale(distance);
@@ -140,15 +176,14 @@ const Map = () => {
               currentPosition.coords.longitude,
             ]}
           >
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
+            <Popup>You are here</Popup>
           </Marker>
-          <Marker position={[destionation.lat, destionation.lng]}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
+          {destinations &&
+            destinations.map((destination, index) => (
+              <Marker position={[destination.lat, destination.lng]}>
+                <Popup>Destination {index + 1}</Popup>
+              </Marker>
+            ))}
           <Circle
             center={[
               currentPosition.coords.latitude,
