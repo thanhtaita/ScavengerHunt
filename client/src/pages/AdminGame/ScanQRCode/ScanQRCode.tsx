@@ -50,7 +50,9 @@ const Scan = () => {
               className="QRCodes2"
               key={clue.clueID}
             >
-              Clue {clue.clueID}
+              Clue {clue.clueID} {
+                clue.location !== "" && <i className='fas fa-map-marker-alt font-size:36px' ></i>
+              }
             </Link>
           ))}
         </ul>
