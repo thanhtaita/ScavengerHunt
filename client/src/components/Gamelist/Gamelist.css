@@ -10,8 +10,8 @@
   box-shadow: 5px 5px 5px #69666678;
   border-radius: 2rem;
   width: 100%;
-  height: 100%;
-  overflow: scroll;
+  height: 50vh;
+  overflow-y: scroll;
 }
 .gamelist .tableHeader {
   margin-top: 1.5rem;

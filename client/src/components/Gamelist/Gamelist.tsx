@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { GameRow } from "../../utils/types.ts";
-import "./Gamelist.css";
+import "./GameList.css";
 import { useNavigate } from "react-router-dom";
 
-interface LeaderboardsProps {
+interface GameListProps {
   games: GameRow[];
   gameId: number;
   onClick: (row: GameRow) => void;
 }
 
-export function Leaderboards({ games, gameId }: LeaderboardsProps) {
+export function GameList({ games, gameId }: GameListProps) {
   const [filteredGame, setFilteredGame] = useState<GameRow>();
 
   useEffect(() => {

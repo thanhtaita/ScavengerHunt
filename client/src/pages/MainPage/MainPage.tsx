@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./MainPage.css";
 import Navbar from "../../components/Navbar/Navbar.tsx";
-import { Leaderboards } from "../../components/Gamelist/Gamelist.tsx";
+import { GameList } from "../../components/GameList/GameList.tsx";
 import { GameRow } from "../../utils/types.ts";
 import { useContext } from "react";
 import { AuthContext } from "../../utils/context";
@@ -71,28 +71,26 @@ const MainPage = () => {
   return (
     <div className="main-page">
       <Navbar gameId={gameId} setGameId={setGameId} />
-      
+
       <div className="shade">
-      
-
-      <div className="main-page-content">
-        <div className="titleHeader">
-          <div className="title">Scavenger Hunt!</div>
-          <p className="bio">
-            Hey {user?.name || "you"}! Welcome to Scavenger Hunt! Join a game or
-            create your own one!
-          </p>
-        </div>
-
-        <Leaderboards
-          games={fetchedGames}
-          gameId={gameId}
-          onClick={handleRowClick}
-        />
-        <button className="add-button" onClick={() => handleCreateGame()}>
-          Create Game +
-          </button>
+        <div className="main-page-content">
+          <div className="titleHeader">
+            <div className="title">Scavenger Hunt!</div>
+            <p className="bio">
+              Hey {user?.name || "you"}! Welcome to Scavenger Hunt! Join a game
+              or create your own one!
+            </p>
           </div>
+
+          <GameList
+            games={fetchedGames}
+            gameId={gameId}
+            onClick={handleRowClick}
+          />
+          <button className="add-button" onClick={() => handleCreateGame()}>
+            Create Game +
+          </button>
+        </div>
       </div>
     </div>
   );
