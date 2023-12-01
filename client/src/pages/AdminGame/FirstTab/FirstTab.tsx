@@ -4,8 +4,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../utils/context";
 import { ClueInfo } from "../../../utils/types";
 import { GetContext } from "../AdminGame";
-import { start } from "repl";
-
+//
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const fixedCluesSize = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // this is fixed
