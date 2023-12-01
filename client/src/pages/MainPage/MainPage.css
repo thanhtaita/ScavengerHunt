@@ -1,44 +1,45 @@
-.main-page{
-  min-width: 320px;
-  min-height: 100vh;
-    
+.main-page {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: relative;
   background-image: url("../public/mainPageBack.png");
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.shade{
-  background-color: #00000075;
+.shade {
+  background-color: #6c6c6c75;
+  border-radius: 2rem;
+  width: 70%;
+  height: 30%;
   margin-top: 2rem;
-  max-width: 97%;
-  margin-left: 1.3rem;
-  padding: 20px;
-  border-radius: 2%;
+  margin-bottom: 2rem;
+  box-shadow: 5px 5px 5px #69666656;
 }
 .titleHeader {
+  margin-top: -2rem;
   display: flex;
   flex-direction: column;
   text-align: center;
   font-family: "Kalam", cursive;
   font-weight: 550;
-
-  margin-top: -1rem;
 }
 .title {
-  color: #8DFFCD;
-  font-size: 3.5rem;
+  color: #8dffcd;
+  font-size: 3rem;
   padding-top: 4rem;
   margin-left: 2.5rem;
 }
 .bio {
-  font-size: 1.8rem;
-  color: #BCFFDB;
-  margin-left: 10%;
+  font-size: 1.5rem;
+  color: #bcffdb;
+  margin-left: 1.5rem;
 }
 .add-button {
   background-color: #e55d23;
   padding: 0.7rem 0.7rem;
+  margin-bottom: 1rem;
 }
 
 .main-page-content {

@@ -1,7 +1,6 @@
 .fullPage{
-    min-width: 320px;
-    min-height: 130vh;
-
+    min-width: 100rem;
+    min-height: 100rem;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

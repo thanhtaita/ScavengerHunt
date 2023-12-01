@@ -43,7 +43,7 @@ export function StartingPage() {
             <img className="treasuremap" src="../../treasure-map.png"></img>
             <img className="line" src="../../line.png"></img>
             <p className="welcomeSign">Welcome to</p>
-            <p className="Scaveneger3">Scanvenegr</p>
+            <p className="Scaveneger3">Scanvenger</p>
             <p className="Hunt">Hunt !</p>
             
             <p className="deraction">click the arrow to contuine</p>

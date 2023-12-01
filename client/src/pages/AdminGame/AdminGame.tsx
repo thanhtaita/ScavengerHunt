@@ -25,7 +25,7 @@ const AdminGame = () => {
       {loggedIn && (
         <div>
           <Navbar />
-          <ProcessBar step={step} />
+          <ProcessBar step={step} />x
           <Outlet context={{ step, setStep }} />
         </div>
       )}

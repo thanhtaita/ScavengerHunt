@@ -1,7 +1,7 @@
 
 .StartingPage{
-    min-width: 310px;
-    min-height: 120vh;
+    min-width: 200px;
+    min-height: 100vh;
     
     background-size: cover;
     background-repeat: no-repeat;
@@ -16,7 +16,7 @@
     font-size: 50px;
 }
 .Scaveneger3{
-    margin-top: -1rem;
+    margin-top: -2rem;
     margin-left: 2rem;
     font-family: Pilowlava, regular;
     color: rgb(235, 138, 11);
@@ -30,7 +30,7 @@
     font-size: 80px;
 }
 .startToGame{
-    margin-top: 2rem;
+    margin-top: 3rem;
     margin-left: 10rem;
     width: 20%;
     min-height: 5%;
@@ -43,27 +43,26 @@ border-radius: 2rem;}
     height: 4.5rem;
 }
 .treasuremap{
-   
+   margin-top: 5rem;
    width: 7rem;
     margin-left: 2rem;
-    margin-top: 10rem;
 }
 .line{
     display: flex;
     width: 2rem;
-    height: 20rem;
+    height: 10rem;
     margin-left: 2rem;
 }
 .deraction{
     color: black;
-    margin-top: 10rem;
+    margin-top: 3rem;
     margin-bottom: -1.5rem;
     margin-left: 11.5rem;
 }
 .kid{
-    width: 50%;
-    margin-right: 6rem;
-    margin-top: 13rem;
+    width: 40%;
+    margin-right: 5rem;
+    margin-top: 8rem;
     float: right;
 }
 @media screen and (max-width: 1100px) {
@@ -76,24 +75,27 @@ border-radius: 2rem;}
         background-repeat: no-repeat;
         background-position: center;
         background-attachment: relative;
-        background-color: rgb(39, 189, 159);
+        background-color: rgb(56, 220, 187);
     }  
     .kid{
-        margin-top:21rem;
+        margin-top: 0rem;
         margin-right: 0rem;
-        width: 25rem;
+        width:25rem;
     } 
     .startToGame{
         margin-top: 2rem;
         margin-left: 27rem;
     }
     .deraction{
+        margin-top: 4rem;
         margin-left: 24rem;
+        width: 100%;
     }
     .Hunt{
         color: rgb(235, 138, 11);
     }
 }
+
 @media screen and (max-width: 800px) {
     
     .kid{
