@@ -1,95 +1,95 @@
-.progressContainer{
-    min-width: 320px;
-    min-height: 120vh;
-      
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: relative;
-    background-image: url("../public/mainPageBack.png");
-    display: flex;
+.progressContainer {
+  min-width: 320px;
+  min-height: 120vh;
 
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: relative;
+  background-image: url("/mainPageBack.png");
+  display: flex;
 }
-.progressTitle{
-    font-size: 3rem;
-    border-bottom: 3px solid black;
-    text-transform:uppercase;
-    font-weight: bold;
-}
-
-.pieChart{
-    margin-top: 8%;
-    width: 30%;
-    margin-left: 10rem;
-    margin-right: 5rem;
-}
-.currentClue{
-    margin-top: 10%;
-    padding: 2rem 2rem;
-    background-color: #46414177;
-    border-radius: 2rem;
-}
-.currentClues{
-    font-size: 2.5rem;
-    font-weight: 500;
-    padding-bottom: 4%;
-    color: #8DFFCD;
-}
-.currentClue ul{
-    width: 100%;
-}
-.solvedTitle{
-    font-size: 2.5rem;
-    font-weight: 500;
-    padding-bottom: 4%;
-    color: #8DFFCD;
-}
-.clues{
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    margin-left: -8rem;
-    color: #edfcb4;
-    font-size: 1.25rem;
-
-}
-.scrollableList{
-    overflow-y:auto;
-    height: 70%;
-}
-.solvedClues{
-    margin-top: 10%;
-    padding: 2rem 2rem;
-    background-color: #46414165;
-    border-radius: 2rem;
+.progressTitle {
+  font-size: 3rem;
+  border-bottom: 3px solid black;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
-.solvedClues ul, .currentClue ul {
-    list-style-type: none;
+.pieChart {
+  margin-top: 8%;
+  width: 30%;
+  margin-left: 10rem;
+  margin-right: 5rem;
 }
-.solvedClues li{
-    padding-top: 1.5%;
-    border-bottom: 2px solid #141111;
+.currentClue {
+  margin-top: 10%;
+  padding: 2rem 2rem;
+  background-color: #46414177;
+  border-radius: 2rem;
+}
+.currentClues {
+  font-size: 2.5rem;
+  font-weight: 500;
+  padding-bottom: 4%;
+  color: #8dffcd;
+}
+.currentClue ul {
+  width: 100%;
+}
+.solvedTitle {
+  font-size: 2.5rem;
+  font-weight: 500;
+  padding-bottom: 4%;
+  color: #8dffcd;
+}
+.clues {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin-left: -8rem;
+  color: #edfcb4;
+  font-size: 1.25rem;
+}
+.scrollableList {
+  overflow-y: auto;
+  height: 70%;
+}
+.solvedClues {
+  margin-top: 10%;
+  padding: 2rem 2rem;
+  background-color: #46414165;
+  border-radius: 2rem;
+}
+
+.solvedClues ul,
+.currentClue ul {
+  list-style-type: none;
+}
+.solvedClues li {
+  padding-top: 1.5%;
+  border-bottom: 2px solid #141111;
 }
 
 /* Add custom square bullet points */
-.solvedClues li, .currentClue li {
-    position: relative;
-    padding-left: 1.5em;
-    padding-bottom: 1%;
+.solvedClues li,
+.currentClue li {
+  position: relative;
+  padding-left: 1.5em;
+  padding-bottom: 1%;
 }
 
-.solvedClues li::before,.currentClue li::before {
-    content: ''; 
-    position: absolute;
-    left: 0;
-    top: 1rem; 
-    width: 0.9em; 
-    height: 0.9em; 
-    border-radius: 50%;
-    background-color: #69BF4F;
-    
+.solvedClues li::before,
+.currentClue li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1rem;
+  width: 0.9em;
+  height: 0.9em;
+  border-radius: 50%;
+  background-color: #69bf4f;
 }
-.currentClue li::before{
-    background-color: #FFC36B;
+.currentClue li::before {
+  background-color: #ffc36b;
 }
