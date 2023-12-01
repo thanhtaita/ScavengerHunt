@@ -93,10 +93,6 @@ const router = createBrowserRouter([
     element: <GameDetails />,
   },
   {
-    path: "/map",
-    element: <Map />,
-  },
-  {
     path: "/",
     element: <StartingPage />,
   },
