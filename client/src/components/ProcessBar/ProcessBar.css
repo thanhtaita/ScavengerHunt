@@ -2,20 +2,20 @@
 .text-center {
   text-align: center;
   color: #ccc;
+  margin-bottom: 2rem;
 }
+
 .cont {
   height: 100%;
   left: calc(50% - 220px);
-  padding: 0;
-  margin: 40px auto;
   position: absolute;
+  
 }
 #nprogress-bar {
   -webkit-appearance: none;
   width: 28rem;
   color: #ccc;
   height: 2px;
-  margin: 0 auto;
 }
 
 #first,
