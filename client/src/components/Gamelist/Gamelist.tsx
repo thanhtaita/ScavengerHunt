@@ -16,7 +16,7 @@ export function GameList({ games, gameId }: GameListProps) {
     // find the first match game id so it returns only one game
     const temp = games.find((game) => game.id === gameId);
     setFilteredGame(temp);
-  }, [gameId]);
+  }, [games, gameId]);
   const navigate = useNavigate();
   const handleRowClick = (gameId: number) => {
     navigate(`/game/${gameId}`);

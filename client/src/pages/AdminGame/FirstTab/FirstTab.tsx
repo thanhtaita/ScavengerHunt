@@ -164,7 +164,7 @@ const FirstTab = () => {
       }
     };
     loadedGameInfo();
-  }, []);
+  }, [gId, navigate]);
 
   // useEffect(() => {
 

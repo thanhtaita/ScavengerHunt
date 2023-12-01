@@ -107,7 +107,6 @@ const Process = () => {
             console.error("oops, something went wrong!", error);
           });
       });
-      genPDF = true;
     }
   }, []);
   const pdfOnClick = () => {

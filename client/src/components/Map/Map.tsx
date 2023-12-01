@@ -2,8 +2,6 @@ import "./Map.css";
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Popup, Marker, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { get } from "http";
-
 interface Position {
   coords: {
     latitude: number;
