@@ -7,12 +7,14 @@ const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const ScanQR = () => {
   const { gId } = useParams();
+  var counter = 0
   const video = useRef<HTMLVideoElement>(null);
   const [qrScanner, setQrScanner] = useState<QrScanner>();
   const [redirect, setRedirect] = useState(false);
   const [clues, setclues] = useState<Array<ClueInfo>>([]);
   let navigate = useNavigate();
   const [scanCode, setScanCode] = useState({ "QrText": "", 'location': "" });
+  const [scanResults, setScanResults] = useState("");
   console.log(gId)
   const updateLocation = async (currentClueNum: number, qrText: string) => {
     const tempClues = clues.map((clue) => {
@@ -41,7 +43,8 @@ const ScanQR = () => {
 
   useEffect(() => {
     if (redirect) {
-      navigate(`/mygame/${gId}/ScanQRCode`);
+      window.location.assign(`/mygame/${gId}/ScanQRCode`);
+      // navigate(`/mygame/${gId}/ScanQRCode`);
     }
   }, [redirect])
 
@@ -62,7 +65,12 @@ const ScanQR = () => {
         (position: GeolocationPosition) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-          console.log(`{"Latitude": "${latitude}", "Longitude": "${longitude}"}`);
+          console.log(`{"Latitude": "${latitude}", "Longitude": "${longitude}"}`, scanResults, scanCode);
+          // setScanCode((prev) => {
+          //   const data = prev;
+          //   data.location = `{"Latitude": "${latitude}", "Longitude": "${longitude}"}`
+          //   return data
+          // })
           setScanCode({ "QrText": scanCode.QrText, "location": `{"Latitude": "${latitude}", "Longitude": "${longitude}"}` })
         }
       );
@@ -87,47 +95,34 @@ const ScanQR = () => {
   }, [])
 
   function handleScan(result: QrScanner.ScanResult) {
+    console.log(counter)
+    counter = counter + 1
+    if (counter === 1) {
 
-    console.log(result.data);
-    const res = result.data
-    qrScanner?.destroy();
-    setScanCode((prev) => {
-      const data = prev;
-      data.QrText = res
-      return data
-    })
-    // qrScanner?.destroy();
-    getLocation()
+
+      const res = result.data
+      console.log(res);
+      setScanResults(res)
+      // setScanCode({ "QrText": res, "location": scanCode.QrText })
+
+      setScanCode((prev) => {
+        const data = prev;
+        data.QrText = res
+        return data
+      })
+      // qrScanner?.destroy();
+      getLocation()
+      qrScanner?.destroy();
+    }
   }
   // Function to stop the webcam
-  const stopWebcam = () => {
-    //     localStream.getVideoTracks()[0].stop();
-    //  video.src = '';
-    if (video.current) {
-      const videoRef = video.current;
 
-
-      // Pause the video
-      videoRef.pause();
-
-      // Get the stream from the video element
-      const stream = videoRef.srcObject as MediaStream | null;
-
-      // Check if stream exists and stop tracks
-      if (stream) {
-        const tracks = stream.getTracks();
-        tracks.forEach(track => track.stop());
-        videoRef.srcObject = null;
-      }
-      videoRef.src = ''
-    }
-  };
 
   useEffect(() => {
     if (video.current) {
       const qrScanner = new QrScanner(
         video.current,
-        (result) => { qrScanner.destroy(); stopWebcam(); handleScan(result) },
+        (result) => { handleScan(result) },
         {
           highlightScanRegion: true,
         }
@@ -141,7 +136,7 @@ const ScanQR = () => {
   return (
     <div >
 
-      {scanCode?.QrText !== "" && <h1> {scanCode.QrText} {scanCode.location}</h1>}
+      {scanCode?.QrText !== "" && <h1 className={"justify-content: center"}> {scanCode.QrText} {scanCode.location}</h1>}
       {scanCode?.QrText === "" && <div className="scanContainer"> <video ref={video}></video> </div>}
     </div>
   );
