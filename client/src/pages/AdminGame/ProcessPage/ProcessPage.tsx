@@ -114,12 +114,9 @@ const Process = () => {
     saveAs(pdfBlob, "gameId.pdf");
   };
   return (
-    <>
+    <div className="process-page">
       <div className="Header">
         <p className="titlePage">Print The QR Codes</p>
-        <p className="bioPage">
-          click the PrintQR Code button to generate a PDF of all the QR
-        </p>
       </div>
       <div className="listOfQR">
         <ul className="allOfClues">
@@ -168,7 +165,7 @@ const Process = () => {
           Next
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 

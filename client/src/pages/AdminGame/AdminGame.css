@@ -1,9 +1,13 @@
-.fullPage{
-    min-width: 100rem;
-    min-height: 100rem;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
-    background-image: url("../public/mainPageBack.png");
+.fullPage {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-image: url("../public/mainPageBack.png");
+}
+
+.admin-game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

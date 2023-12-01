@@ -3,11 +3,11 @@ import HamButton from "../../HamButton/HamButton";
 import { Link } from "react-router-dom";
 const NavBar = () => {
   return (
-    <div className="nav-bar">
+    <div className="admin-nav-bar">
       <Link to="/MainPage" className="nav-btn2">
         Cancel
       </Link>
-      <h2 className="title">Admin's View</h2>
+      <h2 className="title1">ADMIN'S VIEW</h2>
       <HamButton />
     </div>
   );

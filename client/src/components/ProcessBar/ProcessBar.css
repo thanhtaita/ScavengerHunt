@@ -1,4 +1,6 @@
-
+.row {
+  position: relative;
+}
 .text-center {
   text-align: center;
   color: #ccc;
@@ -7,15 +9,18 @@
 
 .cont {
   height: 100%;
-  left: calc(50% - 220px);
   position: absolute;
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 #nprogress-bar {
   -webkit-appearance: none;
-  width: 28rem;
+  width: 22%;
   color: #ccc;
   height: 2px;
+  margin-top: 4rem;
 }
 
 #first,
@@ -32,7 +37,7 @@
   background: #e2e2e2;
   position: absolute;
   left: 0;
-  top: -0.5rem;
+  top: 0.5rem;
   cursor: pointer;
   transition: all 0.4s ease-in-out;
   display: flex;
@@ -40,23 +45,15 @@
   align-items: center;
 }
 
-#step {
-  height: 100px;
-  width: 100%;
-}
-
 #step .first {
-  left: -23px;
+  left: 39%;
 }
 
 #step .second {
-  left: 200px;
+  left: 49.5%;
 }
 #step .third {
-  left: 420px;
-}
-#step .fourth {
-  left: 640px;
+  left: 60%;
 }
 .detail {
   position: relative;

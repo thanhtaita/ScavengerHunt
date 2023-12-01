@@ -2,7 +2,7 @@ import { Outlet, useOutletContext } from "react-router-dom";
 import Navbar from "../../components/AdminGame/NavBar/NavBar.tsx";
 import ProcessBar from "../../components/ProcessBar/ProcessBar.tsx";
 import { AuthContext } from "../../utils/context.ts";
-import { } from "react-router-dom";
+import {} from "react-router-dom";
 import "./AdminGame.css";
 
 import { useState, useContext } from "react";
@@ -23,13 +23,13 @@ const AdminGame = () => {
   return (
     <div className="fullPage">
       {loggedIn && (
-        <div>
+        <div className="admin-game">
           <Navbar />
-          <ProcessBar step={step} />x
+          <ProcessBar step={step} />
           <Outlet context={{ step, setStep }} />
         </div>
       )}
-  </div>
+    </div>
   );
 };
 

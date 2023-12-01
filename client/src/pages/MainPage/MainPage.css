@@ -7,20 +7,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
 }
+
 .shade {
-  background-color: #6c6c6c75;
+  background-color: #b4b4b434;
   border-radius: 2rem;
-  width: 70%;
-  height: 30%;
+  width: 80%;
   margin-top: 2rem;
   margin-bottom: 2rem;
+  padding: 0rem 1rem;
   box-shadow: 5px 5px 5px #69666656;
 }
 .titleHeader {
-  margin-top: -2rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
   text-align: center;
   font-family: "Kalam", cursive;
   font-weight: 550;
@@ -28,16 +30,13 @@
 .title {
   color: #8dffcd;
   font-size: 3rem;
-  padding-top: 4rem;
-  margin-left: 2.5rem;
 }
 .bio {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #bcffdb;
-  margin-left: 1.5rem;
 }
 .add-button {
-  background-color: #e55d23;
+  background-color: #c04203;
   padding: 0.7rem 0.7rem;
   margin-bottom: 1rem;
 }
@@ -47,4 +46,6 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  width: 100%;
+  height: 2%;
 }

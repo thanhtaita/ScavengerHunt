@@ -2,7 +2,7 @@ import "./Navbar.css";
 import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../utils/context";
-import NavBar from "../../components/HamButton/HamButton";
+import HamButton from "../../components/HamButton/HamButton";
 
 interface NavbarProps {
   gameId: number;
@@ -31,7 +31,7 @@ const Navbar = ({ gameId, setGameId }: NavbarProps) => {
   };
 
   return (
-    <div>
+    <div className="nav-bar-component">
       <div className="search">
         <input
           className="search-bar"
@@ -46,7 +46,7 @@ const Navbar = ({ gameId, setGameId }: NavbarProps) => {
           Login
         </button>
       )}
-      {loggedIn && <NavBar />}
+      {loggedIn && <HamButton />}
     </div>
   );
 };

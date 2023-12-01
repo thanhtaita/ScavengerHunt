@@ -4,6 +4,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../utils/context";
 import { ClueInfo } from "../../../utils/types";
 import { GetContext } from "../AdminGame";
+import { start } from "repl";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -174,7 +175,6 @@ const FirstTab = () => {
 
   return (
     <div className="first-tab">
-      <h1 className="title">Fill Questions</h1>
       <div className="content">
         <div className="game-info">
           <div className="general-info">
@@ -207,7 +207,7 @@ const FirstTab = () => {
               <input
                 type="datetime-local"
                 value={endTime}
-                min={formatDateTime(new Date())}
+                min={startTime}
                 onChange={(e) => {
                   setEndTime(e.target.value);
                 }}
@@ -276,15 +276,15 @@ const FirstTab = () => {
             </form>
           </div>
         </div>
-
-        <Link
-          to={`/mygame/${gId}/process`}
-          onClick={() => handletoProcess()}
-          className="nav-btn"
-        >
-          Next
-        </Link>
       </div>
+
+      <Link
+        to={`/mygame/${gId}/process`}
+        onClick={() => handletoProcess()}
+        className="nav-btn"
+      >
+        Next
+      </Link>
     </div>
   );
 };

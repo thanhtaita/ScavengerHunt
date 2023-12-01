@@ -1,3 +1,10 @@
+.process-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .header {
   display: flex;
   justify-content: center;
@@ -5,10 +12,10 @@
 }
 .titlePage {
   color: black;
-  font-size: 50px;
+  font-size: 2rem;
   font-weight: bold;
   text-align: center;
-  padding-top: 7rem;
+  padding-top: 5rem;
 }
 .bioPage {
   text-align: center;
@@ -33,10 +40,9 @@
   justify-content: center;
   align-items: center;
   margin-top: 2%;
-  background-color:#1a1a1aad;
-  margin-left: 10%;
-  margin-right: 10%;
+  background-color: rgba(255, 255, 255, 0.116);
   border-radius: 25px;
+  width: 90%;
 }
 .allOfClues {
   height: 30rem;
@@ -51,9 +57,10 @@
 .QRCodes {
   text-align: center;
   border-radius: 25px;
-  padding: 2rem 5rem;
+  padding: 1rem 2rem;
   display: inline-flex;
-  background-color: #333333;
+  background-color: rgb(80, 80, 80);
+  color: #8dffcd;
 }
 
 .footer {

@@ -18,26 +18,26 @@ export function Leaderboards({ games, gameId }: LeaderboardsProps) {
     setFilteredGame(temp);
   }, [gameId]);
   const navigate = useNavigate();
-  const handleRowClick = (gameId: number)=>{
+  const handleRowClick = (gameId: number) => {
     navigate(`/game/${gameId}`);
-  }
+  };
 
   return (
-    <div className="container">
+    <div className="gamelist">
       <div className="main-content">
         <table className="tableHeader">
           <thead>
             <tr>
-              <th >Game ID</th>
-              <th >Name</th>
-              <th >Start Date</th>
-              <th >Clues</th>
+              <th>Game ID</th>
+              <th>Name</th>
+              <th>Start Date</th>
+              <th>Clues</th>
             </tr>
           </thead>
           <tbody className="things">
             {gameId ? (
               filteredGame ? (
-                <tr>
+                <tr className="data-row">
                   <td>{filteredGame.id}</td>
                   <td>{filteredGame.name}</td>
                   <td>{filteredGame.startDate}</td>
@@ -50,15 +50,15 @@ export function Leaderboards({ games, gameId }: LeaderboardsProps) {
               )
             ) : (
               games.map((game) => (
-                <tr key={game.id} onClick={()=>handleRowClick(game.id)}>
-                  <td >{game.id}</td>
-                  <td >{game.name}</td>
-                  <td >{game.startDate}</td>
-                  <td >{game.clues}</td>
+                <tr key={game.id} onClick={() => handleRowClick(game.id)}>
+                  <td>{game.id}</td>
+                  <td>{game.name}</td>
+                  <td>{game.startDate}</td>
+                  <td>{game.clues}</td>
                 </tr>
               ))
             )}
-            </tbody>
+          </tbody>
         </table>
       </div>
     </div>
