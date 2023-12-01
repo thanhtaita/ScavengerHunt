@@ -30,7 +30,8 @@ export function GameList({ games, gameId }: GameListProps) {
             <tr>
               <th>Game ID</th>
               <th>Name</th>
-              <th>Start Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
               <th>Clues</th>
             </tr>
           </thead>
@@ -40,7 +41,8 @@ export function GameList({ games, gameId }: GameListProps) {
                 <tr className="data-row">
                   <td>{filteredGame.id}</td>
                   <td>{filteredGame.name}</td>
-                  <td>{filteredGame.startDate}</td>
+                  <td>{filteredGame.starttime}</td>
+                  <td>{filteredGame.endtime}</td>
                   <td>{filteredGame.clues}</td>
                 </tr>
               ) : (
@@ -53,7 +55,8 @@ export function GameList({ games, gameId }: GameListProps) {
                 <tr key={game.id} onClick={() => handleRowClick(game.id)}>
                   <td>{game.id}</td>
                   <td>{game.name}</td>
-                  <td>{game.startDate}</td>
+                  <td>{game.starttime}</td>
+                  <td>{game.endtime}</td>
                   <td>{game.clues}</td>
                 </tr>
               ))

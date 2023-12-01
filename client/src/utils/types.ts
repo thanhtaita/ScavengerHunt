@@ -1,7 +1,8 @@
 export interface GameRow {
   id: number;
   name: string;
-  startDate: string;
+  starttime: string;
+  endtime: string;
   clues: number;
 }
 

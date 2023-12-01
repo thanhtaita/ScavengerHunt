@@ -9,8 +9,8 @@ import { AuthContext } from "../../utils/context";
 interface GameDetailsProps {
   id: number;
   name: string;
-  startDate: string;
-  endDate: string;
+  starttime: string;
+  endtime: string;
   description: string;
   clues: number;
 }
@@ -96,7 +96,7 @@ function GameDetails() {
   return (
     <div className="game-details">
       <Navbar gameId={gameIdd} setGameId={setGameId} />
-      
+
       <div className="game-details-container">
         {gameDetails ? (
           <>
@@ -105,32 +105,31 @@ function GameDetails() {
               <h1>{gameId}</h1>
             </div>
             <div className="content">
-              <p className="description">
-                Description: {gameDetails.description}
-              </p>
+              <p className="description">{gameDetails.description}</p>
               <div className="extraDeets">
-                <p>Start Date: {gameDetails.startDate}</p>
-                <p>End Date: {gameDetails.endDate}</p>
+                <p>Start Time: {gameDetails.starttime}</p>
+                <p>End Time: {gameDetails.endtime}</p>
                 <p> Number of Clues: {gameDetails.clues}</p>
               </div>
             </div>
-            <button
-              className="startgamebutton"
-              onClick={() => handleStartGame(gameDetails.id)}
-            >
-              Join Game
-              </button>
-              <button
-              className="backPage"
-              onClick={() => navigate("/MainPage")}
-            >
-              back
-            </button>
           </>
         ) : (
           <p>Loading game details...</p>
-          )}
-          </div>
+        )}
+      </div>
+      <div className="btn-container">
+        <button className="backPage" onClick={() => navigate("/MainPage")}>
+          Back
+        </button>
+        {gameDetails && (
+          <button
+            className="startgamebutton"
+            onClick={() => handleStartGame(gameDetails.id)}
+          >
+            Join Game
+          </button>
+        )}
+      </div>
     </div>
   );
 }
