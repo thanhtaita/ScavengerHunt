@@ -257,6 +257,24 @@ app.get("/game/:gameId", async function (req, res) {
   }
 });
 
+
+//get clue information for a user from the database.
+app.post("/progress", async function (req,res) {
+  try {
+    const { uid, gameId } = req.body;
+    console.log(uid);
+    console.log(gameId);
+    console.log("Fetching clues from database ... ");
+    const clues = await GamesController.getClues(uid, gameId);
+    res.json(clues);
+  } catch (err) {
+    console.error("Error fetching clues from the database", err);
+    res.status(500).json({error:"Internal Server Error."});
+  }
+
+});
+
+//Verifying Scanned QR code. 
 app.post("/verifyQR", async (req, res) => {
   try {
     // Extract data from the request body

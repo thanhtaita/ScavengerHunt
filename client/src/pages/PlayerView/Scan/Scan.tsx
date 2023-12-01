@@ -6,6 +6,8 @@ import "./Scan.css";
 import { useContext } from "react";
 import { AuthContext } from "../../../utils/context";
 
+
+
 const Scan = () => {
   const { user } = useContext(AuthContext);
   const { gameId } = useParams<{ gameId: string }>();
@@ -28,7 +30,7 @@ const Scan = () => {
       const uid = user.email;
       try {
         const response = await fetch(
-          "https://shserver-q8el.onrender.com/verifyQR",
+          "http://localhost:9999/verifyQR",
           {
             method: "POST",
             headers: {
@@ -82,6 +84,8 @@ const Scan = () => {
     // Dependency array missing handleScan, since it should not set Scanner on handleScan change
     // eslint-disable-next-line
   }, [video.current]);
+
+  
 
   return (
     <div className="scanContainer2">
