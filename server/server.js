@@ -95,8 +95,6 @@ const auth = (req, res, next) => {
 app.get("/", async function (req, res) {
   GamesController.getGames(req, res);
   // res.send("Hello World!");
-  console.log("Connected to backend");
-  console.log("getting user info");
   // const user = getUserInfo(req);
 });
 
@@ -324,7 +322,7 @@ app.get("/playerview/:id", async function (req, res) {
   try {
     const id = parseInt(req.params.id, 10);
     const leaderboard = await GamesController.leaderboardInfo(id);
-    console.log("in the server: " ,leaderboard);
+    console.log("in the server: ", leaderboard);
     res.json(leaderboard);
   } catch (error) {
     console.error("Error getting leaderboard:", error);

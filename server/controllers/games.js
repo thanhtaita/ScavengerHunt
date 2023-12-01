@@ -50,8 +50,8 @@ const getGameDeets = async (gameId) => {
     return {
       id: gameDetails.gid,
       name: gameDetails.name,
-      startDate: gameDetails.startDate, // Assuming you have a startDate column
-      endDate: gameDetails.endDate, // Assuming you have an endDate column
+      starttime: gameDetails.starttime, // Assuming you have a startDate column
+      endtime: gameDetails.endtime, // Assuming you have an endDate column
       description: gameDetails.description,
       clues: cluesCount,
     };
@@ -176,14 +176,17 @@ const createUser = async (name, email) => {
 // get all games
 const getGames = async (req, res) => {
   try {
-    const games = await pool.query("SELECT * FROM Games");
-    
+    const games = await pool.query(
+      "SELECT * FROM Games WHERE name IS NOT NULL AND code is NOT NULL AND starttime <> 'N/A' AND endtime <> 'N/A' AND hints <> '{}' ORDER BY gid ASC "
+    );
+
     // Transform the data to match the expected format
-    const transformedGames = games.rows.map(game => ({
+    const transformedGames = games.rows.map((game) => ({
       id: game.gid,
       name: game.name,
-      startDate: game.starttime, // Assuming 'starttime' is the column name in the 'Games' table
-      clues: game.hints ? game.hints.length : 0 // Assuming 'hints' is an array
+      starttime: game.starttime, // Assuming 'starttime' is the column name in the 'Games' table
+      endtime: game.endtime, // Assuming 'endtime' is the column name in the 'Games' table
+      clues: game.hints ? game.hints.length : 0, // Assuming 'hints' is an array
     }));
 
     res.status(200).json(transformedGames);
@@ -273,7 +276,7 @@ const leaderboardInfo = async (gid) => {
   } catch (err) {
     console.error("⚠️ error getting game", err);
   }
-}
+};
 export default {
   getGames,
   getGame,
