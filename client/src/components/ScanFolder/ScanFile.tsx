@@ -4,7 +4,7 @@ import QrScanner from "qr-scanner";
 import { useNavigate, useParams } from "react-router-dom";
 import { ClueInfo } from "../../utils/types";
 const serverUrl = import.meta.env.VITE_SERVER_URL;
-
+import "./ScanFile.css";
 const ScanQR = () => {
   const { gId } = useParams();
   let counter = 0;
@@ -16,7 +16,9 @@ const ScanQR = () => {
   const [scanCode, setScanCode] = useState({ QrText: "", location: "" });
   const [scanResults, setScanResults] = useState("");
   console.log(gId);
+
   const updateLocation = async (currentClueNum: number, qrText: string) => {
+
     const tempClues = clues.map((clue) => {
       if (clue.QR_text === qrText) {
         clue.location = scanCode.location;
@@ -27,6 +29,7 @@ const ScanQR = () => {
 
     fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -49,7 +52,9 @@ const ScanQR = () => {
 
   const fectGameDeatils = async () => {
     try {
-      const res = await fetch(`${serverUrl}/mygame/${gId}`);
+      const res = await fetch(`${serverUrl}/mygame/${gId}`, {
+        credentials: "include",
+      });
       const data = await res.json();
       console.log(data["hints"], data);
       setclues(data["hints"]);
@@ -90,6 +95,10 @@ const ScanQR = () => {
       updateLocation(0, scanCode.QrText);
     }
   }, [scanCode]);
+
+  useEffect(() => {
+    console.log(clues)
+  }, [clues])
 
   useEffect(() => {
     console.log(scanCode);
@@ -134,20 +143,27 @@ const ScanQR = () => {
   }, [video.current]);
 
   return (
-    <div>
+
+    <div className="div" >
+
       {scanCode?.QrText !== "" && (
-        <h1 className={"justify-content: center"}>
-          {" "}
-          {scanCode.QrText} {scanCode.location}
+        <h1 className="scanfile">
+          <p>   Loading please wait fetching your location.....
+            <br></br>
+            <br></br>
+            <br></br>
+            Dont close the screen</p>
         </h1>
-      )}
-      {scanCode?.QrText === "" && (
-        <div className="scanContainer">
-          {" "}
-          <video ref={video}></video>{" "}
-        </div>
-      )}
-    </div>
+      )
+      }
+      {
+        scanCode?.QrText === "" && (
+          <div>
+            <video ref={video}></video>
+          </div>
+        )
+      }
+    </div >
   );
 };
 
