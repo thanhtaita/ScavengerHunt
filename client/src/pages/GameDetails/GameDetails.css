@@ -1,49 +1,80 @@
-.game-details-container{
-    /* background-color: #f7f7f7; */
-    color: black;
-    width: 84vw;
-    height:80vh;
-    font-size: large;
-    margin-top: 5vh;
-    margin-left: 8vw;
-    margin-right: 8vw;
-    font-size: 3vh;
-    display:flex;
-    flex-direction: column;
-    
+.game-details {
+  min-width: 320px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-image: url("../public/mainPageBack.png");
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
 }
 
-.gameTitle{
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between;
-    font-size: 4.5vh;
-    font-weight: bold;
-    padding-bottom: 2vh;
-    margin-bottom: 4vh;
-    font-style: normal;
-    border-bottom: 1px solid black;
-    text-transform:uppercase;
-    
-}
-.extradeets{
-    align-items: top;
+.game-details-container {
+  /* background-color: #f7f7f7; */
+  color: rgb(4, 4, 4);
+  width: 80vw;
+  margin-top: 5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: rgb(80, 80, 80);
+  padding: 2rem 4rem;
+  border-radius: 2rem;
 }
 
-.content{
-    display:flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding:0 0 0 0;
-    margin: 0 0 0 0;
-    background-color: transparent;
-    align-items: flex-start;
+.gameTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 2.5rem;
+  border-bottom: 2px solid rgba(108, 108, 108, 0.456);
+  text-transform: uppercase;
+  font-weight: bold;
+  color: white;
 }
-.description{
-    width:40vw;
-    height:55vh;
+
+.extraDeets {
+  align-items: top;
 }
-.startgamebutton{
-    width: 15vw;
-    padding:1vw 1vw 1vw 1vw;
+
+.extraDeets p {
+  font-size: 1.2rem;
+  color: #8dffcd;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: transparent;
+  align-items: flex-start;
+  font-size: 25px;
+  margin-top: 1rem;
+}
+.description {
+  width: 40vw;
+  height: 40vh;
+  font-size: 1.3rem;
+  color: #8dffcd;
+}
+
+.game-details .btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.game-details button {
+  background-color: #c04203;
+  border: none;
+  border-radius: 1rem;
+  width: 10rem;
+  padding: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
 }

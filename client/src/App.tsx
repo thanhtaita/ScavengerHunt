@@ -1,4 +1,3 @@
-import "./App.css";
 import {
   RouterProvider,
   createBrowserRouter,
@@ -21,11 +20,14 @@ import GameDetails from "./pages/GameDetails/GameDetails.tsx";
 // import Scan from "./components/ScanFolder/ScanFile.tsx";
 import AuthenticateFail from "./pages/AuthenticateFail/AuthenticateFail.tsx";
 import PlayerView from "./pages/PlayerView/playerView.tsx";
+//import { Leaderboards } from "./components/Gamelist/Gamelist.tsx";
+import Leaderboards from "./pages/PlayerView/Leaderboards/Leaderboards.tsx";
+import { StartingPage } from "./pages/MainPage/StartingPage.tsx";
+import Map from "./components/Map/Map.tsx";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
 
-console.log(import.meta.env.VITE_SERVER_URL);
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 // a React context to hold the logged-in and user states so they can be shared globally
@@ -37,9 +39,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const {
         data: { loggedIn: logged_in, user },
-      } = await axios.get(`${serverUrl}/auth/logged_in`, {
-        withCredentials: true,
-      });
+      } = await axios.get(`${serverUrl}/auth/logged_in`);
       setLoggedIn(logged_in);
       user && setUser(user);
     } catch (err) {
@@ -70,20 +70,17 @@ const Callback = () => {
           if (called.current) return; // prevent rerender caused by StrictMode
           called.current = true;
           const res = await axios.get(
-            `${serverUrl}/auth/token${window.location.search}`,
-            {
-              withCredentials: true,
-            }
+            `${serverUrl}/auth/token${window.location.search}`
           );
           console.log("response: ", res.data.user);
           checkLoginState();
-          navigate("/");
+          navigate("/MainPage");
         } catch (err) {
           console.error(err);
-          navigate("/");
+          navigate("/MainPage");
         }
       } else if (loggedIn === true) {
-        navigate("/");
+        navigate("/MainPage");
       }
     })();
   }, [checkLoginState, loggedIn, navigate]);
@@ -96,7 +93,15 @@ const router = createBrowserRouter([
     element: <GameDetails />,
   },
   {
+    path: "/map",
+    element: <Map />,
+  },
+  {
     path: "/",
+    element: <StartingPage />,
+  },
+  {
+    path: "/MainPage",
     element: <MainPage />,
   },
   {
@@ -121,14 +126,15 @@ const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: "/playerview/:gameId",
     element: <PlayerView />,
-  },
-  {
-    path: "/playerview/:gameId",
-    element: <PlayerView />,
+    children: [
+      {
+        path: "leaderboards",
+        element: <Leaderboards />,
+      },
+    ],
   },
   {
     path: "/tutorials",

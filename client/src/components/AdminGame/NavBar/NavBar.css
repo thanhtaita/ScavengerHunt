@@ -1,20 +1,25 @@
-.nav-bar {
+.admin-nav-bar {
   background-color: rgba(0, 0, 0, 0);
-  padding: 1.5rem 3rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 0rem 5rem;
+  padding-top: 2rem;
 }
 
-.nav-bar .title {
-  margin-right: 3rem;
-  font-size: 2rem;
-  margin-top: -3rem;
-  color: #333333;
+.admin-nav-bar .title1 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #111010;
+  margin-left: 5.5rem;
 }
-.nav-bar .nav-btn {
-  margin-top: 0.9rem;
+.nav-btn2 {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  background-color: #c04203;
+  border-radius: 1rem;
+  color: white;
 }
 @media screen and (max-width: 768px) {
   .nav-bar .title {

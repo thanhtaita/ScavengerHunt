@@ -1,34 +1,43 @@
-.main-content {
+.gamelist {
+  height: 50vh;
+  width: 100%;
+}
+.gamelist .main-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  background-color: rgb(80, 80, 80);
+  box-shadow: 5px 5px 5px #69666678;
+  border-radius: 2rem;
+  width: 100%;
+  height: 50vh;
+  overflow-y: scroll;
 }
-table {
-  position: relative;
+.gamelist .tableHeader {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: start;
+}
+.gamelist thead tr {
+  background-color: #bcffdb;
+  border-radius: 2rem;
+}
+.gamelist th {
+  font-size: 1rem;
+  padding: 0.7% 0.7%;
+}
+.gamelist tr {
+  border-bottom: rgba(255, 255, 255, 0.193) 1px solid;
+}
+.gamelist table {
   width: 90%;
-  border-collapse: collapse;
 }
-thead {
-  background-color: #767373;
+.gamelist td {
+  padding: 0.5% 0.5%;
+  font-size: 1rem;
+  color: rgb(245, 245, 235);
 }
-table,
-th,
-td {
-  font-size: 1.5rem;
-  border: 2px solid #222020;
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
-th,
-td {
-  padding: 8px 12px;
-  text-align: left;
-  color: #ffffff;
-}
-
-tbody tr:hover {
-  background-color: #8bd961;
+.gamelist tbody tr:hover {
+  background-color: #4f9d69;
   cursor: pointer;
 }

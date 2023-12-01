@@ -7,10 +7,8 @@
   border: #767373;
   border-radius: 10px;
   cursor: pointer;
-  position: absolute;
-  top: 4.1%;
-  right: 4%;
   font-size: 1rem;
+  position: relative;
 }
 
 .user-name {
@@ -23,13 +21,13 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: #00baf0;
-  background: linear-gradient(to left, #293526, #c04203);
+  background-color: #c04203;
+
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: #fff;
   height: 2rem;
   padding: 1.5rem 1rem;
-  width: 10rem;
+  width: 11rem;
 }
 
 .menu {
@@ -53,10 +51,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 #menu-toggle {
-  display: none;
+  position: absolute;
+  right: 2rem;
+  opacity: 0;
+  transform: scale(4);
+  z-index: 9999;
 }
 
 .menu-button,
@@ -144,7 +147,7 @@
 }
 
 .menu li {
-  z-index: 9999;
+  z-index: 1;
 }
 
 /* end of hamburger button */

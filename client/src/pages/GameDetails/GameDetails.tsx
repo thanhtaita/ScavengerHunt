@@ -9,8 +9,8 @@ import { AuthContext } from "../../utils/context";
 interface GameDetailsProps {
   id: number;
   name: string;
-  startDate: string;
-  endDate: string;
+  starttime: string;
+  endtime: string;
   description: string;
   clues: number;
 }
@@ -35,8 +35,20 @@ function GameDetails() {
 
     try {
       const response = await fetch(
-        `${serverUrl}/startGame?gameId=${gameId}&uid=${uid}`
+        `${serverUrl}/startGame?gameId=${gameId}&uid=${uid}`,
+        {
+          credentials: "include",
+        }
       );
+
+      if (response.status === 401) {
+        navigate("/authfail");
+        return;
+      }
+      if (!response.ok) {
+        window.alert("Error happens. Please try again.");
+        return;
+      }
 
       const data = await response.json();
 
@@ -57,8 +69,20 @@ function GameDetails() {
     // Fetch game details from API
     const fetchGameDetails = async () => {
       try {
-        const response = await fetch(`${serverUrl}/game/${gameId}`);
-        console.log(response);
+        const response = await fetch(`${serverUrl}/game/${gameId}`, {
+          credentials: "include",
+        });
+
+        if (response.status === 401) {
+          navigate("/authfail");
+          return;
+        }
+
+        if (!response.ok) {
+          window.alert("Error happens. Please try again.");
+          return;
+        }
+
         const data = await response.json();
         setGameDetails(data);
       } catch (error) {
@@ -70,8 +94,9 @@ function GameDetails() {
   }, [gameId]);
 
   return (
-    <>
+    <div className="game-details">
       <Navbar gameId={gameIdd} setGameId={setGameId} />
+
       <div className="game-details-container">
         {gameDetails ? (
           <>
@@ -80,27 +105,32 @@ function GameDetails() {
               <h1>{gameId}</h1>
             </div>
             <div className="content">
-              <p className="description">
-                Description: {gameDetails.description}
-              </p>
+              <p className="description">{gameDetails.description}</p>
               <div className="extraDeets">
-                <p>Start Date: {gameDetails.startDate}</p>
-                <p>End Date: {gameDetails.endDate}</p>
-                <p>Clues: {gameDetails.clues}</p>
+                <p>Start Time: {gameDetails.starttime}</p>
+                <p>End Time: {gameDetails.endtime}</p>
+                <p> Number of Clues: {gameDetails.clues}</p>
               </div>
             </div>
-            <button
-              className={"startgamebutton"}
-              onClick={() => handleStartGame(gameDetails.id)}
-            >
-              Start Game
-            </button>
           </>
         ) : (
           <p>Loading game details...</p>
         )}
       </div>
-    </>
+      <div className="btn-container">
+        <button className="backPage" onClick={() => navigate("/MainPage")}>
+          Back
+        </button>
+        {gameDetails && (
+          <button
+            className="startgamebutton"
+            onClick={() => handleStartGame(gameDetails.id)}
+          >
+            Join Game
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
 
