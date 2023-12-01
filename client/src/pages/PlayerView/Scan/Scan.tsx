@@ -10,6 +10,7 @@ import { AuthContext } from "../../../utils/context";
 
 const Scan = () => {
   const { user } = useContext(AuthContext);
+  var counter = 0;
   const { gameId } = useParams<{ gameId: string }>();
   // const modal = useRef<HTMLIonModalElement>(null);
   const video = useRef<HTMLVideoElement>(null);
@@ -21,12 +22,15 @@ const Scan = () => {
   // }
 
   async function handleScan(result: QrScanner.ScanResult) {
+    counter = counter + 1
+    console.log(counter)
     //Logic with scanned qr code
     setScanCode(result.data);
     console.log(result.data);
     console.log("Handling Scan...");
+    qrScanner?.destroy();
 
-    if (user) {
+    if (user && counter === 1) {
       const uid = user.email;
       try {
         const response = await fetch(
@@ -60,7 +64,7 @@ const Scan = () => {
       }
     }
 
-    qrScanner?.destroy();
+
   }
 
   // async function close() {
@@ -85,17 +89,17 @@ const Scan = () => {
     // eslint-disable-next-line
   }, [video.current]);
 
-  
+
 
   return (
     <div className="scanContainer2">
       <p className="ScanTitle">Scan QR Code</p>
       <div className="scanContainer">
-      {scanCode === "" && <video ref={video}></video>}
-      {scanCode !== "" && <h1> {scanCode}</h1>}
+        {scanCode === "" && <video ref={video}></video>}
+        {scanCode !== "" && <h1> {scanCode}</h1>}
       </div>
     </div>
-    
+
   );
 };
 

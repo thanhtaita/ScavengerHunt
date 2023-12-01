@@ -38,9 +38,12 @@ const ScanQR = () => {
   }, [video.current]);
 
   return (
-    <div className="scanContainer">
-      {scanCode === "" && <video ref={video}></video>}
-      {scanCode !== "" && <h1> {scanCode}</h1>}
+    <div className="scanContainer2">
+      <p className="ScanTitle">Scan QR Code</p>
+      <div className="scanContainer">
+        {scanCode === "" && <video ref={video}></video>}
+        {scanCode !== "" && <h1> {scanCode}</h1>}
+      </div>
     </div>
   );
 };
