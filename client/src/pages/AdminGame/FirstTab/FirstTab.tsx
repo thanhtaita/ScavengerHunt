@@ -1,9 +1,8 @@
 import "./FirstTab.css";
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../utils/context";
 import { ClueInfo } from "../../../utils/types";
-
 import { GetContext } from "../AdminGame";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
@@ -18,10 +17,21 @@ const defaultClueInfo: ClueInfo = {
   QR_text: "",
 };
 
+function formatDateTime(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
 const FirstTab = () => {
   // Get current user information
   const { user } = useContext(AuthContext);
   const { gId } = useParams();
+  const navigate = useNavigate();
 
   // Game information section
   const [gameName, setGameName] = useState("");
@@ -40,11 +50,12 @@ const FirstTab = () => {
 
   const saveGameInfo = async () => {
     // save game information to backend
-    await fetch(`${serverUrl}/mygame/${gId}`, {
+    const res = await fetch(`${serverUrl}/mygame/${gId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         gameId: gId,
         gameName: gameName,
@@ -53,6 +64,14 @@ const FirstTab = () => {
         endTime: endTime,
       }),
     });
+    if (res.status === 401) {
+      navigate("/authfail");
+      return;
+    }
+    if (!res.ok) {
+      window.alert("Error happens. Please try again.");
+      return;
+    }
   };
 
   const saveClueInfo = async () => {
@@ -70,13 +89,18 @@ const FirstTab = () => {
     console.log(tempClues);
 
     // update clues information to backend
-    await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
+    const res = await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(tempClues),
     });
+    if (res.status === 401) {
+      navigate("/authfail");
+      return;
+    }
   };
 
   const handletoProcess = async () => {
@@ -85,13 +109,18 @@ const FirstTab = () => {
     for (let i = 0; i < tempClues.length; i++) {
       tempClues[i].QR_text = `${serverUrl}}/${gId}/${i + 1}`;
     }
-    await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
+    const res = await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(tempClues),
     });
+    if (res.status === 401) {
+      navigate("/authfail");
+      return;
+    }
   };
 
   useEffect(() => {
@@ -99,31 +128,36 @@ const FirstTab = () => {
     const loadedGameInfo = async () => {
       try {
         // console.log(gId);
-        const response = await fetch(`${serverUrl}/mygame/${gId}`);
-        if (response.ok) {
-          const data = await response.json();
-          //     // Handle the data and set state accordingly
-          // console.log(data);
-          if (Object.keys(data.hints).length === 0) {
-            setLatestClueNum(1);
-          } else {
-            setLatestClueNum(data?.hints.length + 1);
-            const numProvidedCluesTemp = data?.hints.map(
-              (clue: ClueInfo) => clue.clueID
-            );
-            setNumProvidedClues(numProvidedCluesTemp);
-            setProvidedClues(data?.hints);
-          }
-          setGameName(data?.name);
-          setGameDescription(data?.description);
-          setStartTime(data?.starttime);
-          setEndTime(data?.endtime);
-
-          setCurrentClueInfo(data?.hints[0]);
-        } else {
-          // Handle the situation when the response is not ok (e.g., error handling)
-          console.error("Error fetching data:", response.status);
+        const response = await fetch(`${serverUrl}/mygame/${gId}`, {
+          credentials: "include",
+        });
+        if (response.status === 401) {
+          navigate("/authfail");
+          return;
         }
+        if (!response.ok) {
+          window.alert("Error happens. Please try again.");
+          return;
+        }
+        const data = await response.json();
+        //     // Handle the data and set state accordingly
+        // console.log(data);
+        if (Object.keys(data.hints).length === 0) {
+          setLatestClueNum(1);
+        } else {
+          setLatestClueNum(data?.hints.length + 1);
+          const numProvidedCluesTemp = data?.hints.map(
+            (clue: ClueInfo) => clue.clueID
+          );
+          setNumProvidedClues(numProvidedCluesTemp);
+          setProvidedClues(data?.hints);
+        }
+        setGameName(data?.name);
+        setGameDescription(data?.description);
+        setStartTime(data?.starttime);
+        setEndTime(data?.endtime);
+
+        setCurrentClueInfo(data?.hints[0]);
       } catch (error) {
         // Handle any other errors that might occur during the fetch process
         console.error("Error:", error);
@@ -150,22 +184,34 @@ const FirstTab = () => {
                 placeholder="Game name"
                 value={gameName}
                 onChange={(e) => setGameName(e.target.value)}
+                required
               />
               <input
                 type="text"
                 placeholder="Game description"
                 value={gameDescription}
                 onChange={(e) => setGameDescription(e.target.value)}
+                required
               />
+              <label className="start">Start time</label>
               <input
-                type="date"
+                type="datetime-local"
                 value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
+                min={formatDateTime(new Date())}
+                onChange={(e) => {
+                  setStartTime(e.target.value);
+                }}
+                required
               />
+              <label className="end">End time</label>
               <input
-                type="date"
+                type="datetime-local"
                 value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
+                min={formatDateTime(new Date())}
+                onChange={(e) => {
+                  setEndTime(e.target.value);
+                }}
+                required
               />
               <button className="save-btn" onClick={() => saveGameInfo()}>
                 Save

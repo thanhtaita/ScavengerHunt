@@ -54,10 +54,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 #menu-toggle {
-  display: none;
+  position: absolute;
+  top: 50%;
+  right: 20%;
+  opacity: 0;
+  transform: scale(5);
+  z-index: 9999;
 }
 
 .menu-button,

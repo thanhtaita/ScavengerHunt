@@ -11,6 +11,9 @@ interface NavbarProps {
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
+// Ensures cookie is sent
+axios.defaults.withCredentials = true;
+
 const Navbar = ({ gameId, setGameId }: NavbarProps) => {
   const { loggedIn } = useContext(AuthContext);
 

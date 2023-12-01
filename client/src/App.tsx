@@ -23,6 +23,7 @@ import PlayerView from "./pages/PlayerView/playerView.tsx";
 //import { Leaderboards } from "./components/Gamelist/Gamelist.tsx";
 import Leaderboards from "./pages/PlayerView/Leaderboards/Leaderboards.tsx";
 import { StartingPage } from "./pages/MainPage/StartingPage.tsx";
+import Map from "./components/Map/Map.tsx";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
@@ -38,9 +39,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const {
         data: { loggedIn: logged_in, user },
-      } = await axios.get(`${serverUrl}/auth/logged_in`, {
-        withCredentials: true,
-      });
+      } = await axios.get(`${serverUrl}/auth/logged_in`);
       setLoggedIn(logged_in);
       user && setUser(user);
     } catch (err) {
@@ -71,10 +70,7 @@ const Callback = () => {
           if (called.current) return; // prevent rerender caused by StrictMode
           called.current = true;
           const res = await axios.get(
-            `${serverUrl}/auth/token${window.location.search}`,
-            {
-              withCredentials: true,
-            }
+            `${serverUrl}/auth/token${window.location.search}`
           );
           console.log("response: ", res.data.user);
           checkLoginState();
@@ -95,6 +91,10 @@ const router = createBrowserRouter([
   {
     path: "/game/:gameId",
     element: <GameDetails />,
+  },
+  {
+    path: "/map",
+    element: <Map />,
   },
   {
     path: "/",

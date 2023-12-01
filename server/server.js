@@ -13,6 +13,8 @@ import url from "url";
 import GamesController from "./controllers/games.js";
 import { URLSearchParams } from "url";
 import bodyParser from "body-parser";
+import session from "express-session";
+import { get } from "http";
 
 const config = {
   clientId: process.env.GOOGLE_CLIENT_ID,
@@ -22,7 +24,7 @@ const config = {
   redirectUrl: process.env.REDIRECT_URL,
   clientUrl: process.env.CLIENT_URL,
   tokenSecret: process.env.TOKEN_SECRET,
-  tokenExpiration: 36000,
+  tokenExpiration: 3600000,
   postUrl: "https://jsonplaceholder.typicode.com/posts",
 };
 
@@ -67,12 +69,22 @@ app.use(express.json());
 
 // app.use("", gamesRouter);
 
+// function to get user info with token
+const getUserInfo = (req) => {
+  const cookie = req.headers["cookie"]
+    ?.split("; ")
+    .find((row) => row.startsWith("token" + "="));
+  const token = cookie ? cookie.split("=")[1] : "";
+  if (!token) return undefined;
+  const { user } = jwt.verify(token, config.tokenSecret);
+  return user;
+};
+
 // Verify auth
 const auth = (req, res, next) => {
   try {
-    const token = req.cookies.token;
-    if (!token) return res.status(401).json({ message: "Unauthorized" });
-    jwt.verify(token, config.tokenSecret);
+    const user = getUserInfo(req);
+    if (!user) return res.status(401).json({ message: "Unauthorized" });
     return next();
   } catch (err) {
     console.error("Error: ", err);
@@ -84,12 +96,15 @@ app.get("/", async function (req, res) {
   GamesController.getGames(req, res);
   // res.send("Hello World!");
   console.log("Connected to backend");
+  console.log("getting user info");
+  // const user = getUserInfo(req);
 });
 
-app.get("/mygame", async function (req, res) {
-  const form = new URL(`${process.env.SERVER_URL}${req.url}`);
-  const email = form.searchParams.get("email");
-  console.log(email);
+app.get("/mygame", auth, async function (req, res) {
+  console.log("getting my game");
+  const user = getUserInfo(req);
+  const email = user.email;
+  console.log("done getting email");
   let data = await GamesController.getMyGame(email);
   if (!data) {
     data = await GamesController.createGame(email);
@@ -99,7 +114,7 @@ app.get("/mygame", async function (req, res) {
   });
 });
 
-app.get("/mygame/:id", async function (req, res) {
+app.get("/mygame/:id", auth, async function (req, res) {
   console.log("getting my game");
   const { id } = req.params;
   console.log(id);
@@ -108,7 +123,7 @@ app.get("/mygame/:id", async function (req, res) {
   res.json(data);
 });
 
-app.post("/mygame/:id", async function (req, res) {
+app.post("/mygame/:id", auth, async function (req, res) {
   console.log("updating my game");
   const { id } = req.params;
   console.log(id);
@@ -118,7 +133,7 @@ app.post("/mygame/:id", async function (req, res) {
   console.log(data);
 });
 
-app.post("/mygame/:gId/:hintId", async function (req, res) {
+app.post("/mygame/:gId/:hintId", auth, async function (req, res) {
   console.log("updating clue game");
   const { gId, hintId } = req.params;
   console.log(gId);
@@ -128,7 +143,7 @@ app.post("/mygame/:gId/:hintId", async function (req, res) {
   const data = await GamesController.updateClueInfo(gId, body);
 });
 
-app.post("/", async function (req, res) {
+app.post("/", auth, async function (req, res) {
   const form = new URL(req.url);
   const email = form.searchParams.get("email");
   const data = await GamesController.createGame(email);
@@ -161,7 +176,6 @@ app.get("/auth/token", async (req, res) => {
     // Get user info from id token
     const { email, name, picture } = jwt.decode(id_token);
     const user = { name, email, picture };
-
     // Check if user exists in DB
     console.log("user logging");
     const userExists = await GamesController.existedUser(email);
@@ -173,11 +187,11 @@ app.get("/auth/token", async (req, res) => {
 
     // Sign a new token
     const token = jwt.sign({ user }, config.tokenSecret, {
-      expiresIn: config.tokenExpiration,
+      expiresIn: 360000,
     });
     // Set cookies for user
     res.cookie("token", token, {
-      maxAge: config.tokenExpiration,
+      maxAge: 360000,
       sameSite: "none",
       secure: true,
       httpOnly: true,
@@ -197,6 +211,8 @@ app.get("/auth/logged_in", (req, res) => {
   // seedTripsTable();
   try {
     // Get token from cookie,
+    console.log("get token from cookie");
+    console.log(req.headers["cookie"]);
     const cookie = req.headers["cookie"]
       .split("; ")
       .find((row) => row.startsWith("token" + "="));
@@ -204,25 +220,30 @@ app.get("/auth/logged_in", (req, res) => {
     console.log(token);
     if (!token) return res.json({ loggedIn: false });
     const { user } = jwt.verify(token, config.tokenSecret);
-    const newToken = jwt.sign({ user }, config.tokenSecret, {
-      expiresIn: config.tokenExpiration,
-    });
-    // Reset token in cookie
-    res.cookie("token", newToken, {
-      maxAge: config.tokenExpiration,
-      httpOnly: true,
-      sameSite: "none",
-      secure: true,
-    });
+
+    console.log("get user info");
+
+    // const newToken = jwt.sign({ user }, config.tokenSecret, {
+    //   expiresIn: config.tokenExpiration,
+    // });
+    // // Reset token in cookie
+    // res.cookie("token", newToken, {
+    //   maxAge: config.tokenExpiration,
+    //   httpOnly: true,
+    //   sameSite: "none",
+    //   secure: true,
+    // });
     res.json({ loggedIn: true, user });
   } catch (err) {
     res.json({ loggedIn: false });
   }
 });
 
-app.post("/auth/logout", (_, res) => {
-  // clear cookie
-  res.clearCookie("token").json({ message: "Logged out" });
+app.post("/auth/logout", (req, res) => {
+  // Clear the "token" cookie
+  res.clearCookie("token");
+  // Send the response
+  res.json({ message: "Logged out", loggedIn: false });
 });
 
 app.get("/user/posts", auth, async (_, res) => {
@@ -234,7 +255,7 @@ app.get("/user/posts", auth, async (_, res) => {
   }
 });
 
-app.get("/game/:gameId", async function (req, res) {
+app.get("/game/:gameId", auth, async function (req, res) {
   try {
     console.log("inside server processing database call ...");
     const gameId = parseInt(req.params.gameId, 10); // Extract gameId from the route parameter and convert to number
@@ -257,7 +278,7 @@ app.get("/game/:gameId", async function (req, res) {
   }
 });
 
-app.post("/verifyQR", async (req, res) => {
+app.post("/verifyQR", auth, async (req, res) => {
   try {
     // Extract data from the request body
     const { uid, result, gameId } = req.body;
@@ -273,7 +294,7 @@ app.post("/verifyQR", async (req, res) => {
   }
 });
 
-app.get("/startGame", async (req, res) => {
+app.get("/startGame", auth, async (req, res) => {
   try {
     const gameId = parseInt(req.query.gameId, 10);
     const uid = req.query.uid;
