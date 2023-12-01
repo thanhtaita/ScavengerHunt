@@ -87,22 +87,47 @@ const ScanQR = () => {
   }, [])
 
   function handleScan(result: QrScanner.ScanResult) {
+
     console.log(result.data);
+    const res = result.data
+    qrScanner?.destroy();
     setScanCode((prev) => {
       const data = prev;
-      data.QrText = result.data
+      data.QrText = res
       return data
     })
-    qrScanner?.destroy();
+    // qrScanner?.destroy();
     getLocation()
   }
+  // Function to stop the webcam
+  const stopWebcam = () => {
+    //     localStream.getVideoTracks()[0].stop();
+    //  video.src = '';
+    if (video.current) {
+      const videoRef = video.current;
 
+
+      // Pause the video
+      videoRef.pause();
+
+      // Get the stream from the video element
+      const stream = videoRef.srcObject as MediaStream | null;
+
+      // Check if stream exists and stop tracks
+      if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+        videoRef.srcObject = null;
+      }
+      videoRef.src = ''
+    }
+  };
 
   useEffect(() => {
     if (video.current) {
       const qrScanner = new QrScanner(
         video.current,
-        (result) => handleScan(result),
+        (result) => { qrScanner.destroy(); stopWebcam(); handleScan(result) },
         {
           highlightScanRegion: true,
         }
