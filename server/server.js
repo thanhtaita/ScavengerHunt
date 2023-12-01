@@ -126,6 +126,11 @@ app.post("/mygame/:gId/:hintId", async function (req, res) {
   console.log(body);
   // update clue info only
   const data = await GamesController.updateClueInfo(gId, body);
+  
+  if (data) {
+    return res.send(data)
+  }
+
 });
 
 app.post("/", async function (req, res) {

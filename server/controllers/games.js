@@ -246,6 +246,7 @@ const updateGameInfo = async (gid, body) => {
     console.log(values);
     const res = await pool.query(updateQuery, values);
     console.log("🎉 game info updated successfully");
+   
   } catch (err) {
     console.error("⚠️ error updating game", err);
   }
@@ -258,6 +259,7 @@ const updateClueInfo = async (gid, body) => {
     console.log(values);
     const res = await pool.query(updateQuery, values);
     console.log("🎉 clue info updated successfully");
+    return ("clue info updated successfully")
   } catch (err) {
     console.error("⚠️ error updating clue info", err);
   }

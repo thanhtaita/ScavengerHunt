@@ -79,12 +79,38 @@ const FirstTab = () => {
     });
   };
 
+
+  function generateUniqueNumbersForGame(n: number, minVal: number, maxVal: number, gameId: string): string[] {
+    if (maxVal - minVal + 1 < n) {
+      throw new Error("Range too small for the number of unique values required.");
+    }
+
+    const uniqueNumbers = new Set<string>();
+    while (uniqueNumbers.size < n) {
+      const number = Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
+      const qrCode = `${gameId}-${number}`;
+      uniqueNumbers.add(qrCode);
+    }
+
+    return Array.from(uniqueNumbers);
+  }
   const handletoProcess = async () => {
     setStep(step + 1);
-    const tempClues = providedClues;
-    for (let i = 0; i < tempClues.length; i++) {
-      tempClues[i].QR_text = `${serverUrl}}/${gId}/${i + 1}`;
+    var tempClues = providedClues;
+    const qrCodes = generateUniqueNumbersForGame(tempClues.length, 10, 10000, gId!);
+
+    if (gId) {
+      tempClues = tempClues.map((clue, index) => {
+        if (clue.QR_text === "") {
+          return {
+            ...clue,
+            QR_text: qrCodes[index]
+          };
+        }
+        return clue
+      });
     }
+
     await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
       headers: {
@@ -103,7 +129,7 @@ const FirstTab = () => {
         if (response.ok) {
           const data = await response.json();
           //     // Handle the data and set state accordingly
-          // console.log(data);
+
           if (Object.keys(data.hints).length === 0) {
             setLatestClueNum(1);
           } else {
@@ -132,9 +158,7 @@ const FirstTab = () => {
     loadedGameInfo();
   }, []);
 
-  // useEffect(() => {
 
-  // }, [providedClues]);
 
   if (user === null) return null;
 
@@ -176,9 +200,8 @@ const FirstTab = () => {
               <div className="scroll-container">
                 {fixedCluesSize.map((num) => (
                   <button
-                    className={`scroll-item ${
-                      numProvidedClues.includes(num) ? "provided" : ""
-                    }`}
+                    className={`scroll-item ${numProvidedClues.includes(num) ? "provided" : ""
+                      }`}
                     key={num}
                     onClick={() => {
                       if (numProvidedClues.includes(num)) {
