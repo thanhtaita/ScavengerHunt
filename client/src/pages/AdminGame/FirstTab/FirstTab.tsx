@@ -17,6 +17,16 @@ const defaultClueInfo: ClueInfo = {
   QR_text: "",
 };
 
+function formatDateTime(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
 const FirstTab = () => {
   // Get current user information
   const { user } = useContext(AuthContext);
@@ -174,22 +184,34 @@ const FirstTab = () => {
                 placeholder="Game name"
                 value={gameName}
                 onChange={(e) => setGameName(e.target.value)}
+                required
               />
               <input
                 type="text"
                 placeholder="Game description"
                 value={gameDescription}
                 onChange={(e) => setGameDescription(e.target.value)}
+                required
               />
+              <label className="start">Start time</label>
               <input
-                type="date"
+                type="datetime-local"
                 value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
+                min={formatDateTime(new Date())}
+                onChange={(e) => {
+                  setStartTime(e.target.value);
+                }}
+                required
               />
+              <label className="end">End time</label>
               <input
-                type="date"
+                type="datetime-local"
                 value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
+                min={formatDateTime(new Date())}
+                onChange={(e) => {
+                  setEndTime(e.target.value);
+                }}
+                required
               />
               <button className="save-btn" onClick={() => saveGameInfo()}>
                 Save

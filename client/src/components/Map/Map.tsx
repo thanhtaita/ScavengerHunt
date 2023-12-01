@@ -121,7 +121,7 @@ const Map = () => {
     }
   }, [currentPosition]);
   return (
-    <div className="map" style={{ backgroundColor }}>
+    <div className="map">
       {currentPosition && (
         <MapContainer
           center={[
@@ -156,7 +156,12 @@ const Map = () => {
               currentPosition.coords.latitude,
               currentPosition.coords.longitude,
             ]}
-            radius={currentPosition.coords.accuracy} // Use the accuracy value as the radius
+            radius={
+              currentPosition.coords.accuracy > 50
+                ? currentPosition.coords.accuracy / 10
+                : currentPosition.coords.accuracy
+            } // Use the accuracy value as the radius
+            color={backgroundColor}
           />
         </MapContainer>
       )}
