@@ -139,11 +139,10 @@ app.post("/mygame/:gId/:hintId", auth, async function (req, res) {
   console.log(body);
   // update clue info only
   const data = await GamesController.updateClueInfo(gId, body);
-  
-  if (data) {
-    return res.send(data)
-  }
 
+  if (data) {
+    return res.send(data);
+  }
 });
 
 app.post("/", auth, async function (req, res) {
@@ -154,6 +153,19 @@ app.post("/", auth, async function (req, res) {
   if (data) {
     return res.json("");
   }
+});
+
+app.get("/unsolve/:gId", auth, async function (req, res) {
+  console.log("getting unsolve game");
+  const { gId } = req.params;
+  const uId = getUserInfo(req).email;
+  const data = await GamesController.unsolvedGameInfo(gId, uId);
+  console.log(data);
+  console.log("done getting unsolve game");
+  if (data) {
+    return res.send(data);
+  }
+  res.send("");
 });
 
 app.get("/auth/url", (_, res) => {

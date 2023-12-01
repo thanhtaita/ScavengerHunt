@@ -1,6 +1,7 @@
 import "./Map.css";
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Popup, Marker, Circle } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
 interface Position {
   coords: {
@@ -12,19 +13,12 @@ interface Position {
   // Add other properties if needed
 }
 
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 interface NormalPosition {
   lat: number;
   lng: number;
 }
-
-const destinations = [
-  {
-    lat: 41.8737696,
-    lng: -87.650714,
-  },
-  { lat: 41.875, lng: -87.650714 },
-  { lat: 41.873, lng: -87.66714 },
-];
 
 const colorScheme = [
   "#FF2E2E",
@@ -85,23 +79,8 @@ function haversineDistance(
   return distance;
 }
 
-const getSmallestDistance = (lat: number, lng: number) => {
-  let distance = 100000000;
-  for (let i = 0; i < destinations.length; i++) {
-    const temp = haversineDistance(
-      lat,
-      lng,
-      destinations[i].lat,
-      destinations[i].lng
-    );
-    if (temp < distance) {
-      distance = temp;
-    }
-  }
-  return distance;
-};
-
-const Map = () => {
+const Map = ({ gId }: { gId: number }) => {
+  const navigate = useNavigate();
   const [currentPosition, setCurrentPosition] = useState<Position | null>(null);
   const [backgroundColor, setBackgroundColor] = useState<string>(
     colorScheme[colorScheme.length - 1]
@@ -116,14 +95,40 @@ const Map = () => {
     // Get all unsolved destinations
     const getUnsolvedDestinations = async () => {
       try {
-        const res = await fetch(`${serverUrl}/mygame/${gId}`);
+        const res = await fetch(`${serverUrl}/unsolved/${gId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        if (res.status === 401) {
+          navigate("/authfail");
+          return;
+        }
+
         const data = await res.json();
-        console.log(data["hints"], data);
-        setDestinations(data["hints"]);
+        console.log(data);
+        const convertedData = data.map(
+          ({
+            Longtitude,
+            Latitude,
+          }: {
+            Longtitude: number;
+            Latitude: number;
+          }) => ({
+            lat: Latitude,
+            lng: Longtitude,
+          })
+        );
+        setDestinations(convertedData);
       } catch (error) {
         console.error("Error fetching game:", error);
       }
     };
+
+    getUnsolvedDestinations();
 
     setInterval(() => {
       navigator.geolocation.watchPosition(
@@ -138,6 +143,22 @@ const Map = () => {
       );
     }, 2000);
   }, []);
+
+  const getSmallestDistance = (lat: number, lng: number) => {
+    let distance = 100000000;
+    for (let i = 0; i < destinations.length; i++) {
+      const temp = haversineDistance(
+        lat,
+        lng,
+        destinations[i].lat,
+        destinations[i].lng
+      );
+      if (temp < distance) {
+        distance = temp;
+      }
+    }
+    return distance;
+  };
 
   useEffect(() => {
     if (currentPosition) {
@@ -154,6 +175,7 @@ const Map = () => {
       }
     }
   }, [currentPosition]);
+
   return (
     <div className="map">
       {currentPosition && (

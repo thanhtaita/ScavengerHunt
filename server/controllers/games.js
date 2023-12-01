@@ -249,7 +249,6 @@ const updateGameInfo = async (gid, body) => {
     console.log(values);
     const res = await pool.query(updateQuery, values);
     console.log("🎉 game info updated successfully");
-   
   } catch (err) {
     console.error("⚠️ error updating game", err);
   }
@@ -262,11 +261,52 @@ const updateClueInfo = async (gid, body) => {
     console.log(values);
     const res = await pool.query(updateQuery, values);
     console.log("🎉 clue info updated successfully");
-    return ("clue info updated successfully")
+    return "clue info updated successfully";
   } catch (err) {
     console.error("⚠️ error updating clue info", err);
   }
 };
+
+const unsolvedGameInfo = async (uid, gid) => {
+  console.log("get into controller unsolvedGameInfo");
+  try {
+    const selectUserProgressQuery = `
+      SELECT unsolvedClues
+      FROM user_progress
+      WHERE email = $1 AND gid = $2
+    `;
+    let unsolvedClues = [];
+    const userProgressRes = await pool.query(selectUserProgressQuery, [
+      uid,
+      gid,
+    ]);
+    // Assuming that 'solvedclues' and 'unsolvedclues' are stored as JSON strings
+    if (userProgressRes.rowCount > 0) {
+      unsolvedClues = JSON.parse(userProgressRes.rows[0].unsolvedclues || "[]");
+      // Now 'solvedClues' and 'unsolvedClues' are arrays extracted from the database
+    }
+
+    const selectGameHintsQuery = `
+      SELECT hints
+      FROM games
+      WHERE GID = $1
+    `;
+    const gameHintsRes = await pool.query(selectGameHintsQuery, [gid]);
+    if (gameHintsRes.rowCount === 0) {
+      return { unsolvedClues: [] };
+    }
+    const allClues = gameHintsRes.rows[0].hints;
+
+    const unsolvedCluesLoc = unsolvedClues.map(
+      (index) => allClues[index].location
+    );
+
+    return unsolvedCluesLoc;
+  } catch (err) {
+    console.error("⚠️ error accessing DB", err);
+  }
+};
+
 const leaderboardInfo = async (gid) => {
   try {
     const selectQuery = `SELECT * FROM user_progress WHERE gid = $1`;
@@ -294,4 +334,5 @@ export default {
   getGameDeets,
   joinGame,
   leaderboardInfo,
+  unsolvedGameInfo,
 };
