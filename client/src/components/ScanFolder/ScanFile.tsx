@@ -152,7 +152,7 @@ const ScanQR = () => {
             <br></br>
             <br></br>
             <br></br>
-            Dont close the screen</p>
+            Do not close the screen</p>
         </h1>
       )
       }
