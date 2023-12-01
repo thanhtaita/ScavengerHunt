@@ -103,11 +103,47 @@ const FirstTab = () => {
     }
   };
 
+  function generateUniqueNumbersForGame(
+    n: number,
+    minVal: number,
+    maxVal: number,
+    gameId: string
+  ): string[] {
+    if (maxVal - minVal + 1 < n) {
+      throw new Error(
+        "Range too small for the number of unique values required."
+      );
+    }
+
+    const uniqueNumbers = new Set<string>();
+    while (uniqueNumbers.size < n) {
+      const number = Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
+      const qrCode = `${gameId}-${number}`;
+      uniqueNumbers.add(qrCode);
+    }
+
+    return Array.from(uniqueNumbers);
+  }
   const handletoProcess = async () => {
     setStep(step + 1);
-    const tempClues = providedClues;
-    for (let i = 0; i < tempClues.length; i++) {
-      tempClues[i].QR_text = `${serverUrl}}/${gId}/${i + 1}`;
+    var tempClues = providedClues;
+    const qrCodes = generateUniqueNumbersForGame(
+      tempClues.length,
+      10,
+      10000,
+      gId!
+    );
+
+    if (gId) {
+      tempClues = tempClues.map((clue, index) => {
+        if (clue.QR_text === "") {
+          return {
+            ...clue,
+            QR_text: qrCodes[index],
+          };
+        }
+        return clue;
+      });
     }
     const res = await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
@@ -134,6 +170,30 @@ const FirstTab = () => {
         if (response.status === 401) {
           navigate("/authfail");
           return;
+        }
+        if (response.ok) {
+          const data = await response.json();
+          //     // Handle the data and set state accordingly
+
+          if (Object.keys(data.hints).length === 0) {
+            setLatestClueNum(1);
+          } else {
+            setLatestClueNum(data?.hints.length + 1);
+            const numProvidedCluesTemp = data?.hints.map(
+              (clue: ClueInfo) => clue.clueID
+            );
+            setNumProvidedClues(numProvidedCluesTemp);
+            setProvidedClues(data?.hints);
+          }
+          setGameName(data?.name);
+          setGameDescription(data?.description);
+          setStartTime(data?.starttime);
+          setEndTime(data?.endtime);
+
+          setCurrentClueInfo(data?.hints[0]);
+        } else {
+          // Handle the situation when the response is not ok (e.g., error handling)
+          console.error("Error fetching data:", response.status);
         }
         if (!response.ok) {
           window.alert("Error happens. Please try again.");
@@ -164,11 +224,7 @@ const FirstTab = () => {
       }
     };
     loadedGameInfo();
-  }, [gId, navigate]);
-
-  // useEffect(() => {
-
-  // }, [providedClues]);
+  }, []);
 
   if (user === null) return null;
 

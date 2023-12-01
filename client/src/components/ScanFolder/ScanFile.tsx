@@ -1,31 +1,128 @@
 import { useRef, useState, useEffect } from "react";
 // import { OverlayEventDetail } from "@ionic/core";
 import QrScanner from "qr-scanner";
+import { useNavigate, useParams } from 'react-router-dom';
+import { ClueInfo } from "../../utils/types";
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const ScanQR = () => {
-  // const modal = useRef<HTMLIonModalElement>(null);
+  const { gId } = useParams();
+  var counter = 0
   const video = useRef<HTMLVideoElement>(null);
   const [qrScanner, setQrScanner] = useState<QrScanner>();
-  const [scanCode, setScanCode] = useState("");
+  const [redirect, setRedirect] = useState(false);
+  const [clues, setclues] = useState<Array<ClueInfo>>([]);
+  let navigate = useNavigate();
+  const [scanCode, setScanCode] = useState({ "QrText": "", 'location': "" });
+  const [scanResults, setScanResults] = useState("");
+  console.log(gId)
+  const updateLocation = async (currentClueNum: number, qrText: string) => {
+    const tempClues = clues.map((clue) => {
+      if (clue.QR_text === qrText) {
+        clue.location = scanCode.location
+      }
+      return clue
+    });
+    console.log(tempClues, currentClueNum, gId)
 
-  function handleScan(result: QrScanner.ScanResult) {
-    //Logic with scanned qr code
-    setScanCode(result.data);
-    console.log(result);
-    qrScanner?.destroy();
+    fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(tempClues),
+    }).then(response => response.text())
+      .then(result => {
+        console.log(result);
+        setRedirect(true)
+
+      })
+      .catch(error => console.log('error', error));
+
   }
 
-  // async function close() {
-  //   qrScanner?.stop();
-  //   qrScanner?.destroy();
-  //   setQrScanner(undefined);
-  // }
+  useEffect(() => {
+    if (redirect) {
+      window.location.assign(`/mygame/${gId}/ScanQRCode`);
+      // navigate(`/mygame/${gId}/ScanQRCode`);
+    }
+  }, [redirect])
+
+
+  const fectGameDeatils = async () => {
+    try {
+      const res = await fetch(`${serverUrl}/mygame/${gId}`);
+      const data = await res.json();
+      console.log(data["hints"], data); setclues(data["hints"])
+    } catch (error) {
+      console.error("Error fetching game:", error);
+    }
+  }
+  const getLocation = () => {
+    alert("Are you sure you want to enter this location?");
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position: GeolocationPosition) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          console.log(`{"Latitude": "${latitude}", "Longitude": "${longitude}"}`, scanResults, scanCode);
+          // setScanCode((prev) => {
+          //   const data = prev;
+          //   data.location = `{"Latitude": "${latitude}", "Longitude": "${longitude}"}`
+          //   return data
+          // })
+          setScanCode({ "QrText": scanCode.QrText, "location": `{"Latitude": "${latitude}", "Longitude": "${longitude}"}` })
+        }
+      );
+
+    } else {
+      console.log("Geolocation not supported");
+    }
+  };
+  useEffect(() => {
+    console.log(scanCode)
+    if (scanCode.location !== "") {
+      updateLocation(0, scanCode.QrText)
+
+    }
+
+
+  }, [scanCode])
+
+  useEffect(() => {
+    console.log(scanCode)
+    fectGameDeatils()
+  }, [])
+
+  function handleScan(result: QrScanner.ScanResult) {
+    console.log(counter)
+    counter = counter + 1
+    if (counter === 1) {
+
+
+      const res = result.data
+      console.log(res);
+      setScanResults(res)
+      // setScanCode({ "QrText": res, "location": scanCode.QrText })
+
+      setScanCode((prev) => {
+        const data = prev;
+        data.QrText = res
+        return data
+      })
+      // qrScanner?.destroy();
+      getLocation()
+      qrScanner?.destroy();
+    }
+  }
+  // Function to stop the webcam
+
 
   useEffect(() => {
     if (video.current) {
       const qrScanner = new QrScanner(
         video.current,
-        (result) => handleScan(result),
+        (result) => { handleScan(result) },
         {
           highlightScanRegion: true,
         }
@@ -33,14 +130,14 @@ const ScanQR = () => {
       qrScanner.start();
       setQrScanner(qrScanner);
     }
-    // Dependency array missing handleScan, since it should not set Scanner on handleScan change
-    // eslint-disable-next-line
+
   }, [video.current]);
 
   return (
-    <div className="scanContainer">
-      {scanCode === "" && <video ref={video}></video>}
-      {scanCode !== "" && <h1> {scanCode}</h1>}
+    <div >
+
+      {scanCode?.QrText !== "" && <h1 className={"justify-content: center"}> {scanCode.QrText} {scanCode.location}</h1>}
+      {scanCode?.QrText === "" && <div className="scanContainer"> <video ref={video}></video> </div>}
     </div>
   );
 };

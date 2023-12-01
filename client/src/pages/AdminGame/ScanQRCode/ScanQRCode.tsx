@@ -1,49 +1,41 @@
 import "./ScanQRCode.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { GetContext } from "../AdminGame";
+import { ClueInfo } from "../../../utils/types";
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const Scan = () => {
   const { gId } = useParams();
   console.log(gId);
   const { step, setStep } = GetContext();
-  const [clues] = useState<Array<string>>([
-    "Clue 1",
-    "Clue 2",
-    "Clue 3",
-    "Clue 4",
-    "Clue 5",
-    "Clue 6",
-    "Clue 7",
-  ]);
+  const [clues, setclues] = useState<Array<ClueInfo>>([]);
   const [, setDisabled] = useState<Array<boolean>>(
     Array.from({ length: clues.length }, () => false)
   );
   // To fix the issue, wrap the boolean value in an array and set it to the corresponding index of the `disabled` state array
+  const fectGameDeatils = async () => {
+    const url = "http://localhost:9999/mygame/" + gId
+    console.log(
+      url
+    )
 
-  const locationOnClick = (index: number) => {
-    alert("Are you sure you want to enter this location?");
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position: GeolocationPosition) => {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
-          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-        }
-      );
-      const getelement = document.getElementsByClassName("QRCodes2")[
-        index
-      ] as HTMLButtonElement;
-      getelement.innerHTML = `QR Code ${index + 1} Location Entered`;
-      setDisabled((prevDisabled) => {
-        const newDisabled = [...prevDisabled];
-        newDisabled[index] = true;
-        return newDisabled;
-      });
-    } else {
-      console.log("Geolocation not supported");
+    try {
+      const res = await fetch(`${serverUrl}/mygame/${gId}`);
+      const data = await res.json();
+      console.log(data["hints"], data); setclues(data["hints"])
+    } catch (error) {
+      console.error("Error fetching game:", error);
     }
-  };
+
+
+  }
+
+  useEffect(() => {
+    fectGameDeatils()
+
+  }, [])
+
   return (
     <div>
       <p className="titlePage2"> Scan The QR Codes </p>
@@ -52,14 +44,15 @@ const Scan = () => {
       </p>
       <div className="listOfQR2">
         <ul className="allOfClues2">
-          {clues.map((clue: string, index: number) => (
+          {clues.map((clue) => (
             <Link
-              to={`/mygame/${gId}/scanQRcode`}
+              to={`/mygame/${gId}/scanQR`}
               className="QRCodes2"
-              key={index}
-              onClick={() => locationOnClick(index)}
+              key={clue.clueID}
             >
-              {clue}
+              Clue {clue.clueID} {
+                clue.location !== "" && <i className='fas fa-map-marker-alt font-size:36px' ></i>
+              }
             </Link>
           ))}
         </ul>

@@ -37,7 +37,9 @@
     "react-icons": "^4.11.0",
     "react-leaflet": "^4.2.1",
     "react-qr-code": "^2.0.12",
-    "react-router-dom": "^6.9.0"
+    "react-router": "^6.20.0",
+    "react-router-dom": "^6.20.0",
+    "recoil": "^0.7.7"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.6",
