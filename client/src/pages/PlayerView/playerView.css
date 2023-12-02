@@ -1,12 +1,40 @@
+.mainContainer{
+    background-image: url("/mainPageBack.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+}
 .previous-button{
-    margin-left: 2rem;
-    width: 8rem;
-    background-color: #e55d23;
-    margin-right: 18rem;
+    width: 9rem;
+    border-radius: 0.7rem;
+    background-color: #ae481d;
+}
+.nav-item1{
+    position: relative;
+    padding: 3% 19%;
+    margin-left: 6rem;
+
 }
 .nav-link{
-    color: #8DFFCD;
-    font-size: 1.3rem;
-    font-weight: 200;
-    margin-left: 2rem;
+    background-color: #b6491b;
+    color: white;
+    font-size: 1rem;
+    border-radius: 0.7rem;
+    width: 10rem;
+    text-align: center;
+    padding: 7% 7%;
+}
+.navbar-nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 2%;
+    width: 100%;
+}
+.nav-item{
+    padding: 3% 1%;
+}
+.navbar-player{
+    display: flex;
 }

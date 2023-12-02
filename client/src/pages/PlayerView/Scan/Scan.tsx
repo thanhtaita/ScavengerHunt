@@ -10,6 +10,8 @@ const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const Scan = () => {
   const { user } = useContext(AuthContext);
+  let counter = 0;
+
   const { gameId } = useParams<{ gameId: string }>();
   // const modal = useRef<HTMLIonModalElement>(null);
   const video = useRef<HTMLVideoElement>(null);
@@ -21,12 +23,15 @@ const Scan = () => {
   // }
 
   async function handleScan(result: QrScanner.ScanResult) {
+    counter = counter + 1;
+    console.log(counter);
     //Logic with scanned qr code
     setScanCode(result.data);
     console.log(result.data);
     console.log("Handling Scan...");
+    qrScanner?.destroy();
 
-    if (user) {
+    if (user && counter === 1) {
       const uid = user.email;
       try {
         const response = await fetch(`${serverUrl}/verifyQR`, {
@@ -55,6 +60,7 @@ const Scan = () => {
 
         if (data.success) {
           console.log("API call was successful");
+
           window.alert(
             "QR verification was successful! The progress page should reflect the same"
           );
@@ -66,8 +72,6 @@ const Scan = () => {
         console.error("Error making API call:", error);
       }
     }
-
-    qrScanner?.destroy();
   }
 
   // async function close() {
@@ -96,11 +100,10 @@ const Scan = () => {
     <div className="scanContainer2">
       <p className="ScanTitle">Scan QR Code</p>
       <div className="scanContainer">
-      {scanCode === "" && <video ref={video}></video>}
-      {scanCode !== "" && <h1> {scanCode}</h1>}
+        {scanCode === "" && <video ref={video}></video>}
+        {scanCode !== "" && <h1> {scanCode}</h1>}
       </div>
     </div>
-    
   );
 };
 

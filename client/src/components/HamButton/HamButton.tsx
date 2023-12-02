@@ -15,7 +15,10 @@ const HamButton = () => {
   const handleLogout = async () => {
     if (loggedIn) {
       try {
-        await axios.post(`${serverUrl}/auth/logout`);
+        await fetch(`${serverUrl}/auth/logout`, {
+          method: "POST",
+          credentials: "include",
+        });
         window.location.assign("/MainPage");
       } catch (err) {
         console.error(err);

@@ -1,32 +1,26 @@
 .progressContainer {
-  min-width: 320px;
-  min-height: 120vh;
-
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: relative;
-  background-image: url("/mainPageBack.png");
   display: flex;
 }
 .progressTitle {
   font-size: 3rem;
-  border-bottom: 3px solid black;
+  margin-bottom: 3vh;
+  width: 20rem;
+  margin-left: 35%;
+  text-align: center;
+  border-bottom: 1px solid black;
   text-transform: uppercase;
   font-weight: bold;
 }
 
 .pieChart {
   margin-top: 8%;
-  width: 30%;
-  margin-left: 10rem;
-  margin-right: 5rem;
+  margin-right: 3rem;
 }
 .currentClue {
-  margin-top: 10%;
   padding: 2rem 2rem;
   background-color: #46414177;
   border-radius: 2rem;
+  
 }
 .currentClues {
   font-size: 2.5rem;
@@ -38,7 +32,7 @@
   width: 100%;
 }
 .solvedTitle {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 500;
   padding-bottom: 4%;
   color: #8dffcd;
@@ -47,19 +41,22 @@
   display: flex;
   flex-direction: column;
   width: 80%;
-  margin-left: -8rem;
+  padding: 2% 2%;
   color: #edfcb4;
   font-size: 1.25rem;
 }
 .scrollableList {
   overflow-y: auto;
-  height: 70%;
+  height: 80%;
 }
 .solvedClues {
   margin-top: 10%;
-  padding: 2rem 2rem;
+  padding-top: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
   background-color: #46414165;
   border-radius: 2rem;
+  height: 60%;
 }
 
 .solvedClues ul,

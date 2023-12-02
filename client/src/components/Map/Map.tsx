@@ -1,7 +1,9 @@
 import "./Map.css";
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Popup, Marker, Circle } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
+import { loc } from "../../utils/types";
 interface Position {
   coords: {
     latitude: number;
@@ -12,10 +14,12 @@ interface Position {
   // Add other properties if needed
 }
 
-const destionation = {
-  lat: 41.8737696,
-  lng: -87.650714,
-};
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+
+interface NormalPosition {
+  lat: number;
+  lng: number;
+}
 
 const colorScheme = [
   "#FF2E2E",
@@ -65,9 +69,9 @@ function haversineDistance(
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(radLat1) *
-      Math.cos(radLat2) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+    Math.cos(radLat2) *
+    Math.sin(dLon / 2) *
+    Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   // Distance in meters
@@ -76,16 +80,68 @@ function haversineDistance(
   return distance;
 }
 
-const Map = () => {
+const Map = ({ gId }: { gId: number }) => {
+  const navigate = useNavigate();
   const [currentPosition, setCurrentPosition] = useState<Position | null>(null);
   const [backgroundColor, setBackgroundColor] = useState<string>(
     colorScheme[colorScheme.length - 1]
   );
+  const [destinations, setDestinations] = useState<NormalPosition[]>([]);
   useEffect(() => {
     if (!navigator.geolocation) {
       console.log("Your browser doesn't support geolocation feature!");
       return;
     }
+
+    // Get all unsolved destinations
+    const getUnsolvedDestinations = async () => {
+      try {
+
+        console.log(gId)
+        const res = await fetch(`${serverUrl}/unsolve/${gId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        if (res.status === 401) {
+          navigate("/authfail");
+          return;
+        }
+
+        const data = await res.json();
+        console.log(data[0]);
+
+        // await data.map((d: loc, index: number) => { d = JSON.parse(data[index]) })
+        const convertedData = data.map((d: loc, index: number) => {
+          const y = JSON.parse(data[index]);
+          console.log(d, index, y)
+
+          return {
+            lat: y.Latitude,
+            lng: y.Longitude,
+          }
+        })
+        // const convertedData = data.map(
+
+        //   ({
+        //     Longitude,
+        //     Latitude,
+        //   }: loc) => ({
+        //     lat: Latitude,
+        //     lng: Longitude,
+        //   })
+        // );
+        console.log(convertedData)
+        setDestinations(convertedData);
+      } catch (error) {
+        console.error("Error fetching game:", error);
+      }
+    };
+
+    getUnsolvedDestinations();
 
     setInterval(() => {
       navigator.geolocation.watchPosition(
@@ -101,13 +157,27 @@ const Map = () => {
     }, 2000);
   }, []);
 
+  const getSmallestDistance = (lat: number, lng: number) => {
+    let distance = 100000000;
+    for (let i = 0; i < destinations.length; i++) {
+      const temp = haversineDistance(
+        lat,
+        lng,
+        destinations[i].lat,
+        destinations[i].lng
+      );
+      if (temp < distance) {
+        distance = temp;
+      }
+    }
+    return distance;
+  };
+
   useEffect(() => {
     if (currentPosition) {
-      const distance = haversineDistance(
+      const distance = getSmallestDistance(
         currentPosition.coords.latitude,
-        currentPosition.coords.longitude,
-        destionation.lat,
-        destionation.lng
+        currentPosition.coords.longitude
       );
       console.log(distance);
       const temp = getColorScale(distance);
@@ -118,6 +188,7 @@ const Map = () => {
       }
     }
   }, [currentPosition]);
+
   return (
     <div className="map">
       {currentPosition && (
@@ -140,15 +211,14 @@ const Map = () => {
               currentPosition.coords.longitude,
             ]}
           >
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
+            <Popup>You are here</Popup>
           </Marker>
-          <Marker position={[destionation.lat, destionation.lng]}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
+          {destinations &&
+            destinations.map((destination, index) => (
+              <Marker position={[destination.lat, destination.lng]}>
+                <Popup>Destination {index + 1}</Popup>
+              </Marker>
+            ))}
           <Circle
             center={[
               currentPosition.coords.latitude,

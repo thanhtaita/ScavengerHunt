@@ -49,6 +49,10 @@ const FirstTab = () => {
   const { step, setStep } = GetContext();
 
   const saveGameInfo = async () => {
+    console.log(
+
+      gId, gameName, gameDescription, startTime, endTime,
+    )
     // save game information to backend
     const res = await fetch(`${serverUrl}/mygame/${gId}`, {
       method: "POST",
@@ -88,6 +92,7 @@ const FirstTab = () => {
     setProvidedClues(tempClues);
     console.log(tempClues);
 
+
     // update clues information to backend
     const res = await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
@@ -98,16 +103,57 @@ const FirstTab = () => {
       body: JSON.stringify(tempClues),
     });
     if (res.status === 401) {
-      navigate("/authfail");
+      navigate("/mygame/{$}");
       return;
+    } else {
+      window.location.assign(`/mygame/${gId}`)
+
     }
+
+
   };
 
+  function generateUniqueNumbersForGame(
+    n: number,
+    minVal: number,
+    maxVal: number,
+    gameId: string
+  ): string[] {
+    if (maxVal - minVal + 1 < n) {
+      throw new Error(
+        "Range too small for the number of unique values required."
+      );
+    }
+
+    const uniqueNumbers = new Set<string>();
+    while (uniqueNumbers.size < n) {
+      const number = Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
+      const qrCode = `${gameId}-${number}`;
+      uniqueNumbers.add(qrCode);
+    }
+
+    return Array.from(uniqueNumbers);
+  }
   const handletoProcess = async () => {
     setStep(step + 1);
-    const tempClues = providedClues;
-    for (let i = 0; i < tempClues.length; i++) {
-      tempClues[i].QR_text = `${serverUrl}}/${gId}/${i + 1}`;
+    let tempClues = providedClues;
+    const qrCodes = generateUniqueNumbersForGame(
+      tempClues.length,
+      10,
+      10000,
+      gId!
+    );
+
+    if (gId) {
+      tempClues = tempClues.map((clue, index) => {
+        if (clue.QR_text === "") {
+          return {
+            ...clue,
+            QR_text: qrCodes[index],
+          };
+        }
+        return clue;
+      });
     }
     const res = await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
@@ -122,7 +168,9 @@ const FirstTab = () => {
       return;
     }
   };
-
+  useEffect(() => {
+    console.log(gameDescription)
+  }, [gameDescription])
   useEffect(() => {
     // load provided game information from backend
     const loadedGameInfo = async () => {
@@ -135,40 +183,37 @@ const FirstTab = () => {
           navigate("/authfail");
           return;
         }
-        if (!response.ok) {
-          window.alert("Error happens. Please try again.");
-          return;
-        }
-        const data = await response.json();
-        //     // Handle the data and set state accordingly
-        // console.log(data);
-        if (Object.keys(data.hints).length === 0) {
-          setLatestClueNum(1);
-        } else {
-          setLatestClueNum(data?.hints.length + 1);
-          const numProvidedCluesTemp = data?.hints.map(
-            (clue: ClueInfo) => clue.clueID
-          );
-          setNumProvidedClues(numProvidedCluesTemp);
-          setProvidedClues(data?.hints);
-        }
-        setGameName(data?.name);
-        setGameDescription(data?.description);
-        setStartTime(data?.starttime);
-        setEndTime(data?.endtime);
+        if (response.ok) {
+          const data = await response.json();
+          //     // Handle the data and set state accordingly
 
-        setCurrentClueInfo(data?.hints[0]);
+          if (Object.keys(data.hints).length === 0) {
+            setLatestClueNum(1);
+          } else {
+            setLatestClueNum(data?.hints.length + 1);
+            const numProvidedCluesTemp = data?.hints.map(
+              (clue: ClueInfo) => clue.clueID
+            );
+            setNumProvidedClues(numProvidedCluesTemp);
+            setProvidedClues(data?.hints);
+          }
+          setGameName(data?.name);
+          setGameDescription(data?.description);
+          setStartTime(data?.starttime);
+          setEndTime(data?.endtime);
+
+          setCurrentClueInfo(data?.hints[0]);
+        } else {
+          // Handle the situation when the response is not ok (e.g., error handling)
+          console.error("Error fetching data:", response.status);
+        }
       } catch (error) {
         // Handle any other errors that might occur during the fetch process
         console.error("Error:", error);
       }
     };
     loadedGameInfo();
-  }, [gId, navigate]);
-
-  // useEffect(() => {
-
-  // }, [providedClues]);
+  }, []);
 
   if (user === null) return null;
 
@@ -177,7 +222,7 @@ const FirstTab = () => {
       <div className="content">
         <div className="game-info">
           <div className="general-info">
-            <form>
+            <form id="form1" name="form1">
               <input
                 type="text"
                 placeholder="Game name"
@@ -212,18 +257,20 @@ const FirstTab = () => {
                 }}
                 required
               />
-              <button className="save-btn" onClick={() => saveGameInfo()}>
+
+            </form>
+            <div className="div">
+              <button id="savegame" className="savegame-btn" onClick={() => saveGameInfo()}>
                 Save
               </button>
-            </form>
+            </div>
             <div className="clues-info">
               <label>Enter clue information</label>
               <div className="scroll-container">
                 {fixedCluesSize.map((num) => (
                   <button
-                    className={`scroll-item ${
-                      numProvidedClues.includes(num) ? "provided" : ""
-                    }`}
+                    className={`scroll-item ${numProvidedClues.includes(num) ? "provided" : ""
+                      }`}
                     key={num}
                     onClick={() => {
                       if (numProvidedClues.includes(num)) {
@@ -269,10 +316,13 @@ const FirstTab = () => {
                   });
                 }}
               />
-              <button className="save-btn" onClick={() => saveClueInfo()}>
+              {/* <button className="save-btn" onClick={() => saveClueInfo()}>
                 Save
-              </button>
+              </button> */}
             </form>
+            <button className="save-btn" onClick={() => saveClueInfo()}>
+              Save
+            </button>
           </div>
         </div>
       </div>
