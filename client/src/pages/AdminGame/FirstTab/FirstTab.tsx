@@ -92,6 +92,7 @@ const FirstTab = () => {
     setProvidedClues(tempClues);
     console.log(tempClues);
 
+
     // update clues information to backend
     const res = await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
       method: "POST",
@@ -105,6 +106,8 @@ const FirstTab = () => {
       navigate("/authfail");
       return;
     }
+
+
   };
 
   function generateUniqueNumbersForGame(
@@ -310,10 +313,13 @@ const FirstTab = () => {
                   });
                 }}
               />
-              <button className="save-btn" onClick={() => saveClueInfo()}>
+              {/* <button className="save-btn" onClick={() => saveClueInfo()}>
                 Save
-              </button>
+              </button> */}
             </form>
+            <button className="save-btn" onClick={() => saveClueInfo()}>
+              Save
+            </button>
           </div>
         </div>
       </div>
