@@ -56,7 +56,10 @@ app.set("trust proxy", 1);
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "*"], // Allow access from any origin
+    origin: [
+      "http://localhost:3000",
+      "https://play-scavenger-hunt.netlify.app",
+    ], // Allow access from any origin
     credentials: true,
   })
 );
@@ -156,7 +159,7 @@ app.post("/", auth, async function (req, res) {
 });
 
 app.get("/unsolve/:gId", auth, async function (req, res) {
-  console.log("getting unsolve game",req.params);
+  console.log("getting unsolve game", req.params);
   const { gId } = req.params;
   const uId = getUserInfo(req).email;
   const data = await GamesController.unsolvedGameInfo(uId, gId);
@@ -256,9 +259,10 @@ app.get("/auth/logged_in", (req, res) => {
 
 app.post("/auth/logout", (req, res) => {
   // Clear the "token" cookie
-  res.clearCookie("token");
-  // Send the response
-  res.json({ message: "Logged out", loggedIn: false });
+  res.clearCookie("token", {
+    domain: "http://localhost:3000/MainPage",
+    path: "/",
+  });
 });
 
 app.get("/user/posts", auth, async (_, res) => {
@@ -293,9 +297,8 @@ app.get("/game/:gameId", auth, async function (req, res) {
   }
 });
 
-
 //get clue information for a user from the database.
-app.post("/progress", async function (req,res) {
+app.post("/progress", async function (req, res) {
   try {
     const { uid, gameId } = req.body;
     console.log(uid);
@@ -305,12 +308,11 @@ app.post("/progress", async function (req,res) {
     res.json(clues);
   } catch (err) {
     console.error("Error fetching clues from the database", err);
-    res.status(500).json({error:"Internal Server Error."});
+    res.status(500).json({ error: "Internal Server Error." });
   }
-
 });
 
-//Verifying Scanned QR code. 
+//Verifying Scanned QR code.
 app.post("/verifyQR", async (req, res) => {
   try {
     // Extract data from the request body

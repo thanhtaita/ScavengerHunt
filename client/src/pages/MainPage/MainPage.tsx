@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./MainPage.css";
 import Navbar from "../../components/Navbar/Navbar.tsx";
-import { GameList } from "../../components/GameList/GameList.tsx";
+import { GameList } from "../../components/GameList/Gamelist.tsx";
 import { GameRow } from "../../utils/types.ts";
 import { useContext } from "react";
 import { AuthContext } from "../../utils/context";
@@ -11,7 +11,6 @@ const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const [redirect, setRedirect] = useState(false);
 
   const { user } = useContext(AuthContext);
   const [gameId, setGameId] = useState(0);
@@ -62,7 +61,7 @@ const MainPage = () => {
           return;
         }
         const data = await res.json();
-        console.log(data)
+        console.log(data);
         setFetchedGames(data);
       } catch (error) {
         console.error("Error fetching games:", error);
