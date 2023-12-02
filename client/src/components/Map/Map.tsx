@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Popup, Marker, Circle } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
+import { loc } from "../../utils/types";
 interface Position {
   coords: {
     latitude: number;
@@ -95,7 +96,9 @@ const Map = ({ gId }: { gId: number }) => {
     // Get all unsolved destinations
     const getUnsolvedDestinations = async () => {
       try {
-        const res = await fetch(`${serverUrl}/unsolved/${gId}`, {
+
+        console.log(gId)
+        const res = await fetch(`${serverUrl}/unsolve/${gId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -109,19 +112,29 @@ const Map = ({ gId }: { gId: number }) => {
         }
 
         const data = await res.json();
-        console.log(data);
-        const convertedData = data.map(
-          ({
-            Longtitude,
-            Latitude,
-          }: {
-            Longtitude: number;
-            Latitude: number;
-          }) => ({
-            lat: Latitude,
-            lng: Longtitude,
-          })
-        );
+        console.log(data[0]);
+
+        // await data.map((d: loc, index: number) => { d = JSON.parse(data[index]) })
+        const convertedData = data.map((d: loc, index: number) => {
+          const y = JSON.parse(data[index]);
+          console.log(d, index, y)
+
+          return {
+            lat: y.Latitude,
+            lng: y.Longitude,
+          }
+        })
+        // const convertedData = data.map(
+
+        //   ({
+        //     Longitude,
+        //     Latitude,
+        //   }: loc) => ({
+        //     lat: Latitude,
+        //     lng: Longitude,
+        //   })
+        // );
+        console.log(convertedData)
         setDestinations(convertedData);
       } catch (error) {
         console.error("Error fetching game:", error);

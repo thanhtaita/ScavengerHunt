@@ -11,6 +11,10 @@ export interface User {
   email?: string;
   picture?: string;
 }
+export interface loc {
+  Longitude: number;
+  Latitude: number;
+}
 
 export interface AuthContextType {
   loggedIn: null;

@@ -156,10 +156,10 @@ app.post("/", auth, async function (req, res) {
 });
 
 app.get("/unsolve/:gId", auth, async function (req, res) {
-  console.log("getting unsolve game");
+  console.log("getting unsolve game",req.params);
   const { gId } = req.params;
   const uId = getUserInfo(req).email;
-  const data = await GamesController.unsolvedGameInfo(gId, uId);
+  const data = await GamesController.unsolvedGameInfo(uId, gId);
   console.log(data);
   console.log("done getting unsolve game");
   if (data) {
