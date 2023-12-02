@@ -103,8 +103,11 @@ const FirstTab = () => {
       body: JSON.stringify(tempClues),
     });
     if (res.status === 401) {
-      navigate("/authfail");
+      navigate("/mygame/{$}");
       return;
+    } else {
+      window.location.assign(`/mygame/${gId}`)
+
     }
 
 
