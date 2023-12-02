@@ -89,3 +89,5 @@ INSERT INTO User_progress (gid, email, solvedClues, points, latest_time_date) VA
     (2, 'bob@email.com', 'ClueA, ClueB', '80', '2023-11-01 15:30:00'),
     (3, 'charlie@email.com', 'ClueX, ClueY, ClueZ', '120', '2023-11-05 10:30:00');
 */
+
+// INSERT INTO Games (name, email, code, link, starttime, endtime, hints, description) VALUES ('Secrets of the Haunted Mansion', 'karrthik.reddyusa@gmail.com', 1, 'http://link2.com', '2023-12-01 04:08', '2023-12-30 20:08', '[{"clueID": "1", "clueText": "First clue", "imageURL": "http://image1.com", "location": "Location 1", "QR_text": "QR1"}, {"clueID": "2", "clueText": "Second clue", "imageURL": "http://image2.com", "location": "Location 2", "QR_text": "QR2"}, {"clueID": "3", "clueText": "Third clue", "imageURL": "http://image3.com", "location": "Location 3", "QR_text": "QR3"}, {"clueID": "4", "clueText": "Fourth clue", "imageURL": "http://image4.com", "location": "Location 4", "QR_text": "QR4"}, {"clueID": "5", "clueText": "Fifth clue", "imageURL": "http://image5.com", "location": "Location 5", "QR_text": "QR5"}]', 'Description for Game 2');

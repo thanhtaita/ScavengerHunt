@@ -2,6 +2,7 @@ import "./ScanQRCode.css";
 import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { GetContext } from "../AdminGame";
+
 import { ClueInfo } from "../../../utils/types";
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -11,6 +12,10 @@ const Scan = () => {
   console.log(gId);
   const { step, setStep } = GetContext();
   const [clues, setclues] = useState<Array<ClueInfo>>([]);
+
+  const [, setDisabled] = useState<Array<boolean>>(
+    Array.from({ length: clues.length }, () => false)
+  );
   // To fix the issue, wrap the boolean value in an array and set it to the corresponding index of the `disabled` state array
   const fectGameDeatils = async () => {
     try {
@@ -54,6 +59,7 @@ const Scan = () => {
               {clue.location !== "" && (
                 <i className="fas fa-map-marker-alt font-size:36px"></i>
               )}
+
             </Link>
           ))}
         </ul>

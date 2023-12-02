@@ -49,6 +49,10 @@ const FirstTab = () => {
   const { step, setStep } = GetContext();
 
   const saveGameInfo = async () => {
+    console.log(
+
+      gId, gameName, gameDescription, startTime, endTime,
+    )
     // save game information to backend
     const res = await fetch(`${serverUrl}/mygame/${gId}`, {
       method: "POST",
@@ -158,7 +162,9 @@ const FirstTab = () => {
       return;
     }
   };
-
+  useEffect(() => {
+    console.log(gameDescription)
+  }, [gameDescription])
   useEffect(() => {
     // load provided game information from backend
     const loadedGameInfo = async () => {
@@ -210,7 +216,7 @@ const FirstTab = () => {
       <div className="content">
         <div className="game-info">
           <div className="general-info">
-            <form>
+            <form id="form1" name="form1">
               <input
                 type="text"
                 placeholder="Game name"
@@ -245,18 +251,20 @@ const FirstTab = () => {
                 }}
                 required
               />
-              <button className="save-btn" onClick={() => saveGameInfo()}>
+
+            </form>
+            <div className="div">
+              <button id="savegame" className="savegame-btn" onClick={() => saveGameInfo()}>
                 Save
               </button>
-            </form>
+            </div>
             <div className="clues-info">
               <label>Enter clue information</label>
               <div className="scroll-container">
                 {fixedCluesSize.map((num) => (
                   <button
-                    className={`scroll-item ${
-                      numProvidedClues.includes(num) ? "provided" : ""
-                    }`}
+                    className={`scroll-item ${numProvidedClues.includes(num) ? "provided" : ""
+                      }`}
                     key={num}
                     onClick={() => {
                       if (numProvidedClues.includes(num)) {

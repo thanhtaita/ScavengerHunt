@@ -1,6 +1,9 @@
 import { pool } from "../config/database.js";
+import moment from "moment-timezone";
 
-const joinGame = async (uid, gameId) => {
+
+//Joining a game. [Creates new entry if new game]
+const joinGame = async (uid, gameId) => { 
   try {
     console.log("Inside Join Game");
     const selectQuery = `
@@ -21,8 +24,8 @@ const joinGame = async (uid, gameId) => {
 
     // If it doesn't exist, create a new entry.
     const insertQuery = `
-      INSERT INTO user_progress (gid, email, solvedClues, points, latest_time_date)
-      VALUES ($1, $2, '', '0', 'N/A')
+      INSERT INTO user_progress (gid, email, solvedClues, unsolvedClues, points, latest_time_date)
+      VALUES ($1, $2, '', '', '0', 'N/A')
     `;
     await pool.query(insertQuery, [parseInt(gameId, 10), uid]);
 
@@ -33,6 +36,7 @@ const joinGame = async (uid, gameId) => {
   }
 };
 
+//Gets game description from the database to display in the game page. 
 const getGameDeets = async (gameId) => {
   try {
     console.log("Fetching from games database ...");
@@ -61,30 +65,31 @@ const getGameDeets = async (gameId) => {
   }
 };
 
-const verifyQR = async (uid, gameId, result) => {
+//verifying scanned QR code with the in game(actual) QR code. 
+const verifyQR = async (uid, gameId, QR_value) => {
   try {
     console.log("Accessing DB inside verifyQR ...");
 
     const selectUserProgressQuery = `
-      SELECT solvedclues
+      SELECT solvedclues, unsolvedClues
       FROM user_progress
       WHERE email = $1 AND gid = $2
     `;
-    const userProgressRes = await pool.query(selectUserProgressQuery, [
-      uid,
-      gameId,
-    ]);
-    if (userProgressRes.rowCount === 0) {
-      return false;
+
+    let solvedCluesArray=[];
+    let unsolvedCluesArray=[];
+    const userProgressRes = await pool.query(selectUserProgressQuery, [uid, gameId]);
+    // Assuming that 'solvedclues' and 'unsolvedclues' are stored as JSON strings
+    if (userProgressRes.rowCount > 0) {
+      solvedCluesArray = JSON.parse(userProgressRes.rows[0].solvedclues || '[]');
+      unsolvedCluesArray = JSON.parse(userProgressRes.rows[0].unsolvedclues || '[]');
+      // Now 'solvedClues' and 'unsolvedClues' are arrays extracted from the database
+    } else { //when empty user progress, solvedClues is empty (default) and the empty unsolvedClues will be populated (to atleast 1) below while adjusting.
+      const isCreated = await GamesController.joinGame(uid, gameId); 
     }
 
-    let solvedClues = userProgressRes.rows[0].solvedclues;
 
-    // Parse the solvedClues string into an array
-    let cluesArray = solvedClues ? JSON.parse(solvedClues) : [];
-
-    const nextClueIndex = cluesArray.length;
-
+    console.log(solvedCluesArray, unsolvedCluesArray);
     const selectGameHintsQuery = `
       SELECT hints
       FROM games
@@ -98,28 +103,201 @@ const verifyQR = async (uid, gameId, result) => {
 
     const hints = gameHintsRes.rows[0].hints;
 
-    if (!hints[nextClueIndex]) {
-      return false;
+    let foundIndex = -1;
+    for (let i = 0; i < unsolvedCluesArray.length; i++) {
+        const hintIndex = unsolvedCluesArray[i];
+        console.log(hints[hintIndex].QR_text,QR_value);
+        if (hints[hintIndex].QR_text === QR_value) {
+            foundIndex = hintIndex;
+            break;
+        }
     }
 
-    if (hints[nextClueIndex].QR_text === result) {
-      // Add the new clue ID to the cluesArray
-      cluesArray.push(hints[nextClueIndex].id);
+    // If a match is found, update the solved and unsolved clues arrays
+    if (foundIndex !== -1) {
+        // Add to solved clues
+        solvedCluesArray.push(foundIndex);
 
-      // Convert the cluesArray back into a string
-      solvedClues = JSON.stringify(cluesArray);
+        // Remove from unsolved clues
+        const indexInUnsolved = unsolvedCluesArray.indexOf(foundIndex);
+        if (indexInUnsolved !== -1) {
+            unsolvedCluesArray.splice(indexInUnsolved, 1);
+        }
+        let solvedClues = JSON.stringify(solvedCluesArray);
+        let unsolvedClues = JSON.stringify(unsolvedCluesArray);
 
-      const updateTimestampQuery = `
+        const currentTimeCST = moment().tz("America/Chicago").format('YYYY-MM-DD HH:mm:ss');
+
+        const updateTimestampQuery = `
         UPDATE user_progress
-        SET latest_time_date = TO_CHAR(NOW(), 'YYYY-MM-DD HH24:MI:SS'), solvedclues = $3
+        SET latest_time_date = $5, solvedclues = $3, unsolvedclues = $4
         WHERE email = $1 AND gid = $2
-      `;
+        `;
 
-      await pool.query(updateTimestampQuery, [uid, gameId, solvedClues]);
-      return true;
+        await pool.query(updateTimestampQuery, [uid, gameId, solvedClues, unsolvedClues, currentTimeCST]);
+        return true;
+
     }
     return false;
   } catch (err) {
+    console.error("⚠️ error accessing DB", err);
+  }
+};
+
+
+//Order Randomizing based on gameId and userId.
+function stringToSeed(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    // Convert to 32bit integer and make sure it's positive
+    hash = Math.abs(hash | 0); 
+  }
+  return hash;
+}
+function seededRandom(seed) {
+  const a = 1664525;
+  const c = 1013904223;
+  const m = 4294967296; // 2**32
+
+  seed = (a * seed + c) % m;
+  return seed / m;
+}
+function generateClueOrder(numClues, userId, gameId) {
+  const userSeed = stringToSeed(userId); // Convert userId to a seed number
+  const combinedSeed = userSeed * gameId;
+  console.log("Combined Seed", combinedSeed);
+  console.log("User ID", userId);
+  console.log("Game ID", gameId);
+  const indices = Array.from({ length: numClues }, (_, i) => i);
+  
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(seededRandom(combinedSeed + i) * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  
+  console.log("indices inside function", indices);
+  return indices;
+}
+
+const getClues = async (uid, gid) => {
+  try{
+    console.log("Inside Get clues (gameController)");
+    console.log(uid);
+    console.log(gid);
+    // Fetch solved clues for the user and game
+    const selectUserProgressQuery = `
+      SELECT solvedclues, unsolvedClues
+      FROM user_progress
+      WHERE email = $1 AND gid = $2
+    `;
+
+    let solvedClues=[];
+    let unsolvedClues=[];
+    const userProgressRes = await pool.query(selectUserProgressQuery, [uid, gid]);
+    // Assuming that 'solvedclues' and 'unsolvedclues' are stored as JSON strings
+    if (userProgressRes.rowCount > 0) {
+      solvedClues = JSON.parse(userProgressRes.rows[0].solvedclues || '[]');
+      unsolvedClues = JSON.parse(userProgressRes.rows[0].unsolvedclues || '[]');
+      // Now 'solvedClues' and 'unsolvedClues' are arrays extracted from the database
+    } else { //when empty user progress, solvedClues is empty (default) and the empty unsolvedClues will be populated (to atleast 1) below while adjusting.
+      const isCreated = await GamesController.joinGame(uid, gameId); 
+    }
+
+    console.log("Solved Clues & Unsolved Clues before processing");
+    console.log(solvedClues);
+    console.log(unsolvedClues);
+    
+    // Fetch all clues for the game
+    const selectGameHintsQuery = `
+      SELECT hints
+      FROM games
+      WHERE GID = $1
+    `;
+    const gameHintsRes = await pool.query(selectGameHintsQuery, [gid]);
+    if (gameHintsRes.rowCount === 0) {
+      return { solvedClues: [], otherClues: [] };
+    }
+
+    //getting start date and time 
+      const startDatequery = `
+      SELECT starttime
+      FROM games
+      WHERE GID = $1
+    `;
+    const startTimeResult= await pool.query(startDatequery, [gid]);
+    const startTime = new Date (startTimeResult.rows[0].starttime);
+
+    //current time and date
+    const currentTime = new Date();
+
+    // Calculate the difference in milliseconds and minutes
+    const differenceInMilliseconds = currentTime - startTime;
+    const differenceInMinutes = differenceInMilliseconds / 1000 / 60;
+    console.log("Time passed");
+    console.log(currentTime);
+    console.log(startTime);
+
+    //defining interval in minutes 
+    const interval = 15;
+
+    const numberofIntervals = Math.floor(differenceInMinutes / interval);
+
+    const allClues = gameHintsRes.rows[0].hints;
+    const n_solvedClues = solvedClues.length;
+    const n_unsolvedClues = unsolvedClues.length;
+    const total_clues = allClues.length;
+    const clueOrder = generateClueOrder(total_clues, uid, gid);
+    const n_revealedClues= Math.min(total_clues, numberofIntervals+1); //clues revealed from time passing.
+    // const n_revealedClues = 2;
+
+    //Adjusting solvedClues and unsolvedClues to reflect the latest status. 
+    if(n_solvedClues+n_unsolvedClues<n_revealedClues){
+      unsolvedClues = unsolvedClues.concat(clueOrder.slice(n_solvedClues+n_unsolvedClues,n_revealedClues));//adding the extra clues to the unsolvedClues. 
+    }
+    else if (n_unsolvedClues==0){//after adding all the adables. if there's no clues to solve. 
+      if (total_clues==n_solvedClues)//if the user has solved clues.
+        unsolvedClues = [];
+      else{ //clues are left, but user is ahead of the timer. The user is given 1 clue from the shuffled deck. 
+        unsolvedClues = unsolvedClues.concat(clueOrder[n_solvedClues+n_unsolvedClues+1]);
+      }
+    }
+
+    const newSolvedClues = JSON.stringify(solvedClues);
+    const newUnsolvedClues = JSON.stringify(unsolvedClues);
+    
+    console.log("Solved and Unsolved clues after processing");
+    console.log(newSolvedClues);
+    console.log(newUnsolvedClues);
+    // console.log(allClues);
+    console.log("standard cluesorder functioncall", clueOrder);
+    // console.log("hardcoded call", generateClueOrder(5, "karrthik.reddyusa@gmail.com", 46));
+    console.log(n_revealedClues);
+    console.log(n_solvedClues);
+    console.log(n_unsolvedClues);
+    
+    //update the update solvedClues, unsolvedClues, points to the DB
+    const updateUserProgressQuery = `
+    UPDATE user_progress
+    SET solvedclues = $1, unsolvedclues = $2
+    WHERE email = $3 AND gid = $4
+    `;
+    await pool.query(updateUserProgressQuery, [newSolvedClues, newUnsolvedClues, uid, gid]);
+    //"['1','2']"
+    
+    // with the indexes in solvedClues and unsolvedClues, the description from allCLues is retreived and added to solvedCluesDescrip and unsolvedCluesDescrip
+    const solvedCluesDescrip = solvedClues.map(index => allClues[index].clueText);
+    const unsolvedCluesDescrip = unsolvedClues.map(index => allClues[index].clueText);
+    
+    console.log("returned descriptoins.");
+    console.log(solvedCluesDescrip);
+    console.log(unsolvedCluesDescrip);
+
+
+    return { solvedCluesDescrip, unsolvedCluesDescrip, total_clues };
+    
+  } catch (err){
     console.error("⚠️ error accessing DB", err);
   }
 };
@@ -177,7 +355,7 @@ const createUser = async (name, email) => {
 const getGames = async (req, res) => {
   try {
     const games = await pool.query(
-      "SELECT * FROM Games WHERE name IS NOT NULL AND code is NOT NULL AND starttime <> 'N/A' AND endtime <> 'N/A' AND hints <> '{}' ORDER BY gid ASC "
+      "SELECT * FROM Games WHERE name IS NOT NULL AND starttime <> 'N/A' AND endtime <> 'N/A' AND hints <> '{}' ORDER BY gid ASC "
     );
 
     // Transform the data to match the expected format
@@ -188,7 +366,7 @@ const getGames = async (req, res) => {
       endtime: game.endtime, // Assuming 'endtime' is the column name in the 'Games' table
       clues: game.hints ? game.hints.length : 0, // Assuming 'hints' is an array
     }));
-
+console.log("transformedGames: ",transformedGames)
     res.status(200).json(transformedGames);
   } catch (err) {
     console.error("⚠️ error getting games", err);
@@ -334,5 +512,6 @@ export default {
   getGameDeets,
   joinGame,
   leaderboardInfo,
+  getClues,
   unsolvedGameInfo,
 };

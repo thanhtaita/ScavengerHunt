@@ -11,6 +11,8 @@ const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const [redirect, setRedirect] = useState(false);
+
   const { user } = useContext(AuthContext);
   const [gameId, setGameId] = useState(0);
   const [fetchedGames, setFetchedGames] = useState<GameRow[]>([]);
@@ -60,6 +62,7 @@ const MainPage = () => {
           return;
         }
         const data = await res.json();
+        console.log(data)
         setFetchedGames(data);
       } catch (error) {
         console.error("Error fetching games:", error);

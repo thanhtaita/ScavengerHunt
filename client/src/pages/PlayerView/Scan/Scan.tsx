@@ -4,12 +4,18 @@ import { useParams } from "react-router-dom";
 import QrScanner from "qr-scanner";
 import "./Scan.css";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../utils/context";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
+
+
 const Scan = () => {
   const { user } = useContext(AuthContext);
+  var counter = 0;
+
+
   const { gameId } = useParams<{ gameId: string }>();
   // const modal = useRef<HTMLIonModalElement>(null);
   const video = useRef<HTMLVideoElement>(null);
@@ -20,13 +26,18 @@ const Scan = () => {
   //     close();
   // }
 
+
+
   async function handleScan(result: QrScanner.ScanResult) {
+    counter = counter + 1
+    console.log(counter)
     //Logic with scanned qr code
     setScanCode(result.data);
     console.log(result.data);
     console.log("Handling Scan...");
+    qrScanner?.destroy();
 
-    if (user) {
+    if (user && counter === 1) {
       const uid = user.email;
       try {
         const response = await fetch(`${serverUrl}/verifyQR`, {
@@ -55,9 +66,11 @@ const Scan = () => {
 
         if (data.success) {
           console.log("API call was successful");
+
           window.alert(
             "QR verification was successful! The progress page should reflect the same"
           );
+
         } else {
           console.log("API call failed");
           window.alert("Wrong QR code scanned");
@@ -67,7 +80,7 @@ const Scan = () => {
       }
     }
 
-    qrScanner?.destroy();
+
   }
 
   // async function close() {
@@ -92,15 +105,17 @@ const Scan = () => {
     // eslint-disable-next-line
   }, [video.current]);
 
+
+
   return (
     <div className="scanContainer2">
       <p className="ScanTitle">Scan QR Code</p>
       <div className="scanContainer">
-      {scanCode === "" && <video ref={video}></video>}
-      {scanCode !== "" && <h1> {scanCode}</h1>}
+        {scanCode === "" && <video ref={video}></video>}
+        {scanCode !== "" && <h1> {scanCode}</h1>}
       </div>
     </div>
-    
+
   );
 };
 
