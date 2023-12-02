@@ -37,9 +37,11 @@ const Progress = () => {
 
 
     return (
+        <div className="outsideContainer">
+            <p className="progressTitle">Progress</p>
             <div className="progressContainer">
                 
-            <p className="progressTitle">Progress</p>
+            
             
                 <div className="clues">
                     <div className="currentClue">
@@ -59,6 +61,7 @@ const Progress = () => {
                     <Pie data={pieData} />
                 </div>
             </div>
+        </div>
     );
 }
 

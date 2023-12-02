@@ -13,10 +13,10 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
-        <div className="collapse navbar-collapse" id="navbarsExample03">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
+      <nav className="navbar-player">
+        <div className="navbar-whole">
+          <ul className="navbar-nav">
+            <li className="nav-item1">
               <button
                 className="previous-button"
                 onClick={() => {
