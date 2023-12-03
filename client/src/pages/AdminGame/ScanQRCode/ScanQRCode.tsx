@@ -51,7 +51,7 @@ const Scan = () => {
           credentials: "include",
         }
       );
-      window.location.reload();
+      window.location.assign("/MainPage");
     } catch (error) {
       console.error("Error fetching game:", error);
     }

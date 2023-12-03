@@ -5,8 +5,9 @@
 }
 .titleOfLeaderBoards {
     font-size: 3rem;
-    margin-bottom: 3vh;
+    margin-bottom: 4vh;
     width: 25rem;
+    margin-top: 4%;
     margin-left: 35%;
     text-align: center;
     border-bottom: 1px solid black;

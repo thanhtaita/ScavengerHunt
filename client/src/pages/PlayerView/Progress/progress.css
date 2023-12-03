@@ -3,45 +3,37 @@
 }
 .progressTitle {
   font-size: 3rem;
-  margin-bottom: 3vh;
   width: 20rem;
   margin-left: 35%;
+  margin-top: 4%;
   text-align: center;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgb(0, 0, 0);
   text-transform: uppercase;
   font-weight: bold;
 }
 
 .pieChart {
-  margin-top: 8%;
-  margin-right: 3rem;
-}
-.currentClue {
-  padding: 2rem 2rem;
-  background-color: #46414177;
-  border-radius: 2rem;
-  
+  margin-top: 4%;
+  margin-right: 3%;
+  width: 25%;
 }
 .currentClues {
-  font-size: 2.5rem;
-  font-weight: 500;
-  padding-bottom: 4%;
   color: #8dffcd;
 }
 .currentClue ul {
   width: 100%;
 }
 .solvedTitle {
-  font-size: 3rem;
+  font-size: 1.7rem;
   font-weight: 500;
-  padding-bottom: 4%;
+  padding-bottom: 1.5%;
   color: #8dffcd;
 }
 .clues {
   display: flex;
   flex-direction: column;
   width: 80%;
-  padding: 2% 2%;
+  padding: 0% 3%;
   color: #edfcb4;
   font-size: 1.25rem;
 }
@@ -50,10 +42,8 @@
   height: 80%;
 }
 .solvedClues {
-  margin-top: 10%;
-  padding-top: 2rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  margin-top: 8%;
+  padding: 2% 3%;
   background-color: #46414165;
   border-radius: 2rem;
   height: 60%;
@@ -65,14 +55,14 @@
 }
 .solvedClues li {
   padding-top: 1.5%;
-  border-bottom: 2px solid #141111;
+  border-bottom: 2px solid #14111161;
 }
 
 /* Add custom square bullet points */
 .solvedClues li,
 .currentClue li {
   position: relative;
-  padding-left: 1.5em;
+  padding-left: 5%;
   padding-bottom: 1%;
 }
 
