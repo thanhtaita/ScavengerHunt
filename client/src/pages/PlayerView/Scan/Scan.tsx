@@ -9,12 +9,9 @@ import { AuthContext } from "../../../utils/context";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
-
-
 const Scan = () => {
   const { user } = useContext(AuthContext);
   var counter = 0;
-
 
   const { gameId } = useParams<{ gameId: string }>();
   // const modal = useRef<HTMLIonModalElement>(null);
@@ -26,11 +23,9 @@ const Scan = () => {
   //     close();
   // }
 
-
-
   async function handleScan(result: QrScanner.ScanResult) {
-    counter = counter + 1
-    console.log(counter)
+    counter = counter + 1;
+    console.log(counter);
     //Logic with scanned qr code
     setScanCode(result.data);
     console.log(result.data);
@@ -70,17 +65,16 @@ const Scan = () => {
           window.alert(
             "QR verification was successful! The progress page should reflect the same"
           );
-
         } else {
           console.log("API call failed");
           window.alert("Wrong QR code scanned");
         }
+
+        window.location.reload();
       } catch (error) {
         console.error("Error making API call:", error);
       }
     }
-
-
   }
 
   // async function close() {
@@ -105,8 +99,6 @@ const Scan = () => {
     // eslint-disable-next-line
   }, [video.current]);
 
-
-
   return (
     <div className="scanContainer2">
       <p className="ScanTitle">Scan QR Code</p>
@@ -115,7 +107,6 @@ const Scan = () => {
         {scanCode !== "" && <h1> {scanCode}</h1>}
       </div>
     </div>
-
   );
 };
 

@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import "./MainPage.css";
 import Navbar from "../../components/Navbar/Navbar.tsx";
-import { GameList } from "../../components/GameList/Gamelist.tsx";
+import { GameList } from "../../components/GameList/GameList.tsx";
 import { GameRow } from "../../utils/types.ts";
 import { useContext } from "react";
 import { AuthContext } from "../../utils/context";
 import { useNavigate } from "react-router-dom";
-
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const MainPage = () => {
   const navigate = useNavigate();
 
-  const { user } = useContext(AuthContext);
+  const { user, loggedIn } = useContext(AuthContext);
   const [gameId, setGameId] = useState(0);
   const [fetchedGames, setFetchedGames] = useState<GameRow[]>([]);
 
@@ -52,6 +51,7 @@ const MainPage = () => {
 
   useEffect(() => {
     // Fetch games from API
+    console.log(loggedIn);
     console.log("Fetching games...");
     const fetchGames = async () => {
       try {

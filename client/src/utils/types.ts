@@ -29,3 +29,16 @@ export interface ClueInfo {
   location: string;
   QR_text: string;
 }
+
+export interface GameInfo {
+  code: null;
+  description: string;
+  email: string;
+  endtime: string;
+  starttime: string;
+  gid: number;
+  hints: ClueInfo[];
+  link: null;
+  name: string;
+  published: boolean;
+}

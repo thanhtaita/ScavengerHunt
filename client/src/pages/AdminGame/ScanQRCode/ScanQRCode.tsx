@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { GetContext } from "../AdminGame";
 
-import { ClueInfo } from "../../../utils/types";
+import { ClueInfo, GameInfo } from "../../../utils/types";
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const Scan = () => {
@@ -12,10 +12,8 @@ const Scan = () => {
   console.log(gId);
   const { step, setStep } = GetContext();
   const [clues, setclues] = useState<Array<ClueInfo>>([]);
+  const [gameInfo, setGameInfo] = useState<GameInfo>();
 
-  const [, setDisabled] = useState<Array<boolean>>(
-    Array.from({ length: clues.length }, () => false)
-  );
   // To fix the issue, wrap the boolean value in an array and set it to the corresponding index of the `disabled` state array
   const fectGameDeatils = async () => {
     try {
@@ -30,7 +28,8 @@ const Scan = () => {
         return;
       }
       const data = await res.json();
-      console.log(data["hints"], data);
+      console.log("data", data);
+      setGameInfo(data);
       setclues(data["hints"]);
     } catch (error) {
       console.error("Error fetching game:", error);
@@ -41,8 +40,25 @@ const Scan = () => {
     fectGameDeatils();
   }, []);
 
+  const handlePublished = async () => {
+    console.log("handling published");
+    try {
+      await fetch(
+        `${serverUrl}/mygame/${gId}?published=${!gameInfo?.published}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        }
+      );
+      window.location.reload();
+    } catch (error) {
+      console.error("Error fetching game:", error);
+    }
+  };
+
   return (
-    <div>
+    <div className="scanQRCode">
       <p className="titlePage2"> Scan The QR Codes </p>
       <p className="bioPage2">
         Scan the QR at the location that you what to place it
@@ -59,7 +75,6 @@ const Scan = () => {
               {clue.location !== "" && (
                 <i className="fas fa-map-marker-alt font-size:36px"></i>
               )}
-
             </Link>
           ))}
         </ul>
@@ -72,9 +87,9 @@ const Scan = () => {
         >
           Back
         </Link>
-        <Link to="/MainPage" className="nav-btn">
-          Create Game
-        </Link>
+        <button className="nav-btn" onClick={handlePublished}>
+          {gameInfo?.published ? "Hide Game" : "Launch Game"}
+        </button>
       </div>
     </div>
   );

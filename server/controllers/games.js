@@ -1,9 +1,8 @@
 import { pool } from "../config/database.js";
 import moment from "moment-timezone";
 
-
 //Joining a game. [Creates new entry if new game]
-const joinGame = async (uid, gameId) => { 
+const joinGame = async (uid, gameId) => {
   try {
     console.log("Inside Join Game");
     const selectQuery = `
@@ -36,7 +35,7 @@ const joinGame = async (uid, gameId) => {
   }
 };
 
-//Gets game description from the database to display in the game page. 
+//Gets game description from the database to display in the game page.
 const getGameDeets = async (gameId) => {
   try {
     console.log("Fetching from games database ...");
@@ -65,7 +64,7 @@ const getGameDeets = async (gameId) => {
   }
 };
 
-//verifying scanned QR code with the in game(actual) QR code. 
+//verifying scanned QR code with the in game(actual) QR code.
 const verifyQR = async (uid, gameId, QR_value) => {
   try {
     console.log("Accessing DB inside verifyQR ...");
@@ -76,18 +75,25 @@ const verifyQR = async (uid, gameId, QR_value) => {
       WHERE email = $1 AND gid = $2
     `;
 
-    let solvedCluesArray=[];
-    let unsolvedCluesArray=[];
-    const userProgressRes = await pool.query(selectUserProgressQuery, [uid, gameId]);
+    let solvedCluesArray = [];
+    let unsolvedCluesArray = [];
+    const userProgressRes = await pool.query(selectUserProgressQuery, [
+      uid,
+      gameId,
+    ]);
     // Assuming that 'solvedclues' and 'unsolvedclues' are stored as JSON strings
     if (userProgressRes.rowCount > 0) {
-      solvedCluesArray = JSON.parse(userProgressRes.rows[0].solvedclues || '[]');
-      unsolvedCluesArray = JSON.parse(userProgressRes.rows[0].unsolvedclues || '[]');
+      solvedCluesArray = JSON.parse(
+        userProgressRes.rows[0].solvedclues || "[]"
+      );
+      unsolvedCluesArray = JSON.parse(
+        userProgressRes.rows[0].unsolvedclues || "[]"
+      );
       // Now 'solvedClues' and 'unsolvedClues' are arrays extracted from the database
-    } else { //when empty user progress, solvedClues is empty (default) and the empty unsolvedClues will be populated (to atleast 1) below while adjusting.
-      const isCreated = await GamesController.joinGame(uid, gameId); 
+    } else {
+      //when empty user progress, solvedClues is empty (default) and the empty unsolvedClues will be populated (to atleast 1) below while adjusting.
+      const isCreated = await GamesController.joinGame(uid, gameId);
     }
-
 
     console.log(solvedCluesArray, unsolvedCluesArray);
     const selectGameHintsQuery = `
@@ -105,45 +111,51 @@ const verifyQR = async (uid, gameId, QR_value) => {
 
     let foundIndex = -1;
     for (let i = 0; i < unsolvedCluesArray.length; i++) {
-        const hintIndex = unsolvedCluesArray[i];
-        console.log(hints[hintIndex].QR_text,QR_value);
-        if (hints[hintIndex].QR_text === QR_value) {
-            foundIndex = hintIndex;
-            break;
-        }
+      const hintIndex = unsolvedCluesArray[i];
+      console.log(hints[hintIndex].QR_text, QR_value);
+      if (hints[hintIndex].QR_text === QR_value) {
+        foundIndex = hintIndex;
+        break;
+      }
     }
 
     // If a match is found, update the solved and unsolved clues arrays
     if (foundIndex !== -1) {
-        // Add to solved clues
-        solvedCluesArray.push(foundIndex);
+      // Add to solved clues
+      solvedCluesArray.push(foundIndex);
 
-        // Remove from unsolved clues
-        const indexInUnsolved = unsolvedCluesArray.indexOf(foundIndex);
-        if (indexInUnsolved !== -1) {
-            unsolvedCluesArray.splice(indexInUnsolved, 1);
-        }
-        let solvedClues = JSON.stringify(solvedCluesArray);
-        let unsolvedClues = JSON.stringify(unsolvedCluesArray);
+      // Remove from unsolved clues
+      const indexInUnsolved = unsolvedCluesArray.indexOf(foundIndex);
+      if (indexInUnsolved !== -1) {
+        unsolvedCluesArray.splice(indexInUnsolved, 1);
+      }
+      let solvedClues = JSON.stringify(solvedCluesArray);
+      let unsolvedClues = JSON.stringify(unsolvedCluesArray);
 
-        const currentTimeCST = moment().tz("America/Chicago").format('YYYY-MM-DD HH:mm:ss');
+      const currentTimeCST = moment()
+        .tz("America/Chicago")
+        .format("YYYY-MM-DD HH:mm:ss");
 
-        const updateTimestampQuery = `
+      const updateTimestampQuery = `
         UPDATE user_progress
         SET latest_time_date = $5, solvedclues = $3, unsolvedclues = $4
         WHERE email = $1 AND gid = $2
         `;
 
-        await pool.query(updateTimestampQuery, [uid, gameId, solvedClues, unsolvedClues, currentTimeCST]);
-        return true;
-
+      await pool.query(updateTimestampQuery, [
+        uid,
+        gameId,
+        solvedClues,
+        unsolvedClues,
+        currentTimeCST,
+      ]);
+      return true;
     }
     return false;
   } catch (err) {
     console.error("⚠️ error accessing DB", err);
   }
 };
-
 
 //Order Randomizing based on gameId and userId.
 function stringToSeed(str) {
@@ -152,7 +164,7 @@ function stringToSeed(str) {
     const char = str.charCodeAt(i);
     hash = (hash << 5) - hash + char;
     // Convert to 32bit integer and make sure it's positive
-    hash = Math.abs(hash | 0); 
+    hash = Math.abs(hash | 0);
   }
   return hash;
 }
@@ -171,18 +183,18 @@ function generateClueOrder(numClues, userId, gameId) {
   console.log("User ID", userId);
   console.log("Game ID", gameId);
   const indices = Array.from({ length: numClues }, (_, i) => i);
-  
+
   for (let i = indices.length - 1; i > 0; i--) {
     const j = Math.floor(seededRandom(combinedSeed + i) * (i + 1));
     [indices[i], indices[j]] = [indices[j], indices[i]];
   }
-  
+
   console.log("indices inside function", indices);
   return indices;
 }
 
 const getClues = async (uid, gid) => {
-  try{
+  try {
     console.log("Inside Get clues (gameController)");
     console.log(uid);
     console.log(gid);
@@ -193,22 +205,26 @@ const getClues = async (uid, gid) => {
       WHERE email = $1 AND gid = $2
     `;
 
-    let solvedClues=[];
-    let unsolvedClues=[];
-    const userProgressRes = await pool.query(selectUserProgressQuery, [uid, gid]);
+    let solvedClues = [];
+    let unsolvedClues = [];
+    const userProgressRes = await pool.query(selectUserProgressQuery, [
+      uid,
+      gid,
+    ]);
     // Assuming that 'solvedclues' and 'unsolvedclues' are stored as JSON strings
     if (userProgressRes.rowCount > 0) {
-      solvedClues = JSON.parse(userProgressRes.rows[0].solvedclues || '[]');
-      unsolvedClues = JSON.parse(userProgressRes.rows[0].unsolvedclues || '[]');
+      solvedClues = JSON.parse(userProgressRes.rows[0].solvedclues || "[]");
+      unsolvedClues = JSON.parse(userProgressRes.rows[0].unsolvedclues || "[]");
       // Now 'solvedClues' and 'unsolvedClues' are arrays extracted from the database
-    } else { //when empty user progress, solvedClues is empty (default) and the empty unsolvedClues will be populated (to atleast 1) below while adjusting.
-      const isCreated = await GamesController.joinGame(uid, gameId); 
+    } else {
+      //when empty user progress, solvedClues is empty (default) and the empty unsolvedClues will be populated (to atleast 1) below while adjusting.
+      const isCreated = await GamesController.joinGame(uid, gameId);
     }
 
     console.log("Solved Clues & Unsolved Clues before processing");
     console.log(solvedClues);
     console.log(unsolvedClues);
-    
+
     // Fetch all clues for the game
     const selectGameHintsQuery = `
       SELECT hints
@@ -220,14 +236,14 @@ const getClues = async (uid, gid) => {
       return { solvedClues: [], otherClues: [] };
     }
 
-    //getting start date and time 
-      const startDatequery = `
+    //getting start date and time
+    const startDatequery = `
       SELECT starttime
       FROM games
       WHERE GID = $1
     `;
-    const startTimeResult= await pool.query(startDatequery, [gid]);
-    const startTime = new Date (startTimeResult.rows[0].starttime);
+    const startTimeResult = await pool.query(startDatequery, [gid]);
+    const startTime = new Date(startTimeResult.rows[0].starttime);
 
     //current time and date
     const currentTime = new Date();
@@ -239,7 +255,7 @@ const getClues = async (uid, gid) => {
     console.log(currentTime);
     console.log(startTime);
 
-    //defining interval in minutes 
+    //defining interval in minutes
     const interval = 15;
 
     const numberofIntervals = Math.floor(differenceInMinutes / interval);
@@ -249,24 +265,30 @@ const getClues = async (uid, gid) => {
     const n_unsolvedClues = unsolvedClues.length;
     const total_clues = allClues.length;
     const clueOrder = generateClueOrder(total_clues, uid, gid);
-    const n_revealedClues= Math.min(total_clues, numberofIntervals+1); //clues revealed from time passing.
+    const n_revealedClues = Math.min(total_clues, numberofIntervals + 1); //clues revealed from time passing.
     // const n_revealedClues = 2;
 
-    //Adjusting solvedClues and unsolvedClues to reflect the latest status. 
-    if(n_solvedClues+n_unsolvedClues<n_revealedClues){
-      unsolvedClues = unsolvedClues.concat(clueOrder.slice(n_solvedClues+n_unsolvedClues,n_revealedClues));//adding the extra clues to the unsolvedClues. 
-    }
-    else if (n_unsolvedClues==0){//after adding all the adables. if there's no clues to solve. 
-      if (total_clues==n_solvedClues)//if the user has solved clues.
+    //Adjusting solvedClues and unsolvedClues to reflect the latest status.
+    if (n_solvedClues + n_unsolvedClues < n_revealedClues) {
+      unsolvedClues = unsolvedClues.concat(
+        clueOrder.slice(n_solvedClues + n_unsolvedClues, n_revealedClues)
+      ); //adding the extra clues to the unsolvedClues.
+    } else if (n_unsolvedClues == 0) {
+      //after adding all the adables. if there's no clues to solve.
+      if (total_clues == n_solvedClues)
+        //if the user has solved clues.
         unsolvedClues = [];
-      else{ //clues are left, but user is ahead of the timer. The user is given 1 clue from the shuffled deck. 
-        unsolvedClues = unsolvedClues.concat(clueOrder[n_solvedClues+n_unsolvedClues+1]);
+      else {
+        //clues are left, but user is ahead of the timer. The user is given 1 clue from the shuffled deck.
+        unsolvedClues = unsolvedClues.concat(
+          clueOrder[n_solvedClues + n_unsolvedClues + 1]
+        );
       }
     }
 
     const newSolvedClues = JSON.stringify(solvedClues);
     const newUnsolvedClues = JSON.stringify(unsolvedClues);
-    
+
     console.log("Solved and Unsolved clues after processing");
     console.log(newSolvedClues);
     console.log(newUnsolvedClues);
@@ -276,28 +298,35 @@ const getClues = async (uid, gid) => {
     console.log(n_revealedClues);
     console.log(n_solvedClues);
     console.log(n_unsolvedClues);
-    
+
     //update the update solvedClues, unsolvedClues, points to the DB
     const updateUserProgressQuery = `
     UPDATE user_progress
     SET solvedclues = $1, unsolvedclues = $2
     WHERE email = $3 AND gid = $4
     `;
-    await pool.query(updateUserProgressQuery, [newSolvedClues, newUnsolvedClues, uid, gid]);
+    await pool.query(updateUserProgressQuery, [
+      newSolvedClues,
+      newUnsolvedClues,
+      uid,
+      gid,
+    ]);
     //"['1','2']"
-    
+
     // with the indexes in solvedClues and unsolvedClues, the description from allCLues is retreived and added to solvedCluesDescrip and unsolvedCluesDescrip
-    const solvedCluesDescrip = solvedClues.map(index => allClues[index].clueText);
-    const unsolvedCluesDescrip = unsolvedClues.map(index => allClues[index].clueText);
-    
+    const solvedCluesDescrip = solvedClues.map(
+      (index) => allClues[index].clueText
+    );
+    const unsolvedCluesDescrip = unsolvedClues.map(
+      (index) => allClues[index].clueText
+    );
+
     console.log("returned descriptoins.");
     console.log(solvedCluesDescrip);
     console.log(unsolvedCluesDescrip);
 
-
     return { solvedCluesDescrip, unsolvedCluesDescrip, total_clues };
-    
-  } catch (err){
+  } catch (err) {
     console.error("⚠️ error accessing DB", err);
   }
 };
@@ -355,7 +384,7 @@ const createUser = async (name, email) => {
 const getGames = async (req, res) => {
   try {
     const games = await pool.query(
-      "SELECT * FROM Games WHERE name IS NOT NULL AND starttime <> 'N/A' AND endtime <> 'N/A' AND hints <> '{}' ORDER BY gid ASC "
+      "SELECT * FROM Games WHERE name IS NOT NULL AND starttime <> 'N/A' AND endtime <> 'N/A' AND hints <> '{}' AND published <> false ORDER BY gid ASC "
     );
 
     // Transform the data to match the expected format
@@ -366,7 +395,7 @@ const getGames = async (req, res) => {
       endtime: game.endtime, // Assuming 'endtime' is the column name in the 'Games' table
       clues: game.hints ? game.hints.length : 0, // Assuming 'hints' is an array
     }));
-console.log("transformedGames: ",transformedGames)
+    console.log("transformedGames: ", transformedGames);
     res.status(200).json(transformedGames);
   } catch (err) {
     console.error("⚠️ error getting games", err);
@@ -424,6 +453,18 @@ const updateGameInfo = async (gid, body) => {
       body.endTime,
       gid,
     ];
+    console.log(values);
+    const res = await pool.query(updateQuery, values);
+    console.log("🎉 game info updated successfully");
+  } catch (err) {
+    console.error("⚠️ error updating game", err);
+  }
+};
+
+const updatePublishedGame = async (id, published) => {
+  try {
+    const updateQuery = `UPDATE Games SET published = $1 WHERE gid = $2`;
+    const values = [published, id];
     console.log(values);
     const res = await pool.query(updateQuery, values);
     console.log("🎉 game info updated successfully");
@@ -514,4 +555,5 @@ export default {
   leaderboardInfo,
   getClues,
   unsolvedGameInfo,
+  updatePublishedGame,
 };

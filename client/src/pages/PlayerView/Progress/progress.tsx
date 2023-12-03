@@ -4,7 +4,7 @@ import { Pie } from "react-chartjs-2";
 import "chart.js/auto";
 import { useContext } from "react";
 import { AuthContext } from "../../../utils/context";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import confetti from "canvas-confetti";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
@@ -25,7 +25,6 @@ const defaultPieData = {
 };
 
 const Progress = () => {
-  const navigate = useNavigate();
   const [solvedClues, setSolvedClues] = useState([]);
   const [unsolvedClues, setUnsolvedClues] = useState([]);
   const [totalClues, setTotalClues] = useState(0);
@@ -40,10 +39,7 @@ const Progress = () => {
   });
 
   useEffect(() => {
-    if (!user) {
-      navigate("/authfail");
-    }
-
+    if (!user) return;
     const uid = user?.email;
     async function fetchData() {
       try {
@@ -106,7 +102,7 @@ const Progress = () => {
     }
 
     fetchData();
-  }, []);
+  }, [user, gameId]);
 
   if (state.loading) return <div>Loading...</div>;
   if (state.error) return <div>Error: {state.error.message}</div>;

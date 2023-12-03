@@ -69,9 +69,9 @@ function haversineDistance(
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(radLat1) *
-    Math.cos(radLat2) *
-    Math.sin(dLon / 2) *
-    Math.sin(dLon / 2);
+      Math.cos(radLat2) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   // Distance in meters
@@ -96,8 +96,7 @@ const Map = ({ gId }: { gId: number }) => {
     // Get all unsolved destinations
     const getUnsolvedDestinations = async () => {
       try {
-
-        console.log(gId)
+        console.log(gId);
         const res = await fetch(`${serverUrl}/unsolve/${gId}`, {
           method: "GET",
           headers: {
@@ -112,32 +111,25 @@ const Map = ({ gId }: { gId: number }) => {
         }
 
         const data = await res.json();
-        console.log(data[0]);
-
+        if (data.length === 0) {
+          window.alert("The current quizzes have no destinations.");
+        }
         // await data.map((d: loc, index: number) => { d = JSON.parse(data[index]) })
         const convertedData = data.map((d: loc, index: number) => {
           const y = JSON.parse(data[index]);
-          console.log(d, index, y)
+          console.log(d, index, y);
 
           return {
             lat: y.Latitude,
             lng: y.Longitude,
-          }
-        })
-        // const convertedData = data.map(
+          };
+        });
 
-        //   ({
-        //     Longitude,
-        //     Latitude,
-        //   }: loc) => ({
-        //     lat: Latitude,
-        //     lng: Longitude,
-        //   })
-        // );
-        console.log(convertedData)
+        console.log(convertedData);
         setDestinations(convertedData);
       } catch (error) {
         console.error("Error fetching game:", error);
+        window.alert("The current quizzes have no destinations.");
       }
     };
 
@@ -220,6 +212,7 @@ const Map = ({ gId }: { gId: number }) => {
               </Marker>
             ))}
           <Circle
+            key={backgroundColor}
             center={[
               currentPosition.coords.latitude,
               currentPosition.coords.longitude,

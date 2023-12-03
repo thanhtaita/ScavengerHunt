@@ -128,10 +128,19 @@ app.post("/mygame/:id", auth, async function (req, res) {
   console.log("updating my game");
   const { id } = req.params;
   console.log(id);
-  const body = req.body;
-  console.log(body);
-  const data = await GamesController.updateGameInfo(id, body);
-  console.log(data);
+  let published = req.query.published;
+  if (published) {
+    published = req.query.published === "true";
+    // console.log(published);
+    const data = await GamesController.updatePublishedGame(id, published);
+    console.log(data);
+  } else {
+    const body = req.body;
+    console.log(body);
+    const data = await GamesController.updateGameInfo(id, body);
+    console.log(data);
+  }
+  return res.send({ message: "success" });
 });
 
 app.post("/mygame/:gId/:hintId", auth, async function (req, res) {
@@ -240,29 +249,27 @@ app.get("/auth/logged_in", (req, res) => {
     const { user } = jwt.verify(token, config.tokenSecret);
 
     console.log("get user info");
-
-    // const newToken = jwt.sign({ user }, config.tokenSecret, {
-    //   expiresIn: config.tokenExpiration,
-    // });
-    // // Reset token in cookie
-    // res.cookie("token", newToken, {
-    //   maxAge: config.tokenExpiration,
-    //   httpOnly: true,
-    //   sameSite: "none",
-    //   secure: true,
-    // });
     res.json({ loggedIn: true, user });
   } catch (err) {
     res.json({ loggedIn: false });
   }
 });
 
-app.post("/auth/logout", (req, res) => {
+app.post("/auth/logout", auth, (req, res) => {
   // Clear the "token" cookie
-  res.clearCookie("token", {
-    domain: "http://localhost:3000/MainPage",
-    path: "/",
+  console.log("clear the token cookie");
+  const user = getUserInfo(req);
+  const newToken = jwt.sign({ user }, config.tokenSecret, {
+    expiresIn: config.tokenExpiration,
   });
+  // Reset token in cookie
+  res.cookie("token", newToken, {
+    maxAge: 0,
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  });
+  return res.json({ message: "Logged out" });
 });
 
 app.get("/user/posts", auth, async (_, res) => {
