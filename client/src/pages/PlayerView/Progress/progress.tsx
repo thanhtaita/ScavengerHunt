@@ -76,22 +76,8 @@ const Progress = () => {
           confetti();
         }
         setTotalClues(total_clues);
-        const solvedCount = solvedClues.length;
-        const currentCount = unsolvedClues.length;
-        const cluesToSolve = totalClues - solvedCount - currentCount;
-
-        const newPieData = {
-          labels: ["Solved Clues", "Current Clue", "Clues to Solve"],
-          datasets: [
-            {
-              data: [solvedCount, currentCount, cluesToSolve],
-              backgroundColor: ["#69BF4F", "#FFC36B", "#C2C2C2"],
-            },
-          ],
-        };
-        setPieData(newPieData);
-        console.log(pieData);
-
+        console.log(totalClues);
+  
         setState({ loading: false, error: null });
       } catch (error) {
         if (error instanceof Error) {
@@ -106,7 +92,29 @@ const Progress = () => {
     }
 
     fetchData();
-  }, []);
+  }, []); 
+  
+  useEffect(() => {
+    // Move the logic for creating pie data into a function
+    const creatingPieData = () => {
+      const solvedCount = solvedClues.length;
+      const currentCount = unsolvedClues.length;
+      const newPieData = {
+        labels: ["Solved Clues", "Current Clue"],
+        datasets: [
+          {
+            data: [solvedCount, currentCount],
+            backgroundColor: ["#69BF4F", "#FFC36B"],
+          },
+        ],
+      };
+
+      setPieData(newPieData);
+    };
+
+    // Call the function when the component mounts or whenever needed
+    creatingPieData();
+  }, [solvedClues, unsolvedClues]); // Dependency array en
 
   if (state.loading) return <div>Loading...</div>;
   if (state.error) return <div>Error: {state.error.message}</div>;
@@ -149,7 +157,7 @@ const Progress = () => {
         </div>
 
         <div className="pieChart">
-          <Pie data={pieData} />
+          {pieData && <Pie data={pieData} />}
         </div>
       </div>
     </div>

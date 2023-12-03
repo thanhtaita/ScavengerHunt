@@ -23,7 +23,7 @@ const Navbar = () => {
                   window.location.assign(`/game/${gId}`);
                 }}
               >
-                Back
+                Exit Game
               </button>
             </li>
             <li className="nav-item active">
