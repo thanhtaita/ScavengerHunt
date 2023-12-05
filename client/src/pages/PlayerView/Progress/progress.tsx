@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../../utils/context";
 import { useParams } from "react-router-dom";
 import confetti from "canvas-confetti";
+import { ClueShowInfo } from "../../../utils/types";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -64,11 +65,10 @@ const Progress = () => {
           // Check if result is null or undefined
           throw new Error("No result returned from the API");
         }
-        const { solvedCluesDescrip, unsolvedCluesDescrip, total_clues } =
-          result;
-        setSolvedClues(solvedCluesDescrip);
-        setUnsolvedClues(unsolvedCluesDescrip);
-        if (unsolvedCluesDescrip.length === 0) {
+        const { solvedCluesInfo, unsolvedCluesInfo, total_clues } = result;
+        setSolvedClues(solvedCluesInfo);
+        setUnsolvedClues(unsolvedCluesInfo);
+        if (unsolvedCluesInfo.length === 0) {
           confetti();
         }
         setTotalClues(total_clues);
@@ -88,7 +88,7 @@ const Progress = () => {
     }
 
     fetchData();
-  }, [user, gameId]);
+  }, [user, gameId, totalClues, state.loading]);
 
   useEffect(() => {
     // Move the logic for creating pie data into a function
@@ -134,8 +134,13 @@ const Progress = () => {
               <div>
                 <p className="solvedTitle"> Current Clue(s)</p>
                 <ul className="scrollableList">
-                  {unsolvedClues.map((clue, index) => (
-                    <li key={index}>{clue}</li>
+                  {unsolvedClues.map((clue: ClueShowInfo, index) => (
+                    <div className="each-clue">
+                      <li key={index}>{clue?.clueText}</li>
+                      {clue?.imageURL && (
+                        <img src={clue?.imageURL} alt="clue" />
+                      )}
+                    </div>
                   ))}
                 </ul>
               </div>
@@ -145,8 +150,11 @@ const Progress = () => {
           <div className="solvedClues">
             <p className="solvedTitle"> Solved Clues</p>
             <ul className="scrollableList">
-              {solvedClues.map((clue, index) => (
-                <li key={index}>{clue}</li>
+              {solvedClues.map((clue: ClueShowInfo, index) => (
+                <div className="each-clue">
+                  <li key={index}>{clue?.clueText}</li>
+                  {clue?.imageURL && <img src={clue?.imageURL} alt="clue" />}
+                </div>
               ))}
             </ul>
           </div>

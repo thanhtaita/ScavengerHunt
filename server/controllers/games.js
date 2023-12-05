@@ -314,18 +314,20 @@ const getClues = async (uid, gid) => {
     //"['1','2']"
 
     // with the indexes in solvedClues and unsolvedClues, the description from allCLues is retreived and added to solvedCluesDescrip and unsolvedCluesDescrip
-    const solvedCluesDescrip = solvedClues.map(
-      (index) => allClues[index].clueText
-    );
-    const unsolvedCluesDescrip = unsolvedClues.map(
-      (index) => allClues[index].clueText
-    );
+    const solvedCluesInfo = solvedClues.map((index) => ({
+      clueText: allClues[index]?.clueText,
+      imageURL: allClues[index]?.imageURL,
+    }));
+    const unsolvedCluesInfo = unsolvedClues.map((index) => ({
+      clueText: allClues[index]?.clueText,
+      imageURL: allClues[index]?.imageURL,
+    }));
 
     console.log("returned descriptoins.");
-    console.log(solvedCluesDescrip);
-    console.log(unsolvedCluesDescrip);
+    console.log(solvedCluesInfo);
+    console.log(unsolvedCluesInfo);
 
-    return { solvedCluesDescrip, unsolvedCluesDescrip, total_clues };
+    return { solvedCluesInfo, unsolvedCluesInfo, total_clues };
   } catch (err) {
     console.error("⚠️ error accessing DB", err);
   }

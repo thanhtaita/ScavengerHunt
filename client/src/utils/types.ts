@@ -42,3 +42,8 @@ export interface GameInfo {
   name: string;
   published: boolean;
 }
+
+export interface ClueShowInfo {
+  clueText: string;
+  imageURL: string;
+}

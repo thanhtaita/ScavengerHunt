@@ -4,14 +4,13 @@ import { useParams } from "react-router-dom";
 import QrScanner from "qr-scanner";
 import "./Scan.css";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../utils/context";
 
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const Scan = () => {
   const { user } = useContext(AuthContext);
-  var counter = 0;
+  let counter = 0;
 
   const { gameId } = useParams<{ gameId: string }>();
   // const modal = useRef<HTMLIonModalElement>(null);

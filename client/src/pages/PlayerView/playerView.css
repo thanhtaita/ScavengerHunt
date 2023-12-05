@@ -1,37 +1,45 @@
-.mainContainer{
-    background-image: url("/mainPageBack.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 100vh;
+.mainContainer {
+  background-image: url("/mainPageBack.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
 
+.progress-mainpage .tab {
+  padding: 8rem 0rem;
 }
-.previous-button{
-    width: 10rem;
-    border-radius: 0.7rem;
-    background-color: #c04203;
-    font-size: 1.3rem;
-    padding: 4%;
+
+.previous-button {
+  width: 10rem;
+  border-radius: 0.7rem;
+  background-color: #c04203;
+  font-size: 1.3rem;
+  padding: 4%;
 }
-.nav-item1{
-    position: relative;
-    padding: 2.2% 10%;
+.nav-item1 {
+  position: relative;
+  padding: 2.2% 10%;
 }
-.nav-link{
-    color: white;
-    font-size: 1.5rem;
-    border-radius: 0.7rem;
-    text-align: center;
-    margin-left: 4.5em;
+.nav-link {
+  color: white;
+  font-size: 1.5rem;
+  border-radius: 0.7rem;
+  text-align: center;
+  margin-left: 4.5em;
 }
-.navbar-nav{
-    display: flex;
-    flex-direction: row;
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
 }
-.nav-item{
-    padding: 2% 0%;
+.nav-item {
+  padding: 2% 0%;
 }
-.navbar-player{
-    display: flex;
-    background-color: rgba(4, 48, 78, 0.725);
+.navbar-player {
+  display: flex;
+  background-color: rgba(4, 48, 78, 0.725);
+  width: 100vw;
+  height: 10vh;
+  position: fixed;
+  z-index: 9999;
 }

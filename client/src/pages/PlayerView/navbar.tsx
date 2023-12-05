@@ -12,7 +12,7 @@ const Navbar = () => {
   const gId = parseInt(gameId || "", 10);
 
   return (
-    <div>
+    <div className="progress-mainpage">
       <nav className="navbar-player">
         <div className="navbar-whole">
           <ul className="navbar-nav">
@@ -73,11 +73,12 @@ const Navbar = () => {
           </ul>
         </div>
       </nav>
-
-      {basicActive === "Home" && <Progress />}
-      {basicActive === "Leaderboard" && <Leaderboards />}
-      {basicActive === "Scan" && <Scan />}
-      {basicActive === "Map" && <Map gId={gId} />}
+      <div className="tab">
+        {basicActive === "Home" && <Progress />}
+        {basicActive === "Leaderboard" && <Leaderboards />}
+        {basicActive === "Scan" && <Scan />}
+        {basicActive === "Map" && <Map gId={gId} />}
+      </div>
     </div>
   );
 };

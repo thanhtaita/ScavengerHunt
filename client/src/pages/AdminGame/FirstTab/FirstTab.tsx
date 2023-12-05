@@ -1,6 +1,6 @@
 import "./FirstTab.css";
 import { useContext, useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../utils/context";
 import { ClueInfo } from "../../../utils/types";
 import { GetContext } from "../AdminGame";
@@ -10,7 +10,7 @@ const serverUrl = import.meta.env.VITE_SERVER_URL;
 const fixedCluesSize = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // this is fixed
 
 const defaultClueInfo: ClueInfo = {
-  clueID: 0,
+  clueID: 1,
   clueText: "",
   imageURL: "",
   location: "",
@@ -44,15 +44,11 @@ const FirstTab = () => {
   const [numProvidedClues, setNumProvidedClues] = useState<number[]>([]);
   const [currentClueNum, setCurrentClueNum] = useState(1);
   const [currentClueInfo, setCurrentClueInfo] = useState(defaultClueInfo);
-  const [latestClueNum, setLatestClueNum] = useState(1); // this is the latest clue number that has been saved
 
   const { step, setStep } = GetContext();
 
   const saveGameInfo = async () => {
-    console.log(
-
-      gId, gameName, gameDescription, startTime, endTime,
-    )
+    console.log(gId, gameName, gameDescription, startTime, endTime);
     // save game information to backend
     const res = await fetch(`${serverUrl}/mygame/${gId}`, {
       method: "POST",
@@ -81,7 +77,7 @@ const FirstTab = () => {
   const saveClueInfo = async () => {
     // replace the changed clues
     const tempClues = providedClues;
-    if (currentClueNum < latestClueNum) {
+    if (currentClueNum < providedClues.length + 1) {
       tempClues[currentClueNum - 1] = currentClueInfo;
     } else {
       if (numProvidedClues.length === 0) {
@@ -91,7 +87,6 @@ const FirstTab = () => {
     }
     setProvidedClues(tempClues);
     console.log(tempClues);
-
 
     // update clues information to backend
     const res = await fetch(`${serverUrl}/mygame/${gId}/${currentClueNum}`, {
@@ -103,14 +98,11 @@ const FirstTab = () => {
       body: JSON.stringify(tempClues),
     });
     if (res.status === 401) {
-      navigate("/mygame/{$}");
+      navigate("/authfail");
       return;
     } else {
-      window.location.assign(`/mygame/${gId}`)
-
+      window.location.assign(`/mygame/${gId}`);
     }
-
-
   };
 
   function generateUniqueNumbersForGame(
@@ -135,6 +127,18 @@ const FirstTab = () => {
     return Array.from(uniqueNumbers);
   }
   const handletoProcess = async () => {
+    if (
+      gameName === "" ||
+      gameDescription === "" ||
+      startTime === "N/A" ||
+      endTime === "N/A" ||
+      providedClues.length === 0
+    ) {
+      window.alert(
+        "Please fill in all the information and at least one clue information to proceed."
+      );
+      return;
+    }
     setStep(step + 1);
     let tempClues = providedClues;
     const qrCodes = generateUniqueNumbersForGame(
@@ -167,10 +171,13 @@ const FirstTab = () => {
       navigate("/authfail");
       return;
     }
+    navigate(`/mygame/${gId}/process`);
   };
   useEffect(() => {
-    console.log(gameDescription)
-  }, [gameDescription])
+    console.log("Latest clue number: ", providedClues.length + 1);
+    console.log("Number of provided clues: ", numProvidedClues);
+    console.log(gameDescription);
+  }, [gameDescription]);
   useEffect(() => {
     // load provided game information from backend
     const loadedGameInfo = async () => {
@@ -186,23 +193,18 @@ const FirstTab = () => {
         if (response.ok) {
           const data = await response.json();
           //     // Handle the data and set state accordingly
-
-          if (Object.keys(data.hints).length === 0) {
-            setLatestClueNum(1);
-          } else {
-            setLatestClueNum(data?.hints.length + 1);
+          if (Object.keys(data.hints).length !== 0) {
             const numProvidedCluesTemp = data?.hints.map(
               (clue: ClueInfo) => clue.clueID
             );
             setNumProvidedClues(numProvidedCluesTemp);
             setProvidedClues(data?.hints);
+            setCurrentClueInfo(data?.hints[0]);
           }
           setGameName(data?.name);
           setGameDescription(data?.description);
           setStartTime(data?.starttime);
           setEndTime(data?.endtime);
-
-          setCurrentClueInfo(data?.hints[0]);
         } else {
           // Handle the situation when the response is not ok (e.g., error handling)
           console.error("Error fetching data:", response.status);
@@ -257,10 +259,13 @@ const FirstTab = () => {
                 }}
                 required
               />
-
             </form>
             <div className="div">
-              <button id="savegame" className="savegame-btn" onClick={() => saveGameInfo()}>
+              <button
+                id="savegame"
+                className="savegame-btn"
+                onClick={() => saveGameInfo()}
+              >
                 Save
               </button>
             </div>
@@ -269,15 +274,16 @@ const FirstTab = () => {
               <div className="scroll-container">
                 {fixedCluesSize.map((num) => (
                   <button
-                    className={`scroll-item ${numProvidedClues.includes(num) ? "provided" : ""
-                      }`}
+                    className={`scroll-item ${
+                      numProvidedClues.includes(num) ? "provided" : ""
+                    }`}
                     key={num}
                     onClick={() => {
                       if (numProvidedClues.includes(num)) {
                         setCurrentClueNum(num);
                         setCurrentClueInfo(providedClues[num - 1]);
                       } else {
-                        setCurrentClueNum(latestClueNum);
+                        setCurrentClueNum(providedClues.length + 1);
                         setCurrentClueInfo({
                           ...defaultClueInfo,
                           clueID: providedClues.length + 1,
@@ -327,13 +333,9 @@ const FirstTab = () => {
         </div>
       </div>
 
-      <Link
-        to={`/mygame/${gId}/process`}
-        onClick={() => handletoProcess()}
-        className="nav-btn"
-      >
+      <button onClick={() => handletoProcess()} className="nav-btn">
         Next
-      </Link>
+      </button>
     </div>
   );
 };

@@ -1,20 +1,13 @@
 .map {
-  padding: 5rem;
-  min-width: 320px;
-  min-height: 120vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: relative;
-  background-image: url("/mainPageBack.png");
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 1rem 2rem;
 }
 
 /* sizing for the map */
 .leaflet-container {
   height: 70vh;
   width: 90%;
-  border-radius: 5rem;
+  border-radius: 2rem;
 }

@@ -91,7 +91,7 @@ const Leaderboards = () => {
         <tbody>
           {data.map((element: leader, index: number) => (
             <tr key={index}>
-              <td>{element.ranking}</td>
+              <td>{index + 1}</td>
               <td>{element.player_name}</td>
               <td>{element.solved_clues}</td>
               <td>{element.time}</td>
