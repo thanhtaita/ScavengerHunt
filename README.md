@@ -4,7 +4,7 @@
 
 # snapShot/Video Walkthrough of ScavenegerHunt Final project
 
-https://drive.google.com/file/d/1F8pPG2kv2FXA0FBdTqoFCLFpjJVUUXPR/view?usp=sharing
+https://www.youtube.com/watch?v=vxZAHIeJ14c
 
 # Member information
 
