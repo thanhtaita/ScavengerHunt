@@ -1,8 +1,6 @@
 # Geo Scavenger Hunt: https://play-scavenger-hunt.netlify.app/
 
-# Server link: https://play-scavenger-hunt-e1eecdb42480.herokuapp.com/
-
-# snapShot/Video Walkthrough of ScavenegerHunt Final project
+Video Walkthrough of ScavenegerHunt
 
 https://www.youtube.com/watch?v=vxZAHIeJ14c
 
