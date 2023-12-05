@@ -1,8 +1,6 @@
 # Geo Scavenger Hunt: https://play-scavenger-hunt.netlify.app/
 
-Video Walkthrough of ScavenegerHunt
-
-https://www.youtube.com/watch?v=vxZAHIeJ14c
+ # Video Walkthrough of ScavenegerHunt https://www.youtube.com/watch?v=vxZAHIeJ14c
 
 # Member information
 
